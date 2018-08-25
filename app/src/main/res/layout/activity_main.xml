@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:openDrawer="start">
+
+        <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:fab="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context="br.com.bruno.join.activity.MainActivity">
+
+
+            <LinearLayout
+                android:background="@color/cardview_light_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.design.widget.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/AppTheme.AppBarOverlay">
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="?attr/colorPrimary"
+                        app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+                </android.support.design.widget.AppBarLayout>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorBackground"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    tools:context="br.com.bruno.join.activity.MainActivity"
+                    tools:showIn="@layout/activity_main">
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:paddingTop="5dp"
+                            android:paddingLeft="4dp"
+                            android:paddingRight="4dp"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <include android:id="@+id/resumeCard" layout="@layout/resume_card"/>
+
+                            <include layout="@layout/grafico_card" />
+
+                        </LinearLayout>
+
+                    </ScrollView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <com.github.clans.fab.FloatingActionMenu
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                fab:menu_backgroundColor="#ccffffff"
+                fab:menu_colorNormal="@color/colorAccent"
+                fab:menu_colorPressed="@color/colorPrimary"
+                fab:menu_colorRipple="#1565C0"
+                fab:menu_labels_colorNormal="#fff"
+                fab:menu_labels_ellipsize="end"
+                fab:menu_labels_singleLine="true"
+                fab:menu_labels_textColor="#000">
+
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_top_right_white_24dp"
+                    fab:fab_colorNormal="@color/colorPrimary"
+                    fab:fab_colorPressed="#2945fc"
+                    fab:fab_colorRipple="#3216e2"
+                    fab:fab_label="Adicionar Receita"
+                    fab:fab_size="mini" />
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/botaoAdicionaDespesa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_bottom_left_white_24dp"
+                    fab:fab_colorNormal="@color/colorAccent"
+                    fab:fab_colorPressed="#E8004A"
+                    fab:fab_colorRipple="#C20024"
+                    fab:fab_label="Adicionar Despesas"
+                    fab:fab_size="mini" />
+
+            </com.github.clans.fab.FloatingActionMenu>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/nav_header_main"
+            app:menu="@menu/activity_main_drawer" />
+
+    </android.support.v4.widget.DrawerLayout>
+</layout>
