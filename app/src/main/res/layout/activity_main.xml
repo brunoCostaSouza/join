@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:fab="http://schemas.android.com/apk/res-auto"
@@ -9,9 +8,7 @@
         android:layout_height="match_parent"
         tools:context="br.com.bruno.join.activity.MainActivity">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorBackground"
@@ -46,11 +43,10 @@
             fab:menu_labels_singleLine="true"
             fab:menu_labels_textColor="#000">
 
-
             <com.github.clans.fab.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_top_right_white_24dp"
+                android:src="@drawable/ic_arrow_upward"
                 fab:fab_colorNormal="@color/colorPrimary"
                 fab:fab_colorPressed="#2945fc"
                 fab:fab_colorRipple="#3216e2"
@@ -61,7 +57,7 @@
                 android:id="@+id/botaoAdicionaDespesa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_bottom_left_white_24dp"
+                android:src="@drawable/ic_arrow_down"
                 fab:fab_colorNormal="@color/colorAccent"
                 fab:fab_colorPressed="#E8004A"
                 fab:fab_colorRipple="#C20024"
