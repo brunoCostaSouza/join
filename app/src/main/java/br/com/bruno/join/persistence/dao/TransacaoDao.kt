@@ -1,6 +1,6 @@
 package br.com.bruno.join.persistence.dao
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import br.com.bruno.join.entity.Transacao
 
 /**

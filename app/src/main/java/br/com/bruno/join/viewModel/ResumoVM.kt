@@ -1,7 +1,7 @@
 package br.com.bruno.join.viewModel
 
-import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableField
+import androidx.databinding.ObservableField
+import androidx.lifecycle.ViewModel
 
 /**
  * Created by Bruno Costa on 09/08/2018.
