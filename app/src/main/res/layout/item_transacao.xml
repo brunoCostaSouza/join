@@ -1,18 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="10dp">
+    android:padding="5dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="30dp"
+    <ImageView
+        android:id="@+id/imgItem"
+        android:layout_width="0dp"
         android:layout_height="30dp"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#FF000000"
-        android:background="@color/colorPrimary"
-        android:src="@drawable/ic_arrow_upward"
-        android:tint="@color/colorPrimary" />
+        android:src="@drawable/ic_transfer"
+        android:tint="@color/transferencia"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/descricaoItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="2dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:layout_marginLeft="5dp"
+        android:text="MC Donalds"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/textCategoriaItem"
+        app:layout_constraintEnd_toStartOf="@id/textValorItem"
+        app:layout_constraintStart_toEndOf="@id/imgItem"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textCategoriaItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="2dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:layout_marginLeft="5dp"
+        android:text="Comida "
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/dataItem"
+        app:layout_constraintStart_toEndOf="@id/imgItem"
+        app:layout_constraintTop_toBottomOf="@id/descricaoItem" />
+
+    <TextView
+        android:id="@+id/textValorItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="R$ 1.500,00"
+        android:textAlignment="textEnd"
+        android:textColor="@color/transferencia"
+        app:layout_constraintBottom_toTopOf="@id/dataItem"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/descricaoItem"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <TextView
+        android:id="@+id/dataItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10 jan 2018"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/textCategoriaItem"
+        app:layout_constraintTop_toBottomOf="@id/textValorItem" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

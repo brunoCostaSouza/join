@@ -1,9 +1,6 @@
 package br.com.bruno.join.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
+import androidx.room.*
 import br.com.bruno.join.converter.DateConverter
 
 /**
@@ -13,16 +10,16 @@ import br.com.bruno.join.converter.DateConverter
 class Transacao (
 
         @PrimaryKey(autoGenerate = true)
-        var id: Long = 0,
+        var _id: Long = 0,
 
         @ColumnInfo(name = "valor")
-        var valor: Double,
+        var valor: Double = 0.0,
 
-        @ColumnInfo(name = "descricao")
+        @ColumnInfo(name = "descricao_transacao")
         var descricao: String,
 
-        @ColumnInfo(name = "categoria_id")
-        var categoriaId: Long,
+        @Embedded
+        var categoria: Categoria,
 
         @ColumnInfo(name = "tipo")
         var tipo: String,

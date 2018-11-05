@@ -21,6 +21,6 @@ interface TransacaoDao{
     @Delete
     fun remove(transacao: Transacao)
 
-    @Query("SELECT * FROM Transacao WHERE id = :tId ")
+    @Query("SELECT * FROM Transacao WHERE _id = :tId ")
     fun findById(tId: Long): Transacao
 }

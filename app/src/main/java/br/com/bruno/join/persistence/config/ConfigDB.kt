@@ -9,9 +9,9 @@ import androidx.room.RoomDatabase
  */
 class ConfigDB(private val context: Context) {
     fun config(): RoomDatabase.Builder<AppDataBase> {
-        if (Room.inMemoryDatabaseBuilder(context, AppDataBase::class.java) != null) {
+        /*if (Room.inMemoryDatabaseBuilder(context, AppDataBase::class.java) != null) {
             return Room.inMemoryDatabaseBuilder(context, AppDataBase::class.java)
-        }
+        }*/
         return Room.databaseBuilder(context, AppDataBase::class.java, "joinbrdb")
     }
 }

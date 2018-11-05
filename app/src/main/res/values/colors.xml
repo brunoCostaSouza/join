@@ -10,4 +10,5 @@
     <color name="despesa">#EC407A</color>
     <color name="saldoPositivo">#009688</color>
     <color name="saldoNegativo">#EC407A</color>
+    <color name="transferencia">#bfa600</color>
 </resources>

@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey
 class Categoria (
 
         @PrimaryKey(autoGenerate = true)
-        var id: Long = 0,
+        var idCategoria: Long = 0,
 
-        @ColumnInfo(name = "descricao")
+        @ColumnInfo(name = "descricao_categoria")
         var descricao: String)
