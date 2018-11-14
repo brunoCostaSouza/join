@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp">
+    style="?android:attr/borderlessButtonStyle">
 
     <ImageView
         android:id="@+id/imgItem"
         android:layout_width="0dp"
         android:layout_height="30dp"
-        android:src="@drawable/ic_transfer"
-        android:tint="@color/transferencia"
+        android:src="@drawable/ic_transfer_2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,7 +51,7 @@
         android:layout_height="wrap_content"
         android:text="R$ 1.500,00"
         android:textAlignment="textEnd"
-        android:textColor="@color/transferencia"
+        android:textColor="@color/receita"
         app:layout_constraintBottom_toTopOf="@id/dataItem"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/descricaoItem"
@@ -69,6 +68,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/textCategoriaItem"
         app:layout_constraintTop_toBottomOf="@id/textValorItem" />
+
+    <LinearLayout
+        android:id="@+id/lline"
+        android:background="@color/gray"
+        android:layout_width="0dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="@id/textCategoriaItem"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textCategoriaItem"
+        android:layout_height="1dp"
+        android:orientation="horizontal" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

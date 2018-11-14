@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#05b197</color>
-    <color name="colorPrimaryDark">#05b197</color>
-    <color name="colorAccent">#ff4181</color>
+    <!--<color name="colorPrimary">#05b197</color>
+    <color name="colorPrimaryDark">#047c6b</color>
+    <color name="colorAccent">#ff4181</color>-->
+
+    <color name="colorPrimary">#344955</color>
+    <color name="colorPrimaryDark">#24333b</color>
+    <color name="colorAccent">#faab1a</color>
+
     <color name="colorCard">#FFFFFF</color>
     <color name="colorBackground">#f1f5f8</color>
     <color name="whiteDark">#f5f5f5</color>
-    <color name="receita">#52aeff</color>
-    <color name="despesa">#EC407A</color>
+    <color name="gray">#d2d2d2</color>
+    <color name="receita">#05b197</color>
+    <color name="despesa">#ff4181</color>
     <color name="saldoPositivo">#009688</color>
     <color name="saldoNegativo">#EC407A</color>
-    <color name="transferencia">#bfa600</color>
+    <color name="transferencia">#BB86FC</color>
 </resources>
