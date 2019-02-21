@@ -62,10 +62,10 @@ class TransacaoViewHolder(
             }
         }
         val cal = Calendar.getInstance()
-        cal.timeInMillis = transacao.dataTransacao
+        cal.timeInMillis = transacao.data!!.time
 
         itemView.descricaoItem.text = transacao.descricao
-        itemView.textCategoriaItem.text = transacao.categoria.descricao
+        itemView.textCategoriaItem.text = transacao.categoria!!.descricao
         itemView.dataItem.text = cal.time.formataData()
         itemView.setOnClickListener {
             Toast.makeText(context, "value:${transacao.valor}", Toast.LENGTH_SHORT).show()

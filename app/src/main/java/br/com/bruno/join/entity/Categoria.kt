@@ -1,17 +1,17 @@
 package br.com.bruno.join.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
+import io.realm.annotations.RealmClass
 
 /**
  * Created by Bruno Costa on 09/08/2018.
  */
-@Entity
-class Categoria (
+@RealmClass
+open class Categoria : RealmObject() {
 
-        @PrimaryKey(autoGenerate = true)
-        var idCategoria: Long = 0,
-
-        @ColumnInfo(name = "descricao_categoria")
-        var descricao: String)
+    @PrimaryKey
+    open var id: Long = 0
+    open var resorce: Int? = null
+    open var descricao: String? = null
+}

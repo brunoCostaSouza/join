@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="br.com.bruno.join.viewModel.ResumoVM" />
+            type="br.com.bruno.join.viewModel.MainViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -131,6 +131,7 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
@@ -215,6 +216,7 @@
             android:src="@drawable/ic_add"
             app:layout_anchor="@+id/myBar" />
 
-        <include layout="@layout/sheet_transacao" />
+        <!--<include layout="@layout/transacao_dialog" />-->
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

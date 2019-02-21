@@ -10,4 +10,23 @@
     <string name="title_activity_home">R$ 2.000,00</string>
     <string name="receita">Receita</string>
     <string name="despesa">Despesa</string>
+    <string name="descri_o">Descrição</string>
+    <string name="adicionar_receita">Salvar receita</string>
+    <string name="adicionar_despesa">Salvar despesa</string>
+    <string name="r_0_00">R$0,00</string>
+    <string name="selecione_uma_categoria">Selecione uma categoria</string>
+
+    <array name="categories">
+        <item>Selecione uma categoria</item>
+        <item>Alimentação</item>
+        <item>Casa</item>
+        <item>Vestuário</item>
+        <item>Lazer</item>
+        <item>Remuneração</item>
+        <item>Sobremesa</item>
+        <item>Cartão de Crédito</item>
+        <item>Manutenção do carro</item>
+        <item>Viagem</item>
+        <item>Outros</item>
+    </array>
 </resources>

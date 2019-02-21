@@ -1,7 +1,8 @@
-package br.com.bruno.join
+package br.com.bruno.join.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import br.com.bruno.join.R
 
 
 class TransacaoActivity : AppCompatActivity() {

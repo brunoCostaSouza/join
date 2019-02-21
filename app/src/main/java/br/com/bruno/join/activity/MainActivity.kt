@@ -2,45 +2,35 @@ package br.com.bruno.join.activity
 
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.bruno.join.R
+import br.com.bruno.join.Util.TransacaoPopup
 import br.com.bruno.join.adapter.ItemTransacaoAdapter
 import br.com.bruno.join.databinding.ActivityMainBinding
-import br.com.bruno.join.viewModel.ResumoVM
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.transitionseverywhere.ArcMotion
-import com.transitionseverywhere.ChangeBounds
-import com.transitionseverywhere.Recolor
-import com.transitionseverywhere.TransitionManager
+import br.com.bruno.join.viewModel.MainViewModel
 import formatMoney
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.sheet_transacao.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: ResumoVM
+    private lateinit var viewModel: MainViewModel
     private lateinit var transacaoAdapter: ItemTransacaoAdapter
-    private lateinit var bottomBehavior: BottomSheetBehavior<View>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(ResumoVM::class.java)
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        viewModel = ViewModelProviders.of(this, MainViewModel.Factory(this)).get(MainViewModel::class.java)
+        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewModel = viewModel
 
         setupView()
         setupViewModel()
-        viewModel.addItem()
     }
 
     fun setupViewModel(){
@@ -48,10 +38,13 @@ class MainActivity : AppCompatActivity() {
         viewModel.totalDespesa.set(2000.0)
         viewModel.totalReceita.set(3000.0)
         viewModel.listaTransacoes.subscribe {
-            transacaoAdapter.updateList(it)
-            listItens.adapter = transacaoAdapter
-            animateValue()
+            this@MainActivity!!.runOnUiThread {
+                transacaoAdapter.updateList(it)
+                listItens.adapter = transacaoAdapter
+                animateValue()
+            }
         }
+
     }
 
     private fun setupView(){
@@ -63,29 +56,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnAdd.setOnClickListener {
-            bottomBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            val dialog = TransacaoPopup()
+            dialog.show(this.supportFragmentManager,"")
         }
 
-        bottomBehavior = BottomSheetBehavior.from(sheetTransacao)
-        bottomBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-
-        var isReceita = true
-        llTipoTransacao.setOnClickListener {
-
-            TransitionManager.beginDelayedTransition(llTipoTransacao, ChangeBounds().setPathMotion(ArcMotion()).setDuration(400))
-            llToogleParent.gravity = if(isReceita) Gravity.END else Gravity.START
-
-            TransitionManager.beginDelayedTransition(llTipoTransacao, Recolor())
-            textReceita.setTextColor(ContextCompat.getColor(this, if (isReceita) R.color.gray else R.color.whiteDark))
-            textDespesa.setTextColor(ContextCompat.getColor(this, if (isReceita) R.color.whiteDark else R.color.gray))
-            llToogle.setBackgroundResource(if (isReceita) R.drawable.background_accent else R.drawable.background_primary)
-
-            editValue.setTextColor(ContextCompat.getColor(this, if (isReceita) R.color.despesa else R.color.receita))
-            isReceita = !isReceita
-        }
     }
-
-
 
     private fun animateValue() {
         val endValue = viewModel.saldo.get()!!.toFloat()

@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="br.com.bruno.join.viewModel.ResumoVM" />
+            type="br.com.bruno.join.viewModel.MainViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"

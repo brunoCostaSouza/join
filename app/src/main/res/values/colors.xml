@@ -9,11 +9,18 @@
     <color name="colorAccent">#faab1a</color>
 
     <color name="colorCard">#FFFFFF</color>
+    <color name="white">#FFFFFF</color>
     <color name="colorBackground">#f1f5f8</color>
     <color name="whiteDark">#f5f5f5</color>
     <color name="gray">#d2d2d2</color>
+    <color name="gray_dark">#737373</color>
     <color name="receita">#05b197</color>
     <color name="despesa">#ff4181</color>
+
+    <color name="sucess">#05b197</color>
+    <color name="error">#ff4181</color>
+    <color name="orange">#faab1a</color>
+
     <color name="saldoPositivo">#009688</color>
     <color name="saldoNegativo">#EC407A</color>
     <color name="transferencia">#BB86FC</color>

@@ -1,19 +1,16 @@
 package br.com.bruno.join.persistence.dao
 
-import androidx.room.*
-import br.com.bruno.join.entity.Transacao
-
 /**
  * Created by Bruno Costa on 10/08/2018.
  */
-@Dao
+//@Dao
 interface TransacaoDao{
-
+    /*
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(transacao: Transacao)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg transacao: Transacao)
+    fun insert(transacoes: List<Transacao>)
 
     @Update
     fun update(transacao: Transacao)
@@ -23,4 +20,10 @@ interface TransacaoDao{
 
     @Query("SELECT * FROM Transacao WHERE _id = :tId ")
     fun findById(tId: Long): Transacao
+
+    @Query("SELECT * FROM Transacao")
+    fun findAll(): List<Transacao>
+
+    @Query("SELECT * FROM Categoria")
+    fun findAllCategories(): List<Categoria>*/
 }
