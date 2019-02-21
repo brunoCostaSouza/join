@@ -1,42 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/button_green"
     android:id="@+id/rootAlert"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/button_pink"
-    android:layout_margin="10dp"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/srcAlert"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="8dp"
+        android:tint="@color/receita"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/srcAlert"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="8dp"
-            android:src="@drawable/ic_sucess"
-            android:tint="@color/despesa"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/descriptionAlert"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/srcAlert"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="Transação realizada com sucesso"
-            android:textColor="@color/despesa"
-            android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@id/srcAlert"
-            app:layout_constraintTop_toTopOf="@id/srcAlert" />
+    <TextView
+        android:id="@+id/descriptionAlert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/srcAlert"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="8dp"
+        android:text="Transação realizada com sucesso"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/srcAlert"
+        app:layout_constraintTop_toTopOf="@id/srcAlert" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

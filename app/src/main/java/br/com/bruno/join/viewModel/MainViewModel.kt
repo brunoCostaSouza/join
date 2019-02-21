@@ -38,6 +38,9 @@ class MainViewModel(
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
+                    totalReceita.set(it.filter { it.tipo!! == TipoTransacao.RECEITA.name }.sumByDouble { it.valor })
+                    totalDespesa.set(it.filter { it.tipo!! == TipoTransacao.DESPESA.name }.sumByDouble { it.valor })
+                    saldo.set(totalReceita.get()!! - totalDespesa.get()!!)
                     listaTransacoes.onNext(it)
                 }
         )
@@ -57,20 +60,6 @@ class MainViewModel(
         list.add(Transacao(descricao = "Água", categoria = Categoria(descricao = "Casa"), valor = 50.5, dataTransacao = time, tipo = TipoTransacao.DESPESA.name, contaId = 0))
         list.add(Transacao(descricao = "Internet", categoria = Categoria(descricao = "Casa"), valor = 110.5, dataTransacao = time, tipo = TipoTransacao.DESPESA.name, contaId = 0))
         */
-    }
-
-    fun addTransacao(){
-        Transacao().apply {
-            data = Date()
-            descricao = "Teste"
-            categoria = Categoria()
-            categoria!!.descricao = "Testecat"
-            valor = 1.000
-            tipo = TipoTransacao.DESPESA.name
-
-            categoria!!.save()
-            this.save()
-        }
     }
 
     class Factory(

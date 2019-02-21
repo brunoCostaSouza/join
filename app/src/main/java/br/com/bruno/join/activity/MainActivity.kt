@@ -13,14 +13,17 @@ import br.com.bruno.join.R
 import br.com.bruno.join.Util.TransacaoPopup
 import br.com.bruno.join.adapter.ItemTransacaoAdapter
 import br.com.bruno.join.databinding.ActivityMainBinding
+import br.com.bruno.join.extensions.observe
 import br.com.bruno.join.viewModel.MainViewModel
 import formatMoney
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var transacaoAdapter: ItemTransacaoAdapter
+    private val compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,20 +37,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setupViewModel(){
-        viewModel.saldo.set(1000.0)
-        viewModel.totalDespesa.set(2000.0)
-        viewModel.totalReceita.set(3000.0)
-        viewModel.listaTransacoes.subscribe {
+        compositeDisposable.add(viewModel.listaTransacoes.subscribe {
             this@MainActivity!!.runOnUiThread {
                 transacaoAdapter.updateList(it)
                 listItens.adapter = transacaoAdapter
                 animateValue()
             }
-        }
+        })
+
+        compositeDisposable.add(viewModel.saldo.observe {
+            if(it!! < 0) {
+                textSaldoAcumulado.setTextColor(resources.getColor(R.color.despesa))
+            } else {
+                textSaldoAcumulado.setTextColor(resources.getColor(R.color.receita))
+            }
+        })
 
     }
 
     private fun setupView(){
+
         transacaoAdapter = ItemTransacaoAdapter(applicationContext)
         listItens.apply {
             layoutManager = LinearLayoutManager(context)
@@ -59,7 +68,6 @@ class MainActivity : AppCompatActivity() {
             val dialog = TransacaoPopup()
             dialog.show(this.supportFragmentManager,"")
         }
-
     }
 
     private fun animateValue() {

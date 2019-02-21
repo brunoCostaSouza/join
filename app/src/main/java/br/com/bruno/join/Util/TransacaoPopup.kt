@@ -1,6 +1,5 @@
 package br.com.bruno.join.Util
 
-import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -21,6 +20,8 @@ import br.com.bruno.join.adapter.CategoriaAdapter
 import br.com.bruno.join.databinding.TransacaoDialogBinding
 import br.com.bruno.join.enums.TipoTransacao
 import br.com.bruno.join.extensions.observe
+import br.com.bruno.join.repository.ITransacaoRepository
+import br.com.bruno.join.repository.TransacaoRepository
 import br.com.bruno.join.viewModel.TransacaoViewModel
 import com.transitionseverywhere.ArcMotion
 import com.transitionseverywhere.ChangeBounds
@@ -33,12 +34,16 @@ class TransacaoPopup: DialogFragment() {
 
     val compDisposable = CompositeDisposable()
     lateinit var  viewModel: TransacaoViewModel
+    lateinit var transacaoRepository: ITransacaoRepository
     lateinit var categoriaAdapter: CategoriaAdapter
     lateinit var app: JApplication
+    var isReceita = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        transacaoRepository = TransacaoRepository()
+
         viewModel = ViewModelProviders
-                .of(this, TransacaoViewModel.Factory(activity!!.applicationContext, null))
+                .of(this, TransacaoViewModel.Factory(activity!!.applicationContext, null, transacaoRepository))
                 .get(TransacaoViewModel::class.java)
 
         val binding: TransacaoDialogBinding = DataBindingUtil.inflate(inflater, R.layout.transacao_dialog, container, true)
@@ -52,7 +57,7 @@ class TransacaoPopup: DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         super.onViewCreated(view, savedInstanceState)
-        setupView(view)
+        setupView()
         setupViewModel()
         viewModel.getCategorias()
     }
@@ -63,22 +68,18 @@ class TransacaoPopup: DialogFragment() {
         activity!!.windowManager.defaultDisplay.getMetrics(metrics)
         dialog.window!!.setGravity(Gravity.CENTER)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        //dialog.setCancelable(true)
     }
 
-    private fun setupView(view: View) {
+    private fun setupView() {
         categoriaAdapter = CategoriaAdapter(activity!!.applicationContext, mutableListOf())
         spnCategory.adapter = categoriaAdapter
-
-
-        imgClose.setOnClickListener {
-            dialog.dismiss()
-        }
+        imgClose.setOnClickListener { dialog.dismiss() }
 
     }
 
     private fun setupViewModel() {
         compDisposable.add(viewModel.categorias.observe {
+            if(dialog.isShowing) dialog.dismiss()
             categoriaAdapter.categorias = it!!
             categoriaAdapter.notifyDataSetChanged()
         })
@@ -87,27 +88,33 @@ class TransacaoPopup: DialogFragment() {
             doAnimate(it!! == TipoTransacao.RECEITA)
         })
 
-        compDisposable.add(viewModel.showALert.observe {
-            app.showAlert("Adicionado com sucesso", JApplication.ALERT_TYPE_SUCCESS, Toast.LENGTH_SHORT)
+        compDisposable.add(viewModel.showALert.subscribe {
+            app.showAlert(it!!, JApplication.ALERT_TYPE_WARNING, Toast.LENGTH_SHORT)
         })
+
+        compDisposable.add(viewModel.showSuccess.subscribe {
+            dialog.dismiss()
+            Handler().postDelayed({app.showAlert(it!!, JApplication.ALERT_TYPE_SUCCESS, Toast.LENGTH_SHORT)}, 300)
+        })
+
     }
 
     fun doAnimate(isReceita: Boolean) {
         TransitionManager.beginDelayedTransition(llTTransacao, ChangeBounds().setPathMotion(ArcMotion()).setDuration(300))
-        llToogleParent.gravity = if(isReceita) Gravity.END else Gravity.START
+        llToogleParent.gravity = if(isReceita) Gravity.START else Gravity.END
 
         TransitionManager.beginDelayedTransition(llTTransacao, Recolor())
         Handler().postDelayed({
-            textReceita.setTextColor(ContextCompat.getColor(activity!!.applicationContext, if (isReceita) R.color.gray_dark else R.color.white))
-            textDespesa.setTextColor(ContextCompat.getColor(activity!!.applicationContext, if (isReceita) R.color.white else R.color.gray_dark))
+            textReceita.setTextColor(ContextCompat.getColor(activity!!.applicationContext, if (isReceita) R.color.white else R.color.gray_dark))
+            textDespesa.setTextColor(ContextCompat.getColor(activity!!.applicationContext, if (isReceita) R.color.gray_dark else R.color.white))
         }, 300)
 
-        llToogle.setBackgroundResource(if (isReceita) R.drawable.background_accent else R.drawable.background_primary)
+        llToogle.setBackgroundResource(if (isReceita) R.drawable.background_primary else R.drawable.background_accent)
 
         //dialog.editValue.setTextColor(ContextCompat.getColor(context, if (isReceita) R.color.despesa else R.color.receita))
 
-        btnAddReceita.visibility = if(!isReceita) View.VISIBLE else View.GONE
-        btnAddDespesa.visibility = if(!isReceita) View.GONE else View.VISIBLE
+        btnAddReceita.visibility = if(isReceita) View.VISIBLE else View.GONE
+        btnAddDespesa.visibility = if(isReceita) View.GONE else View.VISIBLE
     }
 
 }
