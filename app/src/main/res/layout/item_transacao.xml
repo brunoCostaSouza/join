@@ -1,75 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
-    style="?android:attr/borderlessButtonStyle">
+    android:layout_margin="3dp"
+    android:elevation="15dp"
+    app:cardBackgroundColor="@color/cardview_light_background"
+    app:cardCornerRadius="10dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/imgItem"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_check_circle_black_24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/descricaoItem"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="2dp"
-        android:ellipsize="end"
-        android:lines="1"
-        android:layout_marginLeft="5dp"
-        android:text="MC Donalds"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/textCategoriaItem"
-        app:layout_constraintEnd_toStartOf="@id/textValorItem"
-        app:layout_constraintStart_toEndOf="@id/imgItem"
-        app:layout_constraintTop_toTopOf="parent" />
+        style="?android:attr/borderlessButtonStyle">
 
-    <TextView
-        android:id="@+id/textCategoriaItem"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="2dp"
-        android:ellipsize="end"
-        android:lines="1"
-        android:layout_marginLeft="5dp"
-        android:text="Comida "
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/dataItem"
-        app:layout_constraintStart_toEndOf="@id/imgItem"
-        app:layout_constraintTop_toBottomOf="@id/descricaoItem" />
+        <ImageView
+            android:id="@+id/imgItem"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_check_circle_black_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textValorItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="R$ 1.500,00"
-        android:textAlignment="textEnd"
-        android:textColor="@color/receita"
-        app:layout_constraintBottom_toTopOf="@id/dataItem"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/descricaoItem"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="5dp"
-        tools:layout_editor_absoluteY="0dp" />
+        <TextView
+            android:id="@+id/descricaoItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:layout_marginLeft="5dp"
+            android:text="MC Donalds"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/textCategoriaItem"
+            app:layout_constraintEnd_toStartOf="@id/textValorItem"
+            app:layout_constraintStart_toEndOf="@id/imgItem"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/dataItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="10 jan 2018"
-        android:textSize="13sp"
-        android:layout_marginEnd="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/textCategoriaItem"
-        app:layout_constraintTop_toBottomOf="@id/textValorItem" />
+        <TextView
+            android:id="@+id/textCategoriaItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:layout_marginLeft="5dp"
+            android:text="Comida "
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/dataItem"
+            app:layout_constraintStart_toEndOf="@id/imgItem"
+            app:layout_constraintTop_toBottomOf="@id/descricaoItem" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/textValorItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R$ 1.500,00"
+            android:textAlignment="textEnd"
+            android:textColor="@color/receita"
+            app:layout_constraintBottom_toTopOf="@id/dataItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/descricaoItem"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="5dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <TextView
+            android:id="@+id/dataItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10 jan 2018"
+            android:textSize="13sp"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textCategoriaItem"
+            app:layout_constraintTop_toBottomOf="@id/textValorItem" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
