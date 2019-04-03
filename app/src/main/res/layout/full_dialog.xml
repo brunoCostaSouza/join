@@ -1,64 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rootPopup"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:background="@drawable/background_card"
-    android:orientation="vertical"></LinearLayout>
-<!--<layout>
+<layout>
+
     <data>
+
         <variable
             name="viewModel"
-            type="br.com.bruno.join.viewModel.TransacaoViewModel"/>
+            type="br.com.bruno.join.viewModel.TransacaoViewModel" />
     </data>
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/rootPopup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/background_card"
-        android:orientation="vertical">
 
-        <RelativeLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_card">
+
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20sp"
-                android:orientation="vertical">
+                android:layout_gravity="end" />
 
-                <ImageView
-                    android:id="@+id/imgClose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:src="@drawable/ic_close"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:id="@+id/rootPopup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_card"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/llTTransacao"
                     android:layout_width="0dp"
                     android:layout_height="35dp"
                     android:layout_marginStart="20sp"
-                    android:layout_marginTop="10sp"
+                    android:layout_marginTop="25sp"
                     android:layout_marginEnd="20sp"
                     android:background="@drawable/background_primary_white"
-                    android:orientation="vertical"
                     android:onClick="@{() -> viewModel.clickTipoTransacao()}"
+                    android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/imgClose">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <LinearLayout
                         android:id="@+id/llToogleParent"
@@ -110,21 +103,21 @@
                     android:id="@+id/editValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@={viewModel.valor}"
+                    android:layout_marginTop="20dp"
                     android:background="@android:color/transparent"
                     android:hint="@string/r_0_00"
                     android:imeOptions="actionDone"
-                    android:textCursorDrawable="@null"
                     android:inputType="number"
                     android:maxLength="15"
                     android:singleLine="true"
+                    android:text="@={viewModel.valor}"
                     android:textAlignment="textEnd"
-                    app:layout_constraintStart_toStartOf="@id/llTTransacao"
-                    app:layout_constraintEnd_toEndOf="@id/llTTransacao"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="20dp"
+                    android:textCursorDrawable="@null"
+                    android:textSize="40sp"
                     app:groupDivider="."
+                    app:layout_constraintEnd_toEndOf="@id/llTTransacao"
+                    app:layout_constraintStart_toStartOf="@id/llTTransacao"
                     app:layout_constraintTop_toBottomOf="@id/llTTransacao"
                     app:locale="pt_BR"
                     app:monetaryDivider=","
@@ -132,16 +125,16 @@
 
                 <EditText
                     android:id="@+id/textDescription"
-                    android:text="@={viewModel.descricao}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:textCursorDrawable="@null"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
-                    android:textColor="@color/colorPrimary"
-                    android:hint="@string/descri_o"
                     android:backgroundTint="@color/colorPrimary"
+                    android:hint="@string/descri_o"
+                    android:text="@={viewModel.descricao}"
+                    android:textColor="@color/colorPrimary"
+                    android:textCursorDrawable="@null"
                     android:textSize="20sp"
                     app:layout_constraintTop_toBottomOf="@id/editValue" />
 
@@ -149,11 +142,11 @@
                     android:id="@+id/spnCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
-                    android:spinnerMode="dropdown"
                     android:onItemSelected="@{(parent,view,pos,id) -> viewModel.itemSelecionado(parent,view,pos,id)}"
+                    android:spinnerMode="dropdown"
                     app:layout_constraintTop_toBottomOf="@id/textDescription" />
 
                 <Button
@@ -162,30 +155,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/adicionar_receita"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/button_green"
                     android:onClick="@{() -> viewModel.salvarTransacao()}"
+                    android:text="@string/adicionar_receita"
                     android:textColor="@color/receita"
-                    app:layout_constraintTop_toBottomOf="@id/spnCategory"
-                    android:background="@drawable/button_green"/>
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
                 <Button
                     android:id="@+id/btnAddDespesa"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:visibility="gone"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/button_pink"
+                    android:onClick="@{() -> viewModel.salvarTransacao()}"
                     android:text="@string/adicionar_despesa"
                     android:textColor="@color/despesa"
-                    android:onClick="@{() -> viewModel.salvarTransacao()}"
-                    app:layout_constraintTop_toBottomOf="@id/spnCategory"
-                    android:background="@drawable/button_pink"/>
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </RelativeLayout>
-
-    </LinearLayout>
-</layout>-->
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

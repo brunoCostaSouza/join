@@ -4,9 +4,10 @@
     <color name="colorPrimaryDark">#047c6b</color>
     <color name="colorAccent">#ff4181</color>-->
 
-    <color name="colorPrimary">#344955</color>
+    <color name="colorPrimary">#2fb7a7</color>
     <color name="colorPrimaryDark">#24333b</color>
     <color name="colorAccent">#faab1a</color>
+
 
     <color name="colorCard">#FFFFFF</color>
     <color name="white">#FFFFFF</color>

@@ -1,15 +1,50 @@
 package br.com.bruno.join.Util
 
+import android.os.Bundle
+import android.os.Handler
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProviders
+import br.com.bruno.join.Application.JApplication
+import br.com.bruno.join.R
+import br.com.bruno.join.adapter.CategoriaAdapter
+import br.com.bruno.join.databinding.FullDialogBinding
+import br.com.bruno.join.enums.TipoTransacao
+import br.com.bruno.join.extensions.observe
+import br.com.bruno.join.repository.ITransacaoRepository
+import br.com.bruno.join.repository.TransacaoRepository
+import br.com.bruno.join.viewModel.TransacaoViewModel
+import com.transitionseverywhere.ArcMotion
+import com.transitionseverywhere.ChangeBounds
+import com.transitionseverywhere.Recolor
+import com.transitionseverywhere.TransitionManager
+import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.full_dialog.*
 
-class TransacaoPopup: DialogFragment() {
-    /*
+class FullScreenDialog: DialogFragment() {
+
+    companion object {
+        var TAG = "FullScreenDialog"
+    }
+
     val compDisposable = CompositeDisposable()
     lateinit var  viewModel: TransacaoViewModel
     lateinit var transacaoRepository: ITransacaoRepository
     lateinit var categoriaAdapter: CategoriaAdapter
     lateinit var app: JApplication
     var isReceita = true
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.FullScreenDialogStyle)
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         transacaoRepository = TransacaoRepository()
@@ -18,7 +53,7 @@ class TransacaoPopup: DialogFragment() {
                 .of(this, TransacaoViewModel.Factory(activity!!.applicationContext, null, transacaoRepository))
                 .get(TransacaoViewModel::class.java)
 
-        val binding: TransacaoDialogBinding = DataBindingUtil.inflate(inflater, R.layout.transacao_dialog, container, true)
+        val binding: FullDialogBinding = DataBindingUtil.inflate(inflater, R.layout.full_dialog, container, true)
         binding.viewModel = viewModel
 
         app = activity!!.application as JApplication
@@ -34,18 +69,22 @@ class TransacaoPopup: DialogFragment() {
         viewModel.getCategorias()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        val metrics = DisplayMetrics()
-        activity!!.windowManager.defaultDisplay.getMetrics(metrics)
-        dialog.window!!.setGravity(Gravity.CENTER)
-        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    override fun onStart() {
+        super.onStart()
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        dialog.window?.setWindowAnimations(R.style.FullScreenDialogStyle)
     }
 
     private fun setupView() {
         categoriaAdapter = CategoriaAdapter(activity!!.applicationContext, mutableListOf())
         spnCategory.adapter = categoriaAdapter
-        imgClose.setOnClickListener { dialog.dismiss() }
+
+        toolbar.apply {
+            setNavigationIcon(R.drawable.ic_close_white)
+            isSaveEnabled = true
+            setNavigationOnClickListener { dialog.dismiss() }
+            title = "Transação"
+        }
 
     }
 
@@ -88,5 +127,5 @@ class TransacaoPopup: DialogFragment() {
         btnAddReceita.visibility = if(isReceita) View.VISIBLE else View.GONE
         btnAddDespesa.visibility = if(isReceita) View.GONE else View.VISIBLE
     }
-    */
+
 }

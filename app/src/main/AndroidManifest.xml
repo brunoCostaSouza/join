@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.TransacaoActivity" />
-        <activity android:name=".activity.TransactionActivity"></activity>
+        <!-- <activity android:name=".activity.TransactionActivity"></activity> -->
     </application>
 
 </manifest>

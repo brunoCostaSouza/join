@@ -7,9 +7,11 @@ import android.view.MenuItem
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.bruno.join.R
+import br.com.bruno.join.Util.FullScreenDialog
 import br.com.bruno.join.Util.TransacaoPopup
 import br.com.bruno.join.adapter.ItemTransacaoAdapter
 import br.com.bruno.join.databinding.ActivityMainBinding
@@ -65,8 +67,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnAdd.setOnClickListener {
-            val dialog = TransacaoPopup()
-            dialog.show(this.supportFragmentManager,"")
+            /*val dialog = TransacaoPopup()
+            dialog.show(this.supportFragmentManager,"")*/
+            FullScreenDialog().show(supportFragmentManager.beginTransaction(), FullScreenDialog.TAG)
         }
     }
 

@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
     style="?android:attr/borderlessButtonStyle">
 
     <ImageView
         android:id="@+id/imgItem"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:src="@drawable/ic_transfer_2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_check_circle_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,6 +57,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/descricaoItem"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="5dp"
         tools:layout_editor_absoluteY="0dp" />
 
     <TextView
@@ -64,21 +66,10 @@
         android:layout_height="wrap_content"
         android:text="10 jan 2018"
         android:textSize="13sp"
+        android:layout_marginEnd="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/textCategoriaItem"
         app:layout_constraintTop_toBottomOf="@id/textValorItem" />
-
-    <LinearLayout
-        android:id="@+id/lline"
-        android:background="@color/gray"
-        android:layout_width="0dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintStart_toStartOf="@id/textCategoriaItem"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textCategoriaItem"
-        android:layout_height="1dp"
-        android:orientation="horizontal" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
