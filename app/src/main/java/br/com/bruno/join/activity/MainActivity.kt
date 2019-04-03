@@ -1,11 +1,13 @@
 package br.com.bruno.join.activity
 
 import android.animation.ValueAnimator
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
@@ -14,12 +16,12 @@ import br.com.bruno.join.R
 import br.com.bruno.join.Util.FullScreenDialog
 import br.com.bruno.join.Util.TransacaoPopup
 import br.com.bruno.join.adapter.ItemTransacaoAdapter
-import br.com.bruno.join.databinding.ActivityMainBinding
+import br.com.bruno.join.databinding.HomeBinding
 import br.com.bruno.join.extensions.observe
 import br.com.bruno.join.viewModel.MainViewModel
 import formatMoney
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.home.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,8 +33,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this, MainViewModel.Factory(this)).get(MainViewModel::class.java)
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        val binding: HomeBinding = DataBindingUtil.setContentView(this, R.layout.home)
         binding.viewModel = viewModel
+
+        setSupportActionBar(toolbarhome)
+        supportActionBar?.elevation = 0F
 
         setupView()
         setupViewModel()
@@ -49,9 +54,13 @@ class MainActivity : AppCompatActivity() {
 
         compositeDisposable.add(viewModel.saldo.observe {
             if(it!! < 0) {
-                textSaldoAcumulado.setTextColor(resources.getColor(R.color.despesa))
+                layoutTop.background = ContextCompat.getDrawable(this, R.drawable.shape_negative)
+                window.statusBarColor = ContextCompat.getColor(this, R.color.secondPrimary)
+                //supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.secondPrimary)))
             } else {
-                textSaldoAcumulado.setTextColor(resources.getColor(R.color.receita))
+                layoutTop.background = ContextCompat.getDrawable(this, R.drawable.shape_positive)
+                window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
+                //supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.colorPrimary)))
             }
         })
 

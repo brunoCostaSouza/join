@@ -15,22 +15,31 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/resumeCard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context="br.com.bruno.join.activity.MainActivity">
 
             <LinearLayout
                 android:id="@+id/layoutTop"
                 android:layout_width="match_parent"
-                android:layout_height="118dp"
+                android:layout_height="180dp"
                 android:background="@drawable/shape_positive"
                 android:orientation="vertical">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbarhome"
+                    android:background="@null"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:textColor="@color/white"
+                    android:layout_marginTop="5dp"
                     android:textSize="20sp"
                     android:text="Saldo" />
 
@@ -41,7 +50,6 @@
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="30sp"
-                    android:text="2.000,00"
                     app:formatMoney="@{viewModel.saldo.get().toString()}" />
 
 
@@ -81,10 +89,10 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="R$ 2.000,00"
                             android:textColor="@color/receita"
                             android:textAlignment="center"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            app:formatMoney="@{viewModel.totalReceita.get().toString()}"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -120,10 +128,10 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="R$ 2.000,00"
                             android:textColor="@color/despesa"
                             android:textAlignment="center"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            app:formatMoney="@{viewModel.totalDespesa.get().toString()}"/>
 
                         <TextView
                             android:layout_width="match_parent"
@@ -153,7 +161,7 @@
 
             </androidx.core.widget.NestedScrollView>
 
-            <com.github.clans.fab.FloatingActionMenu
+           <com.github.clans.fab.FloatingActionMenu
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
@@ -187,7 +195,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_arrow_down_white"
                     android:tint="@color/colorCard"
-                    app:fab_colorNormal="@color/colorAccent"
+                    app:fab_colorNormal="@color/despesa"
                     app:fab_colorPressed="#E8004A"
                     app:fab_colorRipple="#C20024"
                     app:fab_label="Adicionar Despesas"
@@ -196,6 +204,27 @@
             </com.github.clans.fab.FloatingActionMenu>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--<com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/myBar"
+            style="@style/Widget.MaterialComponents.BottomAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/colorPrimary"
+            app:fabAlignmentMode="center"
+            app:hideOnScroll="true"
+            app:navigationIcon="@drawable/ic_menu_bar"
+            tools:ignore="BottomAppBar" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add"
+            app:layout_anchor="@+id/myBar" />-->
+
+        <include layout="@layout/transacao_dialog" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

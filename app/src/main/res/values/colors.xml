@@ -5,9 +5,9 @@
     <color name="colorAccent">#ff4181</color>-->
 
     <color name="colorPrimary">#2fb7a7</color>
+    <color name="secondPrimary">#f5787e</color>
     <color name="colorPrimaryDark">#24333b</color>
     <color name="colorAccent">#faab1a</color>
-
 
     <color name="colorCard">#FFFFFF</color>
     <color name="white">#FFFFFF</color>
@@ -16,7 +16,7 @@
     <color name="gray">#d2d2d2</color>
     <color name="gray_dark">#737373</color>
     <color name="receita">#05b197</color>
-    <color name="despesa">#ff4181</color>
+    <color name="despesa">#f5787e</color>
 
     <color name="sucess">#05b197</color>
     <color name="error">#ff4181</color>
