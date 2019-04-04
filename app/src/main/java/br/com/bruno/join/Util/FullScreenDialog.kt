@@ -93,6 +93,8 @@ class FullScreenDialog: DialogFragment() {
             isSaveEnabled = true
             setNavigationOnClickListener { dialog.dismiss() }
             title = "Transação"
+            background = ColorDrawable(ContextCompat.getColor(context!!, R.color.secondPrimary))
+            elevation = 0f
         }
     }
 

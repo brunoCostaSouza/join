@@ -2,20 +2,22 @@
 <layout>
 
     <data>
+
         <variable
             name="viewModel"
             type="br.com.bruno.join.viewModel.TransacaoViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_card">
+        android:background="@color/secondPrimary">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:elevation="0dp"
+            app:elevation="0dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -27,12 +29,14 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutForm"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <RelativeLayout
                 android:id="@+id/llTTransacao"
@@ -101,7 +105,6 @@
                 android:layout_marginTop="35dp"
                 android:background="@android:color/transparent"
                 android:hint="@string/r_0_00"
-                android:textColorHint="@color/whiteDark"
                 android:imeOptions="actionDone"
                 android:inputType="number"
                 android:maxLength="15"
@@ -109,6 +112,7 @@
                 android:text="@={viewModel.valor}"
                 android:textAlignment="textEnd"
                 android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/whiteDark"
                 android:textCursorDrawable="@null"
                 android:textSize="45sp"
                 app:groupDivider="."
@@ -128,11 +132,11 @@
                 android:layout_marginEnd="20dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:hint="@string/descri_o"
+                android:maxLength="30"
                 android:text="@={viewModel.descricao}"
                 android:textColor="@color/colorPrimary"
                 android:textCursorDrawable="@null"
                 android:textSize="26sp"
-                android:maxLength="30"
                 app:layout_constraintTop_toBottomOf="@id/editValue" />
 
             <Spinner
@@ -187,10 +191,85 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="50dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/formAddReceita"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <faranjit.currency.edittext.CurrencyEditText
+                android:id="@+id/editValue2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@android:color/transparent"
+                android:hint="@string/r_0_00"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLength="15"
+                android:singleLine="true"
+                android:text="@={viewModel.valor}"
+                android:textAlignment="textEnd"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textCursorDrawable="@null"
+                android:textSize="45sp"
+                app:groupDivider="."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:locale="pt_BR"
+                app:monetaryDivider=","
+                app:showSymbol="true" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/backdrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editValue2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:hint="@string/descri_o"
+                    android:text="@string/descri_o"
+                    android:textColorHint="@color/whiteDark"
+                    app:boxStrokeColor="@color/receita"
+                    app:boxStrokeWidth="2dp"
+                    app:errorEnabled="true"
+                    app:helperText="Informe uma descrição"
+                    app:hintEnabled="true"
+                    app:hintTextAppearance="@string/descri_o">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textDescription2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:maxLength="20"
+                        android:text="@={viewModel.descricao}"
+                        android:textColor="@color/colorPrimary"
+                        android:textCursorDrawable="@null"
+                        android:textSize="26sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
