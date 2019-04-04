@@ -13,7 +13,7 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/secondPrimary">
+        android:background="@color/colorPrimary">
 
         <com.google.android.material.appbar.AppBarLayout
             android:elevation="0dp"
@@ -235,6 +235,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/backdrop"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -265,11 +266,23 @@
                         android:maxLength="20"
                         android:text="@={viewModel.descricao}"
                         android:textColor="@color/colorPrimary"
-                        android:textCursorDrawable="@null"
-                        android:textSize="26sp" />
+                        android:textCursorDrawable="@null" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+
             </LinearLayout>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationDone"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                android:layout_marginBottom="5dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

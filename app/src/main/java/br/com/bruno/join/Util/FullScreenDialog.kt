@@ -1,7 +1,7 @@
 package br.com.bruno.join.Util
 
 import android.animation.Animator
-import android.content.Intent
+import android.animation.ValueAnimator
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -9,7 +9,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -17,7 +16,6 @@ import androidx.lifecycle.ViewModelProviders
 import br.com.bruno.join.Application.JApplication
 import br.com.bruno.join.R
 import br.com.bruno.join.activity.Actions
-import br.com.bruno.join.activity.MainActivity
 import br.com.bruno.join.adapter.CategoriaAdapter
 import br.com.bruno.join.databinding.FullDialogBinding
 import br.com.bruno.join.enums.TipoTransacao
@@ -25,11 +23,11 @@ import br.com.bruno.join.extensions.observe
 import br.com.bruno.join.repository.ITransacaoRepository
 import br.com.bruno.join.repository.TransacaoRepository
 import br.com.bruno.join.viewModel.TransacaoViewModel
+import com.airbnb.lottie.LottieDrawable
 import com.felixsoares.sweetdialog.SweetDialog
 import com.transitionseverywhere.*
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.full_dialog.*
-import kotlinx.android.synthetic.main.home.*
 
 class FullScreenDialog: DialogFragment() {
 
@@ -93,9 +91,12 @@ class FullScreenDialog: DialogFragment() {
             isSaveEnabled = true
             setNavigationOnClickListener { dialog.dismiss() }
             title = "Transação"
-            background = ColorDrawable(ContextCompat.getColor(context!!, R.color.secondPrimary))
+            //background = ColorDrawable(ContextCompat.getColor(context!!, R.color.secondPrimary))
             elevation = 0f
         }
+
+        animationDone.setAnimation("done_primary.json")
+        animationDone.playAnimation()
     }
 
     private fun setupViewModel() {
@@ -117,7 +118,7 @@ class FullScreenDialog: DialogFragment() {
             actions.closeButton()
             layoutForm.visibility = View.GONE
             formAnimation.visibility = View.VISIBLE
-            animationDialog.setAnimation("done.json")
+            animationDialog.setAnimation("sucess.json")
             animationDialog.playAnimation()
             animationDialog.addAnimatorListener(object : Animator.AnimatorListener{
                 override fun onAnimationRepeat(animation: Animator?) {}
