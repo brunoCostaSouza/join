@@ -1,29 +1,31 @@
 package br.com.bruno.join.activity
 
 import android.animation.ValueAnimator
-import android.graphics.drawable.ColorDrawable
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import br.com.bruno.join.Application.JApplication
 import br.com.bruno.join.R
 import br.com.bruno.join.Util.FullScreenDialog
-import br.com.bruno.join.Util.TransacaoPopup
 import br.com.bruno.join.adapter.ItemTransacaoAdapter
 import br.com.bruno.join.databinding.HomeBinding
 import br.com.bruno.join.extensions.observe
 import br.com.bruno.join.viewModel.MainViewModel
+import com.transitionseverywhere.Recolor
+import com.transitionseverywhere.TransitionManager
 import formatMoney
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.home.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), Actions {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var transacaoAdapter: ItemTransacaoAdapter
@@ -53,15 +55,18 @@ class MainActivity : AppCompatActivity() {
         })
 
         compositeDisposable.add(viewModel.saldo.observe {
-            if(it!! < 0) {
-                layoutTop.background = ContextCompat.getDrawable(this, R.drawable.shape_negative)
-                window.statusBarColor = ContextCompat.getColor(this, R.color.secondPrimary)
-                //supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.secondPrimary)))
-            } else {
-                layoutTop.background = ContextCompat.getDrawable(this, R.drawable.shape_positive)
-                window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
-                //supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.colorPrimary)))
-            }
+            TransitionManager.beginDelayedTransition(resumeCard, Recolor().setDuration(1000))
+            Handler().postDelayed({
+                if(it!! < 0) {
+                    layoutTop.background = ContextCompat.getDrawable(this, R.drawable.shape_negative)
+                    window.statusBarColor = ContextCompat.getColor(this, R.color.secondPrimary)
+                    //supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.secondPrimary)))
+                } else {
+                    layoutTop.background = ContextCompat.getDrawable(this, R.drawable.shape_positive)
+                    window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
+                    //supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.colorPrimary)))
+                }
+            }, 500)
         })
 
     }
@@ -78,14 +83,19 @@ class MainActivity : AppCompatActivity() {
         btnAdd.setOnClickListener {
             /*val dialog = TransacaoPopup()
             dialog.show(this.supportFragmentManager,"")*/
-            FullScreenDialog().show(supportFragmentManager.beginTransaction(), FullScreenDialog.TAG)
+            val dialog = FullScreenDialog()
+            dialog.actions = this
+            dialog.show(supportFragmentManager.beginTransaction(), FullScreenDialog.TAG)
         }
     }
 
+    override fun closeButton() {
+        rootFab.close(true)
+    }
     private fun animateValue() {
         val endValue = viewModel.saldo.get()!!.toFloat()
         val animator = ValueAnimator.ofFloat(0f, endValue)
-        animator.duration = 800
+        animator.duration = 900
         animator.addUpdateListener { animation ->
             textSaldoAcumulado.text = (animation.animatedValue as Float).toDouble().formatMoney()
         }
@@ -102,5 +112,8 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+}
 
+interface Actions{
+    fun closeButton()
 }

@@ -2,14 +2,15 @@
 <layout>
 
     <data>
-
         <variable
             name="viewModel"
             type="br.com.bruno.join.viewModel.TransacaoViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background_card">
@@ -19,165 +20,179 @@
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/toolbarDialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <LinearLayout
-            android:id="@+id/rootPopup"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutForm"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/background_card"
-            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/llTTransacao"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="20sp"
+                android:layout_marginTop="25sp"
+                android:layout_marginEnd="20sp"
+                android:background="@drawable/background_primary_white"
+                android:onClick="@{() -> viewModel.clickTipoTransacao()}"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:id="@+id/llToogleParent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:id="@+id/llToogle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_primary"
+                        android:orientation="vertical" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/textReceita"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/receita"
+                        android:textColor="@color/white"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/textDespesa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/despesa"
+                        android:textColor="@color/gray_dark"
+                        android:textSize="17sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <faranjit.currency.edittext.CurrencyEditText
+                android:id="@+id/editValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:background="@android:color/transparent"
+                android:hint="@string/r_0_00"
+                android:textColorHint="@color/whiteDark"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLength="15"
+                android:singleLine="true"
+                android:text="@={viewModel.valor}"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorPrimary"
+                android:textCursorDrawable="@null"
+                android:textSize="45sp"
+                app:groupDivider="."
+                app:layout_constraintEnd_toEndOf="@id/llTTransacao"
+                app:layout_constraintStart_toStartOf="@id/llTTransacao"
+                app:layout_constraintTop_toBottomOf="@id/llTTransacao"
+                app:locale="pt_BR"
+                app:monetaryDivider=","
+                app:showSymbol="true" />
+
+            <EditText
+                android:id="@+id/textDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="20dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:hint="@string/descri_o"
+                android:text="@={viewModel.descricao}"
+                android:textColor="@color/colorPrimary"
+                android:textCursorDrawable="@null"
+                android:textSize="26sp"
+                android:maxLength="30"
+                app:layout_constraintTop_toBottomOf="@id/editValue" />
+
+            <Spinner
+                android:id="@+id/spnCategory"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                android:onItemSelected="@{(parent,view,pos,id) -> viewModel.itemSelecionado(parent,view,pos,id)}"
+                android:spinnerMode="dropdown"
+                app:layout_constraintTop_toBottomOf="@id/textDescription" />
+
+            <Button
+                android:id="@+id/btnAddReceita"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/button_green"
+                android:onClick="@{() -> viewModel.salvarTransacao()}"
+                android:text="@string/adicionar_receita"
+                android:textColor="@color/receita"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <Button
+                android:id="@+id/btnAddDespesa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/button_pink"
+                android:onClick="@{() -> viewModel.salvarTransacao()}"
+                android:text="@string/adicionar_despesa"
+                android:textColor="@color/despesa"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/formAnimation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationDialog"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_margin="50dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <RelativeLayout
-                    android:id="@+id/llTTransacao"
-                    android:layout_width="0dp"
-                    android:layout_height="35dp"
-                    android:layout_marginStart="20sp"
-                    android:layout_marginTop="25sp"
-                    android:layout_marginEnd="20sp"
-                    android:background="@drawable/background_primary_white"
-                    android:onClick="@{() -> viewModel.clickTipoTransacao()}"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <LinearLayout
-                        android:id="@+id/llToogleParent"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="left"
-                        android:weightSum="2">
-
-                        <LinearLayout
-                            android:id="@+id/llToogle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/background_primary"
-                            android:orientation="vertical" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:weightSum="2">
-
-                        <TextView
-                            android:id="@+id/textReceita"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/receita"
-                            android:textColor="@color/whiteDark"
-                            android:textSize="17sp" />
-
-                        <TextView
-                            android:id="@+id/textDespesa"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="right"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/despesa"
-                            android:textColor="@color/gray_dark"
-                            android:textSize="17sp" />
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-                <faranjit.currency.edittext.CurrencyEditText
-                    android:id="@+id/editValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/r_0_00"
-                    android:imeOptions="actionDone"
-                    android:inputType="number"
-                    android:maxLength="15"
-                    android:singleLine="true"
-                    android:text="@={viewModel.valor}"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/colorPrimary"
-                    android:textCursorDrawable="@null"
-                    android:textSize="40sp"
-                    app:groupDivider="."
-                    app:layout_constraintEnd_toEndOf="@id/llTTransacao"
-                    app:layout_constraintStart_toStartOf="@id/llTTransacao"
-                    app:layout_constraintTop_toBottomOf="@id/llTTransacao"
-                    app:locale="pt_BR"
-                    app:monetaryDivider=","
-                    app:showSymbol="true" />
-
-                <EditText
-                    android:id="@+id/textDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:hint="@string/descri_o"
-                    android:text="@={viewModel.descricao}"
-                    android:textColor="@color/colorPrimary"
-                    android:textCursorDrawable="@null"
-                    android:textSize="20sp"
-                    app:layout_constraintTop_toBottomOf="@id/editValue" />
-
-                <Spinner
-                    android:id="@+id/spnCategory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:onItemSelected="@{(parent,view,pos,id) -> viewModel.itemSelecionado(parent,view,pos,id)}"
-                    android:spinnerMode="dropdown"
-                    app:layout_constraintTop_toBottomOf="@id/textDescription" />
-
-                <Button
-                    android:id="@+id/btnAddReceita"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/button_green"
-                    android:onClick="@{() -> viewModel.salvarTransacao()}"
-                    android:text="@string/adicionar_receita"
-                    android:textColor="@color/receita"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-
-                <Button
-                    android:id="@+id/btnAddDespesa"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/button_pink"
-                    android:onClick="@{() -> viewModel.salvarTransacao()}"
-                    android:text="@string/adicionar_despesa"
-                    android:textColor="@color/despesa"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

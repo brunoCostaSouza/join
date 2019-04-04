@@ -26,7 +26,7 @@ class TransacaoViewModel(
 ): ViewModel() {
 
     var transacao: Transacao
-    var valor = ObservableField<String>("")
+    var valor = ObservableField<String>()
     var descricao = ObservableField<String>("")
     var categoria = ObservableField<Categoria>()
     var tipoTransacao = ObservableField<TipoTransacao>()

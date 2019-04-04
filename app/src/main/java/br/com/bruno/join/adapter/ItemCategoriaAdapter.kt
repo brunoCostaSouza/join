@@ -32,7 +32,7 @@ class CategoriaAdapter(
     }
 
     private fun createItemView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return getMyView(position, parent, 18F)
+        return getMyView(position, parent, 24F)
     }
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {

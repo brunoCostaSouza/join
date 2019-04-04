@@ -1,14 +1,20 @@
 package br.com.bruno.join.Application
 
 import android.app.Application
+import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import br.com.bruno.join.R
+import com.felixsoares.sweetdialog.SweetDialog
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.alert_toast.view.*
+import android.app.Activity
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+
 
 class JApplication : Application() {
 
@@ -35,8 +41,15 @@ class JApplication : Application() {
 
     }
 
-    fun showAlert(description: String, type: Int, timeShow: Int) {
+    fun showAlert(context: Context, description: String, type: SweetDialog.Type, timeShow: Long) {
 
+        SweetDialog()
+                .setTitle(description)
+                .setType(type)
+                .setTimer(timeShow)
+                .show(context)
+
+        /*
         Toast(applicationContext).apply {
 
             val layout = LayoutInflater.from(applicationContext).inflate(R.layout.alert_toast, null, false)
@@ -77,8 +90,19 @@ class JApplication : Application() {
             setGravity(Gravity.BOTTOM, 0, 175)
 
             show()
-        }
+        }*/
 
+    }
+
+    fun hideKeyboard(activity: Activity) {
+        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        //Find the currently focused view, so we can grab the correct window token from it.
+        var view = activity.currentFocus
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = View(activity)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }

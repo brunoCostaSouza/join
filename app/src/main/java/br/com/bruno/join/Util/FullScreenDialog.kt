@@ -1,5 +1,8 @@
 package br.com.bruno.join.Util
 
+import android.animation.Animator
+import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.view.Gravity
@@ -13,6 +16,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import br.com.bruno.join.Application.JApplication
 import br.com.bruno.join.R
+import br.com.bruno.join.activity.Actions
+import br.com.bruno.join.activity.MainActivity
 import br.com.bruno.join.adapter.CategoriaAdapter
 import br.com.bruno.join.databinding.FullDialogBinding
 import br.com.bruno.join.enums.TipoTransacao
@@ -20,12 +25,11 @@ import br.com.bruno.join.extensions.observe
 import br.com.bruno.join.repository.ITransacaoRepository
 import br.com.bruno.join.repository.TransacaoRepository
 import br.com.bruno.join.viewModel.TransacaoViewModel
-import com.transitionseverywhere.ArcMotion
-import com.transitionseverywhere.ChangeBounds
-import com.transitionseverywhere.Recolor
-import com.transitionseverywhere.TransitionManager
+import com.felixsoares.sweetdialog.SweetDialog
+import com.transitionseverywhere.*
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.full_dialog.*
+import kotlinx.android.synthetic.main.home.*
 
 class FullScreenDialog: DialogFragment() {
 
@@ -38,6 +42,7 @@ class FullScreenDialog: DialogFragment() {
     lateinit var transacaoRepository: ITransacaoRepository
     lateinit var categoriaAdapter: CategoriaAdapter
     lateinit var app: JApplication
+    lateinit var actions: Actions
     var isReceita = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,17 +80,20 @@ class FullScreenDialog: DialogFragment() {
         dialog.window?.setWindowAnimations(R.style.FullScreenDialogStyle)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        actions.closeButton()
+    }
     private fun setupView() {
         categoriaAdapter = CategoriaAdapter(activity!!.applicationContext, mutableListOf())
         spnCategory.adapter = categoriaAdapter
 
-        toolbar.apply {
+        toolbarDialog.apply {
             setNavigationIcon(R.drawable.ic_close_white)
             isSaveEnabled = true
             setNavigationOnClickListener { dialog.dismiss() }
             title = "Transação"
         }
-
     }
 
     private fun setupViewModel() {
@@ -100,29 +108,45 @@ class FullScreenDialog: DialogFragment() {
         })
 
         compDisposable.add(viewModel.showALert.subscribe {
-            app.showAlert(it!!, JApplication.ALERT_TYPE_WARNING, Toast.LENGTH_SHORT)
+            app.showAlert(activity!!, it!!, SweetDialog.Type.DANGER, 2700)
         })
 
         compDisposable.add(viewModel.showSuccess.subscribe {
-            dialog.dismiss()
-            Handler().postDelayed({app.showAlert(it!!, JApplication.ALERT_TYPE_SUCCESS, Toast.LENGTH_SHORT)}, 300)
+            actions.closeButton()
+            layoutForm.visibility = View.GONE
+            formAnimation.visibility = View.VISIBLE
+            animationDialog.setAnimation("done.json")
+            animationDialog.playAnimation()
+            animationDialog.addAnimatorListener(object : Animator.AnimatorListener{
+                override fun onAnimationRepeat(animation: Animator?) {}
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    Handler().postDelayed({if(dialog != null && dialog.isShowing) dialog.dismiss()}, 500)
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {}
+
+                override fun onAnimationStart(animation: Animator?) {}
+
+            })
         })
 
     }
-
     fun doAnimate(isReceita: Boolean) {
         TransitionManager.beginDelayedTransition(llTTransacao, ChangeBounds().setPathMotion(ArcMotion()).setDuration(300))
         llToogleParent.gravity = if(isReceita) Gravity.START else Gravity.END
 
-        TransitionManager.beginDelayedTransition(llTTransacao, Recolor())
         Handler().postDelayed({
             textReceita.setTextColor(ContextCompat.getColor(activity!!.applicationContext, if (isReceita) R.color.white else R.color.gray_dark))
             textDespesa.setTextColor(ContextCompat.getColor(activity!!.applicationContext, if (isReceita) R.color.gray_dark else R.color.white))
         }, 300)
 
+        TransitionManager.beginDelayedTransition(root, Recolor())
         llToogle.setBackgroundResource(if (isReceita) R.drawable.background_primary else R.drawable.background_accent)
 
-        //dialog.editValue.setTextColor(ContextCompat.getColor(context, if (isReceita) R.color.despesa else R.color.receita))
+        dialog.editValue.setTextColor(ContextCompat.getColor(context!!, if (isReceita) R.color.receita else R.color.despesa))
+        dialog.textDescription.setTextColor(ContextCompat.getColor(context!!, if (isReceita) R.color.receita else R.color.despesa))
+        dialog.toolbarDialog.background = if (isReceita) ColorDrawable(ContextCompat.getColor(context!!, R.color.colorPrimary)) else ColorDrawable(ContextCompat.getColor(context!!, R.color.secondPrimary))
 
         btnAddReceita.visibility = if(isReceita) View.VISIBLE else View.GONE
         btnAddDespesa.visibility = if(isReceita) View.GONE else View.VISIBLE

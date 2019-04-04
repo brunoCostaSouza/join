@@ -11,11 +11,11 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/resumeCard"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/resumeCard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -31,6 +31,7 @@
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbarhome"
                     android:background="@null"
+                    app:titleTextColor="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -136,7 +137,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Receita"
+                            android:text="Despesa"
                             android:textAlignment="center"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -162,9 +163,10 @@
             </androidx.core.widget.NestedScrollView>
 
            <com.github.clans.fab.FloatingActionMenu
+                android:id="@+id/rootFab"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
