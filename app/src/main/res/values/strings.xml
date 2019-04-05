@@ -15,18 +15,23 @@
     <string name="adicionar_despesa">Salvar despesa</string>
     <string name="r_0_00">R$0,00</string>
     <string name="selecione_uma_categoria">Selecione uma categoria</string>
+    <string name="data_da_transac_o">Data da transacão</string>
+    <string name="consolidado">Consolidado</string>
+    <string name="sim">Sim</string>
+    <string name="n_o">Não</string>
 
-    <array name="categories">
+    <array name="categorias">
         <item>Selecione uma categoria</item>
         <item>Alimentação</item>
-        <item>Casa</item>
-        <item>Vestuário</item>
-        <item>Lazer</item>
-        <item>Remuneração</item>
-        <item>Sobremesa</item>
-        <item>Cartão de Crédito</item>
-        <item>Manutenção do carro</item>
-        <item>Viagem</item>
+        <item>Renda</item>
+        <item>Compras</item>
+        <item>Habitação</item>
+        <item>Transporte</item>
+        <item>Veículo</item>
+        <item>Vida e entreterimento</item>
+        <item>Comunicação, PC</item>
+        <item>Despesas financeiras</item>
+        <item>Investimentos</item>
         <item>Outros</item>
     </array>
 </resources>

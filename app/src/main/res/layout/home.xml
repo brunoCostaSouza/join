@@ -146,21 +146,13 @@
 
             </LinearLayout>
 
-            <androidx.core.widget.NestedScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listItens"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutTop2">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/listItens"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:listitem="@layout/item_transacao" />
-
-            </androidx.core.widget.NestedScrollView>
+                app:layout_constraintTop_toBottomOf="@+id/layoutTop2"
+                tools:listitem="@layout/item_transacao" />
 
            <com.github.clans.fab.FloatingActionMenu
                 android:id="@+id/rootFab"
@@ -181,7 +173,7 @@
                 app:menu_labels_textColor="#000">
 
                 <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/btnAdd"
+                    android:id="@+id/btnAddReceita"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_arrow_upward_white"
@@ -192,7 +184,7 @@
                     app:fab_size="mini" />
 
                 <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/botaoAdicionaDespesa"
+                    android:id="@+id/btnAddDespesa"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_arrow_down_white"

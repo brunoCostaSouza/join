@@ -1,14 +1,14 @@
 package br.com.bruno.join.Util
 
 import android.animation.Animator
-import android.animation.ValueAnimator
+import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -23,11 +23,10 @@ import br.com.bruno.join.extensions.observe
 import br.com.bruno.join.repository.ITransacaoRepository
 import br.com.bruno.join.repository.TransacaoRepository
 import br.com.bruno.join.viewModel.TransacaoViewModel
-import com.airbnb.lottie.LottieDrawable
 import com.felixsoares.sweetdialog.SweetDialog
-import com.transitionseverywhere.*
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.full_dialog.*
+
 
 class FullScreenDialog: DialogFragment() {
 
@@ -41,7 +40,7 @@ class FullScreenDialog: DialogFragment() {
     lateinit var categoriaAdapter: CategoriaAdapter
     lateinit var app: JApplication
     lateinit var actions: Actions
-    var isReceita = true
+    lateinit var tipoTransacao: TipoTransacao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +75,9 @@ class FullScreenDialog: DialogFragment() {
         super.onStart()
         dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         dialog.window?.setWindowAnimations(R.style.FullScreenDialogStyle)
+
+        editValue.requestFocus()
+        Util.showKeyBoard(activity!!, editValue)
     }
 
     override fun onDestroy() {
@@ -88,14 +90,12 @@ class FullScreenDialog: DialogFragment() {
 
         toolbarDialog.apply {
             setNavigationIcon(R.drawable.ic_close_white)
-            isSaveEnabled = true
             setNavigationOnClickListener { dialog.dismiss() }
             title = "Transação"
-            //background = ColorDrawable(ContextCompat.getColor(context!!, R.color.secondPrimary))
             elevation = 0f
         }
 
-        animationDone.setAnimation("done_primary.json")
+        setColorsDialog()
         animationDone.playAnimation()
     }
 
@@ -106,8 +106,17 @@ class FullScreenDialog: DialogFragment() {
             categoriaAdapter.notifyDataSetChanged()
         })
 
-        compDisposable.add(viewModel.tipoTransacao.observe {
-            doAnimate(it!! == TipoTransacao.RECEITA)
+        compDisposable.add(viewModel.categoria.observe {
+            if(it!=null && it.id != -1L) {
+                val drawable = if(tipoTransacao == TipoTransacao.RECEITA) {
+                    activity!!.getDrawable(R.drawable.button_green)
+                } else {
+                    activity!!.getDrawable(R.drawable.button_orange)
+                }
+                llSpinnerCategoria.background = drawable
+            } else {
+                llSpinnerCategoria.background = activity!!.getDrawable(R.drawable.button_gray)
+            }
         })
 
         compDisposable.add(viewModel.showALert.subscribe {
@@ -116,9 +125,12 @@ class FullScreenDialog: DialogFragment() {
 
         compDisposable.add(viewModel.showSuccess.subscribe {
             actions.closeButton()
-            layoutForm.visibility = View.GONE
-            formAnimation.visibility = View.VISIBLE
-            animationDialog.setAnimation("sucess.json")
+
+            llForm.visibility = View.GONE
+            editValue.visibility = View.INVISIBLE
+            animationDone.visibility = View.GONE
+            llformAnimation.visibility = View.VISIBLE
+
             animationDialog.playAnimation()
             animationDialog.addAnimatorListener(object : Animator.AnimatorListener{
                 override fun onAnimationRepeat(animation: Animator?) {}
@@ -135,6 +147,53 @@ class FullScreenDialog: DialogFragment() {
         })
 
     }
+
+    fun setColorsDialog(){
+        viewModel.tipoTransacao.set(tipoTransacao)
+        when(tipoTransacao) {
+            TipoTransacao.RECEITA -> {
+                val drawableGreen = ColorDrawable(ContextCompat.getColor(context!!, R.color.colorPrimary))
+                val colorGreen = context!!.getColor(R.color.colorPrimary)
+
+                rootDialog.background = drawableGreen
+                textDescription.apply {
+                    background = drawableGreen
+                    setTextColor(colorGreen)
+                }
+                textDescription.setTextColor(colorGreen)
+                textData.apply {
+                    background = drawableGreen
+                    setTextColor(colorGreen)
+                }
+                switchConsolidado.setTextColor(colorGreen)
+                animationDone.setAnimation("done_primary.json")
+                animationDialog.setAnimation("sucess_primary.json")
+            }
+
+            TipoTransacao.DESPESA -> {
+                val drawableGreen = ColorDrawable(ContextCompat.getColor(context!!, R.color.secondPrimary))
+                val color = context!!.getColor(R.color.secondPrimary)
+
+                toolbarDialog.setBackgroundColor(color)
+                rootDialog.setBackgroundColor(color)
+                layoutDescription.boxStrokeColor = color
+                layoutTextData.boxStrokeColor = color
+                textDescription.apply {
+                    background = drawableGreen
+                    setTextColor(color)
+                }
+                textDescription.setTextColor(color)
+                textData.apply {
+                    background = drawableGreen
+                    setTextColor(color)
+                }
+                switchConsolidado.setTextColor(color)
+                animationDone.setAnimation("done_accent.json")
+                animationDialog.setAnimation("sucess_accent.json")
+            }
+        }
+    }
+    /*
     fun doAnimate(isReceita: Boolean) {
         TransitionManager.beginDelayedTransition(llTTransacao, ChangeBounds().setPathMotion(ArcMotion()).setDuration(300))
         llToogleParent.gravity = if(isReceita) Gravity.START else Gravity.END
@@ -153,6 +212,6 @@ class FullScreenDialog: DialogFragment() {
 
         btnAddReceita.visibility = if(isReceita) View.VISIBLE else View.GONE
         btnAddDespesa.visibility = if(isReceita) View.GONE else View.VISIBLE
-    }
+    }*/
 
 }

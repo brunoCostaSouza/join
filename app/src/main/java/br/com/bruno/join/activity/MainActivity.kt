@@ -12,11 +12,13 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import br.com.bruno.join.Application.JApplication
 import br.com.bruno.join.R
 import br.com.bruno.join.Util.FullScreenDialog
 import br.com.bruno.join.adapter.ItemTransacaoAdapter
 import br.com.bruno.join.databinding.HomeBinding
+import br.com.bruno.join.enums.TipoTransacao
 import br.com.bruno.join.extensions.observe
 import br.com.bruno.join.viewModel.MainViewModel
 import com.transitionseverywhere.Recolor
@@ -80,12 +82,32 @@ class MainActivity : AppCompatActivity(), Actions {
             adapter = transacaoAdapter
         }
 
-        btnAdd.setOnClickListener {
+        listItens.addOnScrollListener(scrollListener)
+
+        btnAddReceita.setOnClickListener {
             /*val dialog = TransacaoPopup()
             dialog.show(this.supportFragmentManager,"")*/
             val dialog = FullScreenDialog()
             dialog.actions = this
+            dialog.tipoTransacao = TipoTransacao.RECEITA
             dialog.show(supportFragmentManager.beginTransaction(), FullScreenDialog.TAG)
+        }
+
+        btnAddDespesa.setOnClickListener {
+            val dialog = FullScreenDialog()
+            dialog.actions = this
+            dialog.tipoTransacao = TipoTransacao.DESPESA
+            dialog.show(supportFragmentManager.beginTransaction(), FullScreenDialog.TAG)
+        }
+    }
+
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, lastPosition: Int, newPosition: Int) {
+            super.onScrolled(recyclerView, lastPosition, newPosition)
+            when (lastPosition < newPosition) {
+                true -> rootFab.hideMenu(true)
+                else -> rootFab.showMenu(true)
+            }
         }
     }
 

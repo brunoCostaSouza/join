@@ -25,7 +25,12 @@
         <item name="android:textColor">#848484</item>
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="ThemeSwitchReceita">
+        <item name="colorControlActivated">@color/receita</item>
+    </style>
+    <style name="ThemeSwitchDespesa">
+        <item name="colorControlActivated">@color/despesa</item>
+    </style>
 
     <!-- Full screen dialog -->
     <style name="FullScreenDialogStyle" parent="Theme.AppCompat.Dialog">

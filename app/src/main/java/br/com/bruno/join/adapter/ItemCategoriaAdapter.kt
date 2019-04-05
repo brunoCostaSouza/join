@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import br.com.bruno.join.R
 import br.com.bruno.join.entity.Categoria
 import kotlinx.android.synthetic.main.item_categoria.view.*
@@ -32,11 +33,11 @@ class CategoriaAdapter(
     }
 
     private fun createItemView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return getMyView(position, parent, 24F)
+        return getMyView(position, parent, 20F)
     }
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return getMyView(position, parent, 20F, true)
+        return getMyView(position, parent, 18F, true)
     }
 
     private fun getMyView(position: Int, parent: ViewGroup, fontSize: Float, isDropDown: Boolean = false): View{
@@ -44,6 +45,7 @@ class CategoriaAdapter(
         if (!isDropDown && position == 0) {
             val view = LayoutInflater.from(context).inflate(R.layout.item_categoria_empty, parent, false)
             view.textDescricaoCategoriaVazia.textSize = fontSize
+            view.textDescricaoCategoriaVazia.setTextColor(context.getColor(R.color.gray))
             return view
         }
 

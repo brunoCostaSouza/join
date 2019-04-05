@@ -25,9 +25,15 @@ class TransacaoViewModel(
         val repository: ITransacaoRepository
 ): ViewModel() {
 
-    var transacao: Transacao
+    var transacao: Transacao = if(idTransacao == null) {
+        Transacao()
+    } else {
+        Transacao().queryFirst {equalTo("id", idTransacao)}!!
+    }
+
     var valor = ObservableField<String>()
     var descricao = ObservableField<String>("")
+    var dataTransacao = ObservableField<String>("")
     var categoria = ObservableField<Categoria>()
     var tipoTransacao = ObservableField<TipoTransacao>()
     var categorias = ObservableField<List<Categoria>>()
@@ -35,70 +41,7 @@ class TransacaoViewModel(
     var showSuccess = PublishSubject.create<String>()
 
     init {
-        transacao = if(idTransacao == null) {
-            Transacao()
-        } else {
-            Transacao().queryFirst {equalTo("id", idTransacao)}!!
-        }
         tipoTransacao.set(TipoTransacao.RECEITA)
-
-        if (Categoria().queryAll().isEmpty()) {
-            Categoria().apply {
-                id = 1L
-                descricao = "Salário"
-                resorce = R.drawable.ic_money
-                save()
-            }
-
-            Categoria().apply {
-                id = 2L
-                descricao = "Viagem"
-                resorce = R.drawable.ic_travel
-                save()
-            }
-
-            Categoria().apply {
-                id = 3L
-                descricao = "Alimentação"
-                resorce = R.drawable.ic_food
-                save()
-            }
-
-            Categoria().apply {
-                id = 4L
-                descricao = "Manutenção"
-                resorce = R.drawable.ic_car
-                save()
-            }
-
-            Categoria().apply {
-                id = 5L
-                descricao = "Supermercado"
-                resorce = R.drawable.ic_supermarket
-                save()
-            }
-
-            Categoria().apply {
-                id = 6L
-                descricao = "Cartão de crédito"
-                resorce = R.drawable.ic_payment
-                save()
-            }
-
-            Categoria().apply {
-                id = 7L
-                descricao = "Combustível"
-                resorce = R.drawable.ic_gas
-                save()
-            }
-
-            Categoria().apply {
-                id = 8L
-                descricao = "Lazer"
-                resorce = R.drawable.ic_fan
-                save()
-            }
-        }
     }
 
     fun salvarTransacao() {

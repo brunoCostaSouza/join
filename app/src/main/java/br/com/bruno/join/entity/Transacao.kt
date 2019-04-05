@@ -17,4 +17,5 @@ open class Transacao: RealmObject(){
     open var categoria: Categoria? = null
     open var tipo: String? = null
     open var data: Date? = null
+    open var consolidado: Boolean? = null
 }

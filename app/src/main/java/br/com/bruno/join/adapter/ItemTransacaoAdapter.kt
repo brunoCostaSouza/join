@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import br.com.bruno.join.R
 import br.com.bruno.join.entity.Transacao
@@ -45,6 +46,7 @@ class TransacaoViewHolder(
         when(transacao.tipo){
             TipoTransacao.RECEITA.name -> {
                 itemView.imgItem.setImageResource(R.drawable.ic_arrow_upward)
+                itemView.imgItem.borderColor = context.getColor(R.color.receita)
                 itemView.textValorItem.setTextColor(context.getColor(R.color.receita))
                 itemView.textValorItem.text = " + "+transacao.valor.formatMoney()
             }
@@ -52,12 +54,14 @@ class TransacaoViewHolder(
             TipoTransacao.DESPESA.name -> {
                 itemView.imgItem.setImageResource(R.drawable.ic_arrow_down)
                 itemView.textValorItem.setTextColor(context.getColor(R.color.despesa))
+                itemView.imgItem.borderColor = context.getColor(R.color.despesa)
                 itemView.textValorItem.text = " - "+transacao.valor.formatMoney()
             }
 
             TipoTransacao.TRANSFERENCIA.name -> {
                 itemView.imgItem.setImageResource(R.drawable.ic_transfer_2)
                 itemView.textValorItem.setTextColor(context.getColor(R.color.transferencia))
+                itemView.imgItem.borderColor = context.getColor(R.color.transferencia)
                 itemView.textValorItem.text = transacao.valor.formatMoney()
             }
         }

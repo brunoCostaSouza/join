@@ -14,6 +14,10 @@ import kotlinx.android.synthetic.main.alert_toast.view.*
 import android.app.Activity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import br.com.bruno.join.entity.Categoria
+import com.vicpin.krealmextensions.queryAll
+import com.vicpin.krealmextensions.save
 
 
 class JApplication : Application() {
@@ -38,7 +42,7 @@ class JApplication : Application() {
                 .build()
 
         Realm.setDefaultConfiguration(config)
-
+        addCategoriesIfNeeded()
     }
 
     fun showAlert(context: Context, description: String, type: SweetDialog.Type, timeShow: Long) {
@@ -94,15 +98,77 @@ class JApplication : Application() {
 
     }
 
-    fun hideKeyboard(activity: Activity) {
-        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        //Find the currently focused view, so we can grab the correct window token from it.
-        var view = activity.currentFocus
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = View(activity)
-        }
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
+    fun addCategoriesIfNeeded(){
+        if (Categoria().queryAll().isEmpty()) {
+            Categoria().apply {
+                id = 1L
+                descricao = "Alimentação"
+                resorce = R.drawable.ic_food
+                save()
+            }
 
+            Categoria().apply {
+                id = 2L
+                descricao = "Renda"
+                resorce = R.drawable.ic_money
+                save()
+            }
+
+            Categoria().apply {
+                id = 3L
+                descricao = "Compras"
+                resorce = R.drawable.ic_purchase
+                save()
+            }
+
+            Categoria().apply {
+                id = 4L
+                descricao = "Viagem"
+                resorce = R.drawable.ic_travel
+                save()
+            }
+
+            Categoria().apply {
+                id = 5L
+                descricao = "Manutenção"
+                resorce = R.drawable.ic_car
+                save()
+            }
+
+            Categoria().apply {
+                id = 6L
+                descricao = "Supermercado"
+                resorce = R.drawable.ic_supermarket
+                save()
+            }
+
+            Categoria().apply {
+                id = 7L
+                descricao = "Cartão de crédito"
+                resorce = R.drawable.ic_payment
+                save()
+            }
+
+            Categoria().apply {
+                id = 8L
+                descricao = "Combustível"
+                resorce = R.drawable.ic_gas
+                save()
+            }
+
+            Categoria().apply {
+                id = 9L
+                descricao = "Vida e entreterimento"
+                resorce = R.drawable.ic_fan
+                save()
+            }
+
+            Categoria().apply {
+                id = 10L
+                descricao = "Outros"
+                resorce = R.drawable.ic_others
+                save()
+            }
+        }
+    }
 }
