@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity(), Actions {
 
     private fun setupView(){
 
-        transacaoAdapter = ItemTransacaoAdapter(applicationContext)
+        transacaoAdapter = ItemTransacaoAdapter(applicationContext, supportFragmentManager)
         listItens.apply {
             layoutManager = LinearLayoutManager(context)
             layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.animation_item)
@@ -85,8 +85,6 @@ class MainActivity : AppCompatActivity(), Actions {
         listItens.addOnScrollListener(scrollListener)
 
         btnAddReceita.setOnClickListener {
-            /*val dialog = TransacaoPopup()
-            dialog.show(this.supportFragmentManager,"")*/
             val dialog = FullScreenDialog()
             dialog.actions = this
             dialog.tipoTransacao = TipoTransacao.RECEITA

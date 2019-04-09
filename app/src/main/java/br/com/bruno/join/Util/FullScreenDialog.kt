@@ -39,7 +39,7 @@ class FullScreenDialog: DialogFragment() {
     lateinit var transacaoRepository: ITransacaoRepository
     lateinit var categoriaAdapter: CategoriaAdapter
     lateinit var app: JApplication
-    lateinit var actions: Actions
+    var actions: Actions? = null
     lateinit var tipoTransacao: TipoTransacao
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,8 +51,10 @@ class FullScreenDialog: DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         transacaoRepository = TransacaoRepository()
 
+        val idTransacao = arguments?.getLong("idTransacao")
+
         viewModel = ViewModelProviders
-                .of(this, TransacaoViewModel.Factory(activity!!.applicationContext, null, transacaoRepository))
+                .of(this, TransacaoViewModel.Factory(activity!!.applicationContext, idTransacao, transacaoRepository))
                 .get(TransacaoViewModel::class.java)
 
         val binding: FullDialogBinding = DataBindingUtil.inflate(inflater, R.layout.full_dialog, container, true)
@@ -82,7 +84,7 @@ class FullScreenDialog: DialogFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        actions.closeButton()
+        actions?.closeButton()
     }
     private fun setupView() {
         categoriaAdapter = CategoriaAdapter(activity!!.applicationContext, mutableListOf())
@@ -124,7 +126,7 @@ class FullScreenDialog: DialogFragment() {
         })
 
         compDisposable.add(viewModel.showSuccess.subscribe {
-            actions.closeButton()
+            actions?.closeButton()
 
             llForm.visibility = View.GONE
             editValue.visibility = View.INVISIBLE
@@ -191,6 +193,7 @@ class FullScreenDialog: DialogFragment() {
                 animationDone.setAnimation("done_accent.json")
                 animationDialog.setAnimation("sucess_accent.json")
             }
+            else -> {}
         }
     }
     /*

@@ -10,12 +10,14 @@ import br.com.bruno.join.R
 import br.com.bruno.join.entity.Categoria
 import br.com.bruno.join.entity.Transacao
 import br.com.bruno.join.enums.TipoTransacao
+import br.com.bruno.join.extensions.formataData
 import br.com.bruno.join.extensions.unFormatMoney
 import br.com.bruno.join.repository.ITransacaoRepository
 import com.vicpin.krealmextensions.deleteAll
 import com.vicpin.krealmextensions.queryAll
 import com.vicpin.krealmextensions.queryFirst
 import com.vicpin.krealmextensions.save
+import formatMoney
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 
@@ -42,6 +44,12 @@ class TransacaoViewModel(
 
     init {
         tipoTransacao.set(TipoTransacao.RECEITA)
+        if (idTransacao != null) {
+            valor.set(transacao.valor.formatMoney())
+            descricao.set(transacao.descricao)
+            dataTransacao.set(transacao.data?.formataData())
+            categoria.set(transacao.categoria!!)
+        }
     }
 
     fun salvarTransacao() {

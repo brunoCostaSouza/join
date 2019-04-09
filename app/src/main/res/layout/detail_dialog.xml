@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dialogAlerta"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_card"
+    android:padding="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/lblDescricao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textSize="17sp"
+            android:text="Passeio de fim de semana com a família"
+            android:textAlignment="center"
+            android:textColor="@color/black_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/viewLine"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/gray_dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lblDescricao" />
+
+        <TextView
+            android:id="@+id/lblTextValor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Valor"
+            android:textAlignment="center"
+            android:textColor="@color/black_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewLine" />
+
+        <TextView
+            android:id="@+id/lblValor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="R$ 22.222.200,00"
+            android:textAlignment="center"
+            android:textColor="@color/receita"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lblTextValor" />
+
+        <TextView
+            android:id="@+id/lblData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Data da transacao: 20/04/2018"
+            android:textAlignment="center"
+            android:textColor="@color/gray_dark"
+            android:textSize="11sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lblValor" />
+
+        <TextView
+            android:id="@+id/lblCategoria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Vida e entreterimento"
+            android:textAlignment="center"
+            android:textColor="@color/black_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lblData" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lblCategoria">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnEdit"
+                style="?attr/selectableItemBackgroundBorderless"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="15dp"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="center"
+                android:src="@drawable/ic_edit"
+                android:tint="@color/gray_dark" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnRemove"
+                style="?attr/selectableItemBackgroundBorderless"
+                android:background="@android:color/transparent"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="15dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="center"
+                android:src="@drawable/ic_delete"
+                android:tint="@color/gray_dark" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/descricaoRemover"
+            android:text="Deseja realmente remover essa transação?"
+            android:textAlignment="center"
+            android:textColor="@color/gray_dark"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descricaoRemover"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sim"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

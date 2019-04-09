@@ -16,6 +16,7 @@
     <color name="gray">#d2d2d2</color>
     <color name="gray_dark2">#b4b4b4</color>
     <color name="gray_dark">#737373</color>
+    <color name="black_light">#4e4e4e</color>
     <color name="receita">#05b197</color>
     <color name="despesa">#f5787e</color>
 

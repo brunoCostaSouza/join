@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.bruno.join.R
+import br.com.bruno.join.Util.DetailDialog
 import br.com.bruno.join.entity.Transacao
 import br.com.bruno.join.enums.TipoTransacao
 import br.com.bruno.join.extensions.formataData
@@ -16,13 +18,14 @@ import kotlinx.android.synthetic.main.item_transacao.view.*
 import java.util.*
 
 class ItemTransacaoAdapter(
-        val context: Context
+        val context: Context,
+        val supportFragmentManager: FragmentManager
 ): RecyclerView.Adapter<TransacaoViewHolder>() {
 
     private var listaTransacoes = mutableListOf<Transacao>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransacaoViewHolder {
-        return TransacaoViewHolder(LayoutInflater.from(context).inflate(R.layout.item_transacao, parent, false), context)
+        return TransacaoViewHolder(LayoutInflater.from(context).inflate(R.layout.item_transacao, parent, false), context, supportFragmentManager)
     }
 
     override fun getItemCount() = listaTransacoes.size
@@ -40,7 +43,8 @@ class ItemTransacaoAdapter(
 
 class TransacaoViewHolder(
         itemView: View,
-        val context: Context
+        val context: Context,
+        val supportFragmentManager: FragmentManager
 ): RecyclerView.ViewHolder(itemView){
     fun bind(transacao: Transacao){
         when(transacao.tipo){
@@ -72,7 +76,9 @@ class TransacaoViewHolder(
         itemView.textCategoriaItem.text = transacao.categoria!!.descricao
         itemView.dataItem.text = cal.time.formataData()
         itemView.setOnClickListener {
-            Toast.makeText(context, "value:${transacao.valor}", Toast.LENGTH_SHORT).show()
+            DetailDialog().apply {
+                this.transacao = transacao
+            }.show(supportFragmentManager, DetailDialog.TAG)
         }
     }
 }

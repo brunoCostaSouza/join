@@ -108,7 +108,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@color/colorPrimary"
-                            android:maxLength="20"
+                            android:maxLength="60"
                             android:text="@={viewModel.descricao}"
                             android:textColor="@color/colorPrimary"
                             android:textCursorDrawable="@null" />

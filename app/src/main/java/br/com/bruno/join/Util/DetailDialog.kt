@@ -1,8 +1,66 @@
 package br.com.bruno.join.Util
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import br.com.bruno.join.Application.JApplication
+import br.com.bruno.join.R
+import br.com.bruno.join.entity.Transacao
+import br.com.bruno.join.enums.TipoTransacao
+import br.com.bruno.join.extensions.formataData
+import formatMoney
+import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.detail_dialog.view.*
 
-class TransacaoPopup: DialogFragment() {
+class DetailDialog: DialogFragment() {
+
+    companion object {
+        var TAG = "DETAIL_DIALOG"
+    }
+
+    val compDisposable = CompositeDisposable()
+    lateinit var transacao: Transacao
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val layout = layoutInflater.inflate(R.layout.detail_dialog, container, false)
+        layout.apply {
+            lblDescricao.text = transacao.descricao
+            lblValor.text = transacao.valor.formatMoney()
+            if(transacao.tipo!! == TipoTransacao.RECEITA.name) {
+                lblValor.setTextColor(ContextCompat.getColor(context, R.color.receita))
+            } else {
+                lblValor.setTextColor(ContextCompat.getColor(context, R.color.despesa))
+            }
+
+            lblData.text = "Data da transação: ${transacao.data!!.formataData()}"
+            lblCategoria.text = transacao.categoria!!.descricao
+
+            btnEdit.setOnClickListener(listenerEdit)
+            btnRemove.setOnClickListener(listenerRemove)
+        }
+        dialog.window.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(context!!, android.R.color.transparent)))
+        return layout!!
+    }
+
+    private val listenerEdit = View.OnClickListener {
+        val dialog = FullScreenDialog()
+        dialog.tipoTransacao = if(transacao.tipo == TipoTransacao.RECEITA.name) TipoTransacao.RECEITA else TipoTransacao.DESPESA
+        val args = Bundle()
+        args.putLong("idTransacao", transacao.id)
+        dialog.arguments = args
+        dialog.show(activity?.supportFragmentManager, FullScreenDialog.TAG)
+    }
+
+    private val listenerRemove = View.OnClickListener {
+        Toast.makeText(context, "remove", Toast.LENGTH_SHORT).show()
+    }
+
     /*
     val compDisposable = CompositeDisposable()
     lateinit var  viewModel: TransacaoViewModel
