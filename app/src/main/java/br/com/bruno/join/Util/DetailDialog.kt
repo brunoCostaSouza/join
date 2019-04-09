@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import br.com.bruno.join.Application.JApplication
 import br.com.bruno.join.R
+import br.com.bruno.join.activity.Actions
 import br.com.bruno.join.entity.Transacao
 import br.com.bruno.join.enums.TipoTransacao
 import br.com.bruno.join.extensions.formataData
@@ -18,13 +19,13 @@ import formatMoney
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.detail_dialog.view.*
 
-class DetailDialog: DialogFragment() {
+class DetailDialog: DialogFragment(), Actions {
 
     companion object {
         var TAG = "DETAIL_DIALOG"
     }
 
-    val compDisposable = CompositeDisposable()
+    val dialogForm = FullScreenDialog()
     lateinit var transacao: Transacao
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,21 +45,28 @@ class DetailDialog: DialogFragment() {
             btnEdit.setOnClickListener(listenerEdit)
             btnRemove.setOnClickListener(listenerRemove)
         }
-        dialog.window.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(context!!, android.R.color.transparent)))
+        dialog.window?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(context!!, android.R.color.transparent)))
         return layout!!
     }
 
     private val listenerEdit = View.OnClickListener {
-        val dialog = FullScreenDialog()
-        dialog.tipoTransacao = if(transacao.tipo == TipoTransacao.RECEITA.name) TipoTransacao.RECEITA else TipoTransacao.DESPESA
-        val args = Bundle()
-        args.putLong("idTransacao", transacao.id)
-        dialog.arguments = args
-        dialog.show(activity?.supportFragmentManager, FullScreenDialog.TAG)
+
+        if(!dialogForm.isVisible) {
+            dialogForm.tipoTransacao = if (transacao.tipo == TipoTransacao.RECEITA.name) TipoTransacao.RECEITA else TipoTransacao.DESPESA
+            val args = Bundle()
+            args.putLong("idTransacao", transacao.id)
+            dialogForm.arguments = args
+            dialogForm.actions = this
+            dialogForm.show(activity?.supportFragmentManager, FullScreenDialog.TAG)
+        }
     }
 
     private val listenerRemove = View.OnClickListener {
         Toast.makeText(context, "remove", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun closeWindowBefore() {
+        dismiss()
     }
 
     /*

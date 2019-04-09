@@ -37,6 +37,7 @@ class TransacaoViewModel(
     var descricao = ObservableField<String>("")
     var dataTransacao = ObservableField<String>("")
     var categoria = ObservableField<Categoria>()
+    var consolidado = ObservableField<Boolean>(true)
     var tipoTransacao = ObservableField<TipoTransacao>()
     var categorias = ObservableField<List<Categoria>>()
     var showALert = PublishSubject.create<String>()
@@ -44,6 +45,9 @@ class TransacaoViewModel(
 
     init {
         tipoTransacao.set(TipoTransacao.RECEITA)
+    }
+
+    fun setupViews() {
         if (idTransacao != null) {
             valor.set(transacao.valor.formatMoney())
             descricao.set(transacao.descricao)
@@ -60,6 +64,7 @@ class TransacaoViewModel(
                 it.descricao = descricao.get()!!
                 it.data = Date()
                 it.valor = valor.get()!!.unFormatMoney()?:0.0
+                it.consolidado = consolidado.get()
             }
             repository.salvarTransacao(transacao)
             showSuccess.onNext("Transação salva com sucesso.")
@@ -81,10 +86,6 @@ class TransacaoViewModel(
         list.add(getCategoriaVazia())
         list.addAll(Categoria().queryAll())
         categorias.set(list)
-    }
-
-    fun clickTipoTransacao() {
-        tipoTransacao.set(if (tipoTransacao.get()!! == TipoTransacao.RECEITA) TipoTransacao.DESPESA else TipoTransacao.RECEITA)
     }
 
     fun itemSelecionado(parent: ViewParent, view: View, position: Int, id: Long) {

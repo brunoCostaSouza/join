@@ -1,14 +1,12 @@
 package br.com.bruno.join.Util
 
 import android.animation.Animator
-import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -71,6 +69,7 @@ class FullScreenDialog: DialogFragment() {
         setupView()
         setupViewModel()
         viewModel.getCategorias()
+        viewModel.setupViews()
     }
 
     override fun onStart() {
@@ -84,8 +83,9 @@ class FullScreenDialog: DialogFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        actions?.closeButton()
+        actions?.closeWindowBefore()
     }
+
     private fun setupView() {
         categoriaAdapter = CategoriaAdapter(activity!!.applicationContext, mutableListOf())
         spnCategory.adapter = categoriaAdapter
@@ -116,9 +116,11 @@ class FullScreenDialog: DialogFragment() {
                     activity!!.getDrawable(R.drawable.button_orange)
                 }
                 llSpinnerCategoria.background = drawable
+                spnCategory.setSelection(viewModel.categorias.get()!!.indexOfFirst{ self -> self.id == it.id })
             } else {
                 llSpinnerCategoria.background = activity!!.getDrawable(R.drawable.button_gray)
             }
+
         })
 
         compDisposable.add(viewModel.showALert.subscribe {
@@ -126,7 +128,7 @@ class FullScreenDialog: DialogFragment() {
         })
 
         compDisposable.add(viewModel.showSuccess.subscribe {
-            actions?.closeButton()
+            actions?.closeWindowBefore()
 
             llForm.visibility = View.GONE
             editValue.visibility = View.INVISIBLE

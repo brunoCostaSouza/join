@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity(), Actions {
         }
     }
 
-    override fun closeButton() {
+    override fun closeWindowBefore() {
         rootFab.close(true)
     }
     private fun animateValue() {
@@ -135,5 +135,5 @@ class MainActivity : AppCompatActivity(), Actions {
 }
 
 interface Actions{
-    fun closeButton()
+    fun closeWindowBefore()
 }

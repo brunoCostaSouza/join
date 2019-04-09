@@ -11,12 +11,15 @@ interface ITransacaoRepository{
 class TransacaoRepository(): ITransacaoRepository{
 
     override fun salvarTransacao(transacao: Transacao) {
-        val ultimaTransacao = Transacao().queryLast()
-        if (ultimaTransacao != null){
-            transacao.id = ultimaTransacao.id + 1
-        } else {
-            transacao.id = 1
+        if (transacao.id == 0L) {
+            val ultimaTransacao = Transacao().queryLast()
+            if (ultimaTransacao != null) {
+                transacao.id = ultimaTransacao.id + 1
+            } else {
+                transacao.id = 1
+            }
         }
+
         transacao.save()
     }
 }
