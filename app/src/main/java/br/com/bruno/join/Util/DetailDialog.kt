@@ -1,22 +1,22 @@
 package br.com.bruno.join.Util
 
-import android.graphics.Color
+import android.animation.Animator
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import br.com.bruno.join.Application.JApplication
 import br.com.bruno.join.R
 import br.com.bruno.join.activity.Actions
 import br.com.bruno.join.entity.Transacao
 import br.com.bruno.join.enums.TipoTransacao
 import br.com.bruno.join.extensions.formataData
+import com.vicpin.krealmextensions.delete
 import formatMoney
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.detail_dialog.view.*
 
 class DetailDialog: DialogFragment(), Actions {
@@ -27,6 +27,7 @@ class DetailDialog: DialogFragment(), Actions {
 
     val dialogForm = FullScreenDialog()
     lateinit var transacao: Transacao
+    lateinit var actions: Actions
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val layout = layoutInflater.inflate(R.layout.detail_dialog, container, false)
@@ -45,8 +46,47 @@ class DetailDialog: DialogFragment(), Actions {
             btnEdit.setOnClickListener(listenerEdit)
             btnRemove.setOnClickListener(listenerRemove)
         }
+
         dialog.window?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(context!!, android.R.color.transparent)))
+        setListenersButton(layout)
         return layout!!
+    }
+
+    private fun setListenersButton (layout: View) {
+        layout.btnRemove.setOnClickListener {
+            layout.clDetail.visibility = View.INVISIBLE
+            layout.clQuestion.visibility = View.VISIBLE
+            layout.animDetail.visibility = View.GONE
+        }
+
+        layout.btnQuestionNo.setOnClickListener {
+            layout.clDetail.visibility = View.VISIBLE
+            layout.clQuestion.visibility = View.GONE
+            layout.animDetail.visibility = View.GONE
+        }
+
+        layout.btnQuestionYes.setOnClickListener {
+            Transacao().delete { equalTo("id", transacao.id) }
+            layout.clDetail.visibility = View.INVISIBLE
+            layout.clQuestion.visibility = View.GONE
+            layout.animDetail.visibility = View.VISIBLE
+
+            if (transacao.tipo == TipoTransacao.RECEITA.name) layout.animDetail.setAnimation("removedReceita.json") else layout.animDetail.setAnimation("removedDespesa.json")
+            layout.animDetail.playAnimation()
+            layout.animDetail.speed = 1.2F
+            layout.animDetail.addAnimatorListener(object : Animator.AnimatorListener {
+                override fun onAnimationRepeat(animation: Animator?) {}
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    if (dialog.isShowing) dialog.dismiss()
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {}
+
+                override fun onAnimationStart(animation: Animator?) {}
+
+            })
+        }
     }
 
     private val listenerEdit = View.OnClickListener {

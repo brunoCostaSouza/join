@@ -1,11 +1,11 @@
 package br.com.bruno.join.activity
 
 import android.animation.ValueAnimator
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
-import android.view.MenuItem
+import android.view.View
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -13,7 +13,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import br.com.bruno.join.Application.JApplication
 import br.com.bruno.join.R
 import br.com.bruno.join.Util.FullScreenDialog
 import br.com.bruno.join.adapter.ItemTransacaoAdapter
@@ -47,12 +46,24 @@ class MainActivity : AppCompatActivity(), Actions {
         setupViewModel()
     }
 
-    fun setupViewModel(){
+    private fun setupViewModel() {
         compositeDisposable.add(viewModel.listaTransacoes.subscribe {
             this@MainActivity!!.runOnUiThread {
                 transacaoAdapter.updateList(it)
                 listItens.adapter = transacaoAdapter
                 animateValue()
+
+                if(it.isEmpty()) {
+                    animEmpty.setAnimation("emptybox.json")
+                    animEmpty.visibility = View.VISIBLE
+                    listItens.visibility = View.GONE
+                    animEmpty.playAnimation()
+
+                } else {
+                    animEmpty.visibility = View.GONE
+                    listItens.visibility = View.VISIBLE
+                    animEmpty.pauseAnimation()
+                }
             }
         })
 
@@ -62,13 +73,11 @@ class MainActivity : AppCompatActivity(), Actions {
                 if(it!! < 0) {
                     layoutTop.background = ContextCompat.getDrawable(this, R.drawable.shape_negative)
                     window.statusBarColor = ContextCompat.getColor(this, R.color.secondPrimary)
-                    //supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.secondPrimary)))
                 } else {
                     layoutTop.background = ContextCompat.getDrawable(this, R.drawable.shape_positive)
                     window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
-                    //supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this, R.color.colorPrimary)))
                 }
-            }, 500)
+            }, 350)
         })
 
     }
@@ -112,6 +121,7 @@ class MainActivity : AppCompatActivity(), Actions {
     override fun closeWindowBefore() {
         rootFab.close(true)
     }
+
     private fun animateValue() {
         val endValue = viewModel.saldo.get()!!.toFloat()
         val animator = ValueAnimator.ofFloat(0f, endValue)
@@ -124,13 +134,6 @@ class MainActivity : AppCompatActivity(), Actions {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
         return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 }
 

@@ -11,6 +11,7 @@ import br.com.bruno.join.entity.Categoria
 import br.com.bruno.join.entity.Transacao
 import br.com.bruno.join.enums.TipoTransacao
 import br.com.bruno.join.extensions.formataData
+import br.com.bruno.join.extensions.unFormatData
 import br.com.bruno.join.extensions.unFormatMoney
 import br.com.bruno.join.repository.ITransacaoRepository
 import com.vicpin.krealmextensions.deleteAll
@@ -35,7 +36,7 @@ class TransacaoViewModel(
 
     var valor = ObservableField<String>()
     var descricao = ObservableField<String>("")
-    var dataTransacao = ObservableField<String>("")
+    var dataTransacao = ObservableField<String>()
     var categoria = ObservableField<Categoria>()
     var consolidado = ObservableField<Boolean>(true)
     var tipoTransacao = ObservableField<TipoTransacao>()
@@ -53,6 +54,7 @@ class TransacaoViewModel(
             descricao.set(transacao.descricao)
             dataTransacao.set(transacao.data?.formataData())
             categoria.set(transacao.categoria!!)
+            consolidado.set(transacao.consolidado)
         }
     }
 
@@ -62,8 +64,8 @@ class TransacaoViewModel(
                 it.categoria = categoria.get()
                 it.tipo = tipoTransacao.get()!!.name
                 it.descricao = descricao.get()!!
-                it.data = Date()
                 it.valor = valor.get()!!.unFormatMoney()?:0.0
+                it.data = dataTransacao.get()!!.unFormatData()
                 it.consolidado = consolidado.get()
             }
             repository.salvarTransacao(transacao)
@@ -90,6 +92,10 @@ class TransacaoViewModel(
 
     fun itemSelecionado(parent: ViewParent, view: View, position: Int, id: Long) {
         categoria.set(categorias.get()!![position])
+    }
+
+    fun checkConsolidado(){
+        consolidado.set(!consolidado.get()!!)
     }
 
     private fun getCategoriaVazia(): Categoria {

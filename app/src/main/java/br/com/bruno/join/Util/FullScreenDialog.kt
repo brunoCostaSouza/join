@@ -1,12 +1,15 @@
 package br.com.bruno.join.Util
 
 import android.animation.Animator
+import android.app.DatePickerDialog
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -24,21 +27,25 @@ import br.com.bruno.join.viewModel.TransacaoViewModel
 import com.felixsoares.sweetdialog.SweetDialog
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.full_dialog.*
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 
-class FullScreenDialog: DialogFragment() {
+class FullScreenDialog : DialogFragment() {
 
     companion object {
         var TAG = "FullScreenDialog"
     }
 
     val compDisposable = CompositeDisposable()
-    lateinit var  viewModel: TransacaoViewModel
+    lateinit var viewModel: TransacaoViewModel
     lateinit var transacaoRepository: ITransacaoRepository
     lateinit var categoriaAdapter: CategoriaAdapter
     lateinit var app: JApplication
     var actions: Actions? = null
     lateinit var tipoTransacao: TipoTransacao
+    var datePickerDialog: DatePickerDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,30 +104,51 @@ class FullScreenDialog: DialogFragment() {
             elevation = 0f
         }
 
+        spnCategory.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus) {
+                Util.hideKeyBoard(context!!, editValue)
+            }
+        }
+
+        textData.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) showCalendar() }
+        textData.setOnClickListener { showCalendar() }
+
         setColorsDialog()
         animationDone.playAnimation()
     }
 
+    private fun showCalendar() {
+        if(datePickerDialog == null || !datePickerDialog!!.isShowing) {
+            Util.hideKeyBoard(context!!, textData)
+
+            val cal = Calendar.getInstance()
+            if (viewModel.transacao.data != null) cal.time = viewModel.transacao.data
+
+            datePickerDialog = DatePickerDialog(context!!, getStyleCalendar(), dpdListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+            datePickerDialog!!.show()
+        }
+    }
+
+    private val dpdListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month)
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        val format = SimpleDateFormat("dd/MM/yyyy", Locale.US)
+        viewModel.dataTransacao.set(format.format(calendar.time))
+        datePickerDialog!!.dismiss()
+    }
+
     private fun setupViewModel() {
         compDisposable.add(viewModel.categorias.observe {
-            if(dialog.isShowing) dialog.dismiss()
+            if (dialog.isShowing) dialog.dismiss()
             categoriaAdapter.categorias = it!!
             categoriaAdapter.notifyDataSetChanged()
         })
 
         compDisposable.add(viewModel.categoria.observe {
-            if(it!=null && it.id != -1L) {
-                val drawable = if(tipoTransacao == TipoTransacao.RECEITA) {
-                    activity!!.getDrawable(R.drawable.button_green)
-                } else {
-                    activity!!.getDrawable(R.drawable.button_orange)
-                }
-                llSpinnerCategoria.background = drawable
-                spnCategory.setSelection(viewModel.categorias.get()!!.indexOfFirst{ self -> self.id == it.id })
-            } else {
-                llSpinnerCategoria.background = activity!!.getDrawable(R.drawable.button_gray)
-            }
-
+            if (it != null && it.id != -1L)
+                spnCategory.setSelection(viewModel.categorias.get()!!.indexOfFirst { self -> self.id == it.id })
         })
 
         compDisposable.add(viewModel.showALert.subscribe {
@@ -136,11 +164,11 @@ class FullScreenDialog: DialogFragment() {
             llformAnimation.visibility = View.VISIBLE
 
             animationDialog.playAnimation()
-            animationDialog.addAnimatorListener(object : Animator.AnimatorListener{
+            animationDialog.addAnimatorListener(object : Animator.AnimatorListener {
                 override fun onAnimationRepeat(animation: Animator?) {}
 
                 override fun onAnimationEnd(animation: Animator?) {
-                    Handler().postDelayed({if(dialog != null && dialog.isShowing) dialog.dismiss()}, 500)
+                    Handler().postDelayed({ if (dialog != null && dialog.isShowing) dialog.dismiss() }, 500)
                 }
 
                 override fun onAnimationCancel(animation: Animator?) {}
@@ -152,9 +180,9 @@ class FullScreenDialog: DialogFragment() {
 
     }
 
-    fun setColorsDialog(){
+    fun setColorsDialog() {
         viewModel.tipoTransacao.set(tipoTransacao)
-        when(tipoTransacao) {
+        when (tipoTransacao) {
             TipoTransacao.RECEITA -> {
                 val drawableGreen = ColorDrawable(ContextCompat.getColor(context!!, R.color.colorPrimary))
                 val colorGreen = context!!.getColor(R.color.colorPrimary)
@@ -191,11 +219,19 @@ class FullScreenDialog: DialogFragment() {
                     background = drawableGreen
                     setTextColor(color)
                 }
-                switchConsolidado.setTextColor(color)
+
                 animationDone.setAnimation("done_accent.json")
                 animationDialog.setAnimation("sucess_accent.json")
             }
-            else -> {}
+            else -> {
+            }
+        }
+    }
+
+    private fun getStyleCalendar(): Int {
+        return when (tipoTransacao) {
+            TipoTransacao.RECEITA -> R.style.DatePickerThemeReceita
+            else -> R.style.DatePickerThemeDespesa
         }
     }
     /*

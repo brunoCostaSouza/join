@@ -77,7 +77,7 @@ class JApplication : Application() {
             val border = when(type){
                 ALERT_TYPE_SUCCESS -> R.drawable.button_green
                 ALERT_TYPE_WARNING -> R.drawable.button_orange
-                ALERT_TYPE_ERROR -> R.drawable.button_pink
+                ALERT_TYPE_ERROR -> R.drawable.button_round
                 ALERT_TYPE_INFO -> R.drawable.button_green
                 else -> R.drawable.button_green
             }

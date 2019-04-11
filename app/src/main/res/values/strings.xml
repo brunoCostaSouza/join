@@ -17,6 +17,7 @@
     <string name="selecione_uma_categoria">Selecione uma categoria</string>
     <string name="data_da_transac_o">Data da transacão</string>
     <string name="consolidado">Consolidado</string>
+    <string name="deseja_remover_essa_transa_o">Deseja remover essa transação?</string>
     <string name="sim">Sim</string>
     <string name="n_o">Não</string>
 

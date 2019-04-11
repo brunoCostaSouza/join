@@ -5,16 +5,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="7dp"
+    android:layout_marginTop="3dp"
     android:layout_marginRight="10dp"
     android:layout_marginLeft="10dp"
+    android:layout_marginBottom="5dp"
     android:elevation="15dp"
+    android:clickable="true"
+    android:focusable="true"
     app:cardBackgroundColor="@color/cardview_light_background"
     app:cardCornerRadius="10dp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    style="?android:attr/borderlessButtonStyle">
+    style="?android:attr/selectableItemBackgroundBorderless">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -28,7 +31,7 @@
             android:layout_height="40dp"
             android:layout_marginStart="5dp"
             app:civ_border_color="@color/receita"
-            app:civ_border_width="0.5dp"
+            app:civ_border_width="1dp"
             app:layout_constraintStart_toStartOf="parent"
             android:src="@drawable/ic_arrow_upward"
             android:padding="2dp"

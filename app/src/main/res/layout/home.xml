@@ -2,13 +2,13 @@
 <layout>
 
     <data>
+
         <variable
             name="viewModel"
             type="br.com.bruno.join.viewModel.MainViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/resumeCard"
@@ -30,19 +30,19 @@
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbarhome"
-                    android:background="@null"
-                    app:titleTextColor="@color/white"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    app:titleTextColor="@color/white" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Saldo"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:layout_marginTop="5dp"
-                    android:textSize="20sp"
-                    android:text="Saldo" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/textSaldoAcumulado"
@@ -60,10 +60,10 @@
                 android:id="@+id/layoutTop2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2"
                 app:layout_constraintBottom_toBottomOf="@id/layoutTop"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -72,10 +72,10 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
-                    android:layout_weight="1"
+                    android:layout_marginTop="2dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="3dp"
-                    android:layout_marginTop="2dp"
+                    android:layout_weight="1"
                     android:elevation="15dp"
                     app:cardBackgroundColor="@color/cardview_light_background"
                     app:cardCornerRadius="5dp"
@@ -90,10 +90,10 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/receita"
                             android:textAlignment="center"
+                            android:textColor="@color/receita"
                             android:textSize="18sp"
-                            app:formatMoney="@{viewModel.totalReceita.get().toString()}"/>
+                            app:formatMoney="@{viewModel.totalReceita.get().toString()}" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -108,11 +108,11 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="3dp"
                     android:layout_weight="1"
                     android:elevation="15dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginBottom="3dp"
-                    android:layout_marginTop="2dp"
                     app:cardBackgroundColor="@color/cardview_light_background"
                     app:cardCornerRadius="5dp"
                     app:contentPadding="4dp"
@@ -129,10 +129,10 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/despesa"
                             android:textAlignment="center"
+                            android:textColor="@color/despesa"
                             android:textSize="18sp"
-                            app:formatMoney="@{viewModel.totalDespesa.get().toString()}"/>
+                            app:formatMoney="@{viewModel.totalDespesa.get().toString()}" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -154,12 +154,24 @@
                 app:layout_constraintTop_toBottomOf="@+id/layoutTop2"
                 tools:listitem="@layout/item_transacao" />
 
-           <com.github.clans.fab.FloatingActionMenu
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animEmpty"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutTop2"
+                app:lottie_loop="true" />
+
+            <com.github.clans.fab.FloatingActionMenu
                 android:id="@+id/rootFab"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
+                android:clickable="false"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="10dp"
@@ -217,8 +229,6 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_add"
             app:layout_anchor="@+id/myBar" />-->
-
-        <include layout="@layout/transacao_dialog" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

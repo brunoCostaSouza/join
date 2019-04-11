@@ -5,12 +5,15 @@
     android:id="@+id/dialogAlerta"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_gravity=""
     android:background="@drawable/background_card"
     android:padding="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clDetail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/lblDescricao"
@@ -19,10 +22,10 @@
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:textSize="17sp"
             android:text="Passeio de fim de semana com a família"
             android:textAlignment="center"
             android:textColor="@color/black_light"
+            android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -72,7 +75,7 @@
             android:text="Data da transacao: 20/04/2018"
             android:textAlignment="center"
             android:textColor="@color/gray_dark"
-            android:textSize="11sp"
+            android:textSize="13sp"
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -101,64 +104,127 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lblCategoria">
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/btnEdit"
-                style="?attr/selectableItemBackgroundBorderless"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+            <LinearLayout
+                android:background="@drawable/button_round"
+                android:backgroundTint="@color/gray_dark"
+                android:layout_width="wrap_content"
                 android:layout_marginEnd="15dp"
-                android:background="@android:color/transparent"
-                android:clickable="true"
-                android:focusable="true"
-                android:scaleType="center"
-                android:src="@drawable/ic_edit"
-                android:tint="@color/gray_dark" />
+                android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/btnRemove"
-                style="?attr/selectableItemBackgroundBorderless"
-                android:background="@android:color/transparent"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btnEdit"
+                    style="?attr/selectableItemBackgroundBorderless"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_edit"
+                    android:tint="@color/gray_dark" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:background="@drawable/button_round"
+
+                android:backgroundTint="@color/gray_dark"
+                android:layout_width="wrap_content"
+
                 android:layout_marginStart="15dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:scaleType="center"
-                android:src="@drawable/ic_delete"
-                android:tint="@color/gray_dark" />
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btnRemove"
+                    style="?attr/selectableItemBackgroundBorderless"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_delete"
+                    android:tint="@color/gray_dark" />
+            </LinearLayout>
 
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clQuestion"
         android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="wrap_content">
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/descricaoRemover"
-            android:text="Deseja realmente remover essa transação?"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/deseja_remover_essa_transa_o"
             android:textAlignment="center"
             android:textColor="@color/gray_dark"
-            android:layout_width="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_height="wrap_content" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descricaoRemover"
-            android:layout_height="wrap_content">
+            app:layout_constraintStart_toStartOf="parent">
 
-            <TextView
+            <LinearLayout
+                android:background="@drawable/button_round"
+                android:backgroundTint="@color/receita"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sim"/>
+                android:layout_marginEnd="30dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/btnQuestionYes"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:text="@string/sim"
+                    android:textColor="@color/receita"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:background="@drawable/button_round"
+                android:layout_width="wrap_content"
+
+                android:layout_marginStart="30dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/btnQuestionNo"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:text="@string/n_o"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animDetail"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
 </RelativeLayout>

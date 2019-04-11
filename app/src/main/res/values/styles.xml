@@ -27,9 +27,25 @@
 
     <style name="ThemeSwitchReceita">
         <item name="colorControlActivated">@color/receita</item>
+        <item name="colorSwitchThumbNormal">@color/gray_dark</item>
+        <item name="android:colorForeground">@color/gray_dark</item>
     </style>
     <style name="ThemeSwitchDespesa">
         <item name="colorControlActivated">@color/despesa</item>
+        <item name="colorSwitchThumbNormal">@color/gray_dark</item>
+        <item name="android:colorForeground">@color/gray_dark</item>
+    </style>
+
+    <style name="DatePickerThemeReceita" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/receita</item>
+        <item name="colorPrimaryDark">@color/receita</item>
+        <item name="colorAccent">@color/receita</item>
+    </style>
+
+    <style name="DatePickerThemeDespesa" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/despesa</item>
+        <item name="colorPrimaryDark">@color/despesa</item>
+        <item name="colorAccent">@color/despesa</item>
     </style>
 
     <!-- Full screen dialog -->

@@ -5,7 +5,12 @@
 
         <variable
             name="viewModel"
-            type="br.com.bruno.join.viewModel.TransacaoViewModel" />
+            type="br.com.bruno.join.viewModel.TransacaoViewModel" />"
+
+        <import type="br.com.bruno.join.enums.TipoTransacao"/>
+
+        <import type="br.com.bruno.join.R"/>
+
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -138,6 +143,7 @@
                             android:layout_height="wrap_content"
                             android:backgroundTint="@color/colorPrimary"
                             android:maxLength="20"
+                            android:editable="false"
                             android:text="@={viewModel.dataTransacao}"
                             android:textColor="@color/colorPrimary"
                             android:textCursorDrawable="@null" />
@@ -161,6 +167,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:textAlignment="center"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:popupBackground="@color/white"
                             android:onItemSelected="@{(parent,view,pos,id) -> viewModel.itemSelecionado(parent,view,pos,id)}"
                             android:spinnerMode="dropdown">
 
@@ -181,11 +190,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="5dp"
                             android:checked="@{viewModel.consolidado}"
+                            android:onClick="@{() -> viewModel.checkConsolidado()}"
                             android:color="@color/receita"
-                            android:textOff="@string/n_o"
-                            android:textOn="@string/sim"
                             android:theme="@style/ThemeSwitchReceita" />
-
+`
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
