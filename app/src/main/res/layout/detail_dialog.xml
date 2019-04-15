@@ -193,8 +193,7 @@
                     android:gravity="center"
                     android:text="@string/sim"
                     android:textColor="@color/receita"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="18sp" />
             </LinearLayout>
 
 
@@ -211,8 +210,7 @@
                     android:layout_height="50dp"
                     android:gravity="center"
                     android:text="@string/n_o"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 

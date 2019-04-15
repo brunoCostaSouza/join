@@ -27,4 +27,32 @@
     <color name="saldoPositivo">#009688</color>
     <color name="saldoNegativo">#EC407A</color>
     <color name="transferencia">#BB86FC</color>
+
+    <!-- Paleta de cores -->
+    <color name="c_a">#00C98B</color>
+    <color name="c_b">#FFC570</color>
+    <color name="c_c">#BEEB9F</color>
+    <color name="c_d">#79BD8F</color>
+    <color name="c_e">#00A388</color>
+    <color name="c_f">#96CEB4</color>
+    <color name="c_g">#A460D6</color>
+    <color name="c_h">#FFCC5C</color>
+    <color name="c_i">#AAD8B0</color>
+    <color name="c_j">#26A06B</color>
+    <color name="c_k">#5EDABF</color>
+    <color name="c_l">#09C09E</color>
+    <color name="c_m">#90D1F3</color>
+    <color name="c_n">#9368E5</color>
+    <color name="c_o">#4A80D7</color>
+    <color name="c_p">#35627A</color>
+    <color name="c_q">#CADDDB</color>
+    <color name="c_r">#A7DDA7</color>
+    <color name="c_s">#78BE97</color>
+    <color name="c_t">#398689</color>
+    <color name="c_u">#D79B4A</color>
+    <color name="c_v">#A460D6</color>
+    <color name="c_w">#E8C4B7</color>
+    <color name="c_x">#8DC1B7</color>
+    <color name="c_y">#A6D74A</color>
+    <color name="c_z">#6F3CE3</color>
 </resources>

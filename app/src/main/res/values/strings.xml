@@ -20,6 +20,7 @@
     <string name="deseja_remover_essa_transa_o">Deseja remover essa transação?</string>
     <string name="sim">Sim</string>
     <string name="n_o">Não</string>
+    <string name="voc_ainda_n_o_tem_nenhuma_transa_o_cadastrada_n_click_no_bot_o_para_adicionar_uma_transa_o">Você ainda não tem nenhuma transação cadastrada.\nClick no botão \'+\' para adicionar uma transação</string>
 
     <array name="categorias">
         <item>Selecione uma categoria</item>

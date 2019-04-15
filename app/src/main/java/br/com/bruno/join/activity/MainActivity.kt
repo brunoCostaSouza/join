@@ -1,12 +1,15 @@
 package br.com.bruno.join.activity
 
 import android.animation.ValueAnimator
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
 import android.view.View
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.view.animation.Interpolator
+import android.view.animation.LinearInterpolator
+import android.view.animation.RotateAnimation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -54,15 +57,12 @@ class MainActivity : AppCompatActivity(), Actions {
                 animateValue()
 
                 if(it.isEmpty()) {
-                    animEmpty.setAnimation("emptybox.json")
-                    animEmpty.visibility = View.VISIBLE
+                    textEmpty.visibility = View.VISIBLE
                     listItens.visibility = View.GONE
-                    animEmpty.playAnimation()
 
                 } else {
-                    animEmpty.visibility = View.GONE
+                    textEmpty.visibility = View.GONE
                     listItens.visibility = View.VISIBLE
-                    animEmpty.pauseAnimation()
                 }
             }
         })
@@ -106,6 +106,9 @@ class MainActivity : AppCompatActivity(), Actions {
             dialog.tipoTransacao = TipoTransacao.DESPESA
             dialog.show(supportFragmentManager.beginTransaction(), FullScreenDialog.TAG)
         }
+
+        //rootFab.setIconAnimationInterpolator(AnimationUtils.loadInterpolator(this, R.anim.anim_rotate))
+
     }
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {

@@ -14,4 +14,5 @@ open class Categoria : RealmObject() {
     open var id: Long = 0
     open var resorce: Int? = null
     open var descricao: String? = null
+    open var colorIcon: Int? = null
 }

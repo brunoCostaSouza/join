@@ -100,8 +100,20 @@ class FullScreenDialog : DialogFragment() {
         toolbarDialog.apply {
             setNavigationIcon(R.drawable.ic_close_white)
             setNavigationOnClickListener { dialog.dismiss() }
-            title = "Transação"
             elevation = 0f
+        }
+
+        when(tipoTransacao){
+            TipoTransacao.RECEITA -> {
+                toolbarDialog.title = "Receita"
+                switchConsolidadoReceita.visibility = View.VISIBLE
+                switchConsolidadoDespesa.visibility = View.GONE
+            }
+            else -> {
+                toolbarDialog.title = "Despesa"
+                switchConsolidadoReceita.visibility = View.GONE
+                switchConsolidadoDespesa.visibility = View.VISIBLE
+            }
         }
 
         spnCategory.setOnFocusChangeListener { v, hasFocus ->
@@ -112,6 +124,7 @@ class FullScreenDialog : DialogFragment() {
 
         textData.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) showCalendar() }
         textData.setOnClickListener { showCalendar() }
+
 
         setColorsDialog()
         animationDone.playAnimation()
@@ -197,7 +210,6 @@ class FullScreenDialog : DialogFragment() {
                     background = drawableGreen
                     setTextColor(colorGreen)
                 }
-                switchConsolidado.setTextColor(colorGreen)
                 animationDone.setAnimation("done_primary.json")
                 animationDialog.setAnimation("sucess_primary.json")
             }

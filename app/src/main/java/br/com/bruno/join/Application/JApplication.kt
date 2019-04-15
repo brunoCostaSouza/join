@@ -104,6 +104,7 @@ class JApplication : Application() {
                 id = 1L
                 descricao = "Alimentação"
                 resorce = R.drawable.ic_food
+                colorIcon = R.color.c_b
                 save()
             }
 
@@ -111,6 +112,7 @@ class JApplication : Application() {
                 id = 2L
                 descricao = "Renda"
                 resorce = R.drawable.ic_money
+                colorIcon = R.color.c_a
                 save()
             }
 
@@ -118,6 +120,7 @@ class JApplication : Application() {
                 id = 3L
                 descricao = "Compras"
                 resorce = R.drawable.ic_purchase
+                colorIcon = R.color.c_g
                 save()
             }
 
@@ -125,6 +128,7 @@ class JApplication : Application() {
                 id = 4L
                 descricao = "Viagem"
                 resorce = R.drawable.ic_travel
+                colorIcon = R.color.c_c
                 save()
             }
 
@@ -132,6 +136,7 @@ class JApplication : Application() {
                 id = 5L
                 descricao = "Manutenção"
                 resorce = R.drawable.ic_car
+                colorIcon = R.color.c_h
                 save()
             }
 
@@ -139,6 +144,7 @@ class JApplication : Application() {
                 id = 6L
                 descricao = "Supermercado"
                 resorce = R.drawable.ic_supermarket
+                colorIcon = R.color.c_i
                 save()
             }
 
@@ -146,6 +152,7 @@ class JApplication : Application() {
                 id = 7L
                 descricao = "Cartão de crédito"
                 resorce = R.drawable.ic_payment
+                colorIcon = R.color.c_j
                 save()
             }
 
@@ -153,6 +160,7 @@ class JApplication : Application() {
                 id = 8L
                 descricao = "Combustível"
                 resorce = R.drawable.ic_gas
+                colorIcon = R.color.c_k
                 save()
             }
 
@@ -160,12 +168,14 @@ class JApplication : Application() {
                 id = 9L
                 descricao = "Vida e entreterimento"
                 resorce = R.drawable.ic_fan
+                colorIcon = R.color.c_l
                 save()
             }
 
             Categoria().apply {
                 id = 10L
                 descricao = "Outros"
+                colorIcon = R.color.c_b
                 resorce = R.drawable.ic_others
                 save()
             }

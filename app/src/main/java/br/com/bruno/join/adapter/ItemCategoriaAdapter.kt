@@ -57,6 +57,7 @@ class CategoriaAdapter(
         } else {
             viewCustom.textDescricaoCategoria.textSize = fontSize
             viewCustom.imgCategoria.setBackgroundResource(item.resorce!!)
+            viewCustom.imgCategoria.background!!.setTint(item.colorIcon!!)
             viewCustom.textDescricaoCategoria.text = item.descricao
         }
 
