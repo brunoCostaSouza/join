@@ -34,7 +34,7 @@ captures/
 
 # IntelliJ
 *.iml
-.idea/workspace.xml
+.idea/
 .idea/tasks.xml
 .idea/gradle.xml
 .idea/assetWizardSettings.xml
@@ -79,4 +79,4 @@ lint/tmp/
 # lint/reports/
 \.idea/encodings\.xml
 
-\.idea/misc\.xml
+\.idea/
