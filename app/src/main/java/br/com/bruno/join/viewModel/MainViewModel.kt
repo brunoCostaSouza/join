@@ -55,21 +55,40 @@ class MainViewModel(
     }
 
     private fun calcularSaldoPrevisto(it: List<Transacao>) {
-        val totalDespesas = it.filter { it.tipo!! == TipoTransacao.DESPESA.name }.sumByDouble { it.valor }
-        val totalReceitas = it.filter { it.tipo!! == TipoTransacao.RECEITA.name }.sumByDouble { it.valor }
-        saldoPrevisto.set(totalReceitas - totalDespesas)
+        when(stateFilter) {
+            FILTER_NO -> {
+                val totalDespesas = it.filter { it.tipo!! == TipoTransacao.DESPESA.name }.sumByDouble { it.valor }
+                val totalReceitas = it.filter { it.tipo!! == TipoTransacao.RECEITA.name }.sumByDouble { it.valor }
+                saldoPrevisto.set(totalReceitas - totalDespesas)
+            }
+            FILTER_DESPESAS -> {
+                val totalDespesas = it.filter { it.tipo!! == TipoTransacao.DESPESA.name }.sumByDouble { it.valor }
+                saldoPrevisto.set(totalDespesas)
+            }
+            FILTER_RECEITAS -> {
+                val totalReceitas = it.filter { it.tipo!! == TipoTransacao.RECEITA.name }.sumByDouble { it.valor }
+                saldoPrevisto.set(totalReceitas)
+            }
+        }
     }
 
     private fun calcularSaldoConsolidado(it: List<Transacao>) {
-        when(stateFilter){
+        when (stateFilter) {
             FILTER_NO -> {
                 totalReceita.set(it.filter { it.tipo!! == TipoTransacao.RECEITA.name && it.consolidado!! }.sumByDouble { it.valor })
                 totalDespesa.set(it.filter { it.tipo!! == TipoTransacao.DESPESA.name && it.consolidado!! }.sumByDouble { it.valor })
                 saldo.set(totalReceita.get()!! - totalDespesa.get()!!)
             }
-            FILTER_RECEITAS -> { saldo.set(it.filter { it.tipo!! == TipoTransacao.RECEITA.name && it.consolidado!! }.sumByDouble { it.valor }) }
-            FILTER_DESPESAS -> { saldo.set(it.filter { it.tipo!! == TipoTransacao.DESPESA.name && it.consolidado!! }.sumByDouble { it.valor }) }
+            FILTER_DESPESAS -> {
+                totalDespesa.set(it.filter { it.tipo!! == TipoTransacao.DESPESA.name && it.consolidado!! }.sumByDouble { it.valor })
+                saldo.set(totalDespesa.get()!!)
+            }
+            FILTER_RECEITAS -> {
+                totalReceita.set(it.filter { it.tipo!! == TipoTransacao.RECEITA.name && it.consolidado!! }.sumByDouble { it.valor })
+                saldo.set(totalReceita.get()!!)
+            }
         }
+
     }
 
     fun filterDespesas() {

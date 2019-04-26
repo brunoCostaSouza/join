@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity(), Actions {
     private fun animateValue() {
         val endValue = viewModel.saldo.get()!!.toFloat()
         val animator = ValueAnimator.ofFloat(0f, endValue)
-        animator.duration = 900
+        animator.duration = 500
         animator.addUpdateListener { animation ->
             textSaldoAcumulado.text = (animation.animatedValue as Float).toDouble().formatMoney()
         }

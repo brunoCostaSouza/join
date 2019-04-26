@@ -47,16 +47,32 @@ class TransacaoViewHolder(
     fun bind(transacao: Transacao){
         when(transacao.tipo){
             TipoTransacao.RECEITA.name -> {
-                itemView.imgItem.setImageResource(R.drawable.ic_arrow_upward)
-                itemView.imgItem.borderColor = context.getColor(R.color.receita)
-                itemView.textValorItem.setTextColor(context.getColor(R.color.receita))
+
+                if (transacao.consolidado!!) {
+                    itemView.imgItem.borderColor = context.getColor(R.color.receita)
+                    itemView.textValorItem.setTextColor(context.getColor(R.color.receita))
+                    itemView.imgItem.setImageResource(R.drawable.ic_arrow_upward)
+                } else {
+                    itemView.imgItem.borderColor = context.getColor(R.color.gray_dark)
+                    itemView.textValorItem.setTextColor(context.getColor(R.color.gray_dark))
+                    itemView.imgItem.setImageResource(R.drawable.ic_arrow_upward_gray)
+                }
+
                 itemView.textValorItem.text = " + "+transacao.valor.formatMoney()
             }
 
             TipoTransacao.DESPESA.name -> {
-                itemView.imgItem.setImageResource(R.drawable.ic_arrow_down)
-                itemView.textValorItem.setTextColor(context.getColor(R.color.despesa))
-                itemView.imgItem.borderColor = context.getColor(R.color.despesa)
+
+                if(transacao.consolidado!!) {
+                    itemView.imgItem.borderColor = context.getColor(R.color.despesa)
+                    itemView.imgItem.setImageResource(R.drawable.ic_arrow_down)
+                    itemView.textValorItem.setTextColor(context.getColor(R.color.despesa))
+                } else {
+                    itemView.imgItem.borderColor = context.getColor(R.color.gray_dark)
+                    itemView.imgItem.setImageResource(R.drawable.ic_arrow_down_gray)
+                    itemView.textValorItem.setTextColor(context.getColor(R.color.gray_dark))
+                }
+
                 itemView.textValorItem.text = " - "+transacao.valor.formatMoney()
             }
 
@@ -73,7 +89,6 @@ class TransacaoViewHolder(
         itemView.descricaoItem.text = transacao.descricao
         itemView.textCategoriaItem.text = transacao.categoria!!.descricao
         itemView.dataItem.text = cal.time.formataData()
-        itemView.textConsolidado.visibility = if(transacao.consolidado!!){ View.GONE } else { View.VISIBLE }
         itemView.clRoot.setOnClickListener {
             DetailDialog().apply {
                 this.transacao = transacao
