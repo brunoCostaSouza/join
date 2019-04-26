@@ -19,9 +19,12 @@
     <color name="black_light">#4e4e4e</color>
     <color name="receita">#05b197</color>
     <color name="despesa">#f5787e</color>
+    <color name="despesaLight">#efb6b9</color>
 
     <color name="sucess">#05b197</color>
     <color name="error">#ff4181</color>
+    <color name="primaryPB">#37d1b9</color>
+    <color name="secondPB">#ff0000</color>
     <color name="orange">#faab1a</color>
 
     <color name="saldoPositivo">#009688</color>

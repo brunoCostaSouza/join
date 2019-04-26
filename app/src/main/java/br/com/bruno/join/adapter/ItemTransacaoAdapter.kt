@@ -73,7 +73,8 @@ class TransacaoViewHolder(
         itemView.descricaoItem.text = transacao.descricao
         itemView.textCategoriaItem.text = transacao.categoria!!.descricao
         itemView.dataItem.text = cal.time.formataData()
-        itemView.setOnClickListener {
+        itemView.textConsolidado.visibility = if(transacao.consolidado!!){ View.GONE } else { View.VISIBLE }
+        itemView.clRoot.setOnClickListener {
             DetailDialog().apply {
                 this.transacao = transacao
             }.show(supportFragmentManager, DetailDialog.TAG)

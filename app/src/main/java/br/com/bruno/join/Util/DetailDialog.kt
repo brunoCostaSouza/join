@@ -42,6 +42,7 @@ class DetailDialog: DialogFragment(), Actions {
 
             lblData.text = "Data da transação: ${transacao.data!!.formataData()}"
             lblCategoria.text = transacao.categoria!!.descricao
+            lblConsolidado.visibility = if(transacao.consolidado!!){ View.GONE } else { View.VISIBLE }
 
             btnEdit.setOnClickListener(listenerEdit)
             btnRemove.setOnClickListener(listenerRemove)

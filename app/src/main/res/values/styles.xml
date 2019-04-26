@@ -25,6 +25,12 @@
         <item name="android:textColor">#848484</item>
     </style>
 
+    <style name="MyProgressBar" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressBackgroundTint">@color/despesa</item>
+        <item name="android:progressTint">@color/receita</item>
+        <item name="android:minWidth">200dp</item>
+    </style>
+
     <style name="ThemeSwitchReceita">
         <item name="colorControlActivated">@color/receita</item>
         <item name="colorSwitchThumbNormal">@color/gray_dark</item>

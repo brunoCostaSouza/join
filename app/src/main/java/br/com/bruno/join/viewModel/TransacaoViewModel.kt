@@ -24,8 +24,8 @@ import java.util.*
 
 class TransacaoViewModel(
         val context: Context,
-        val idTransacao: Long?,
-        val repository: ITransacaoRepository
+        private val idTransacao: Long?,
+        private val repository: ITransacaoRepository
 ): ViewModel() {
 
     var transacao: Transacao = if(idTransacao == null) {

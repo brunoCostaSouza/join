@@ -1,15 +1,12 @@
 package br.com.bruno.join.activity
 
 import android.animation.ValueAnimator
-import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.view.animation.Interpolator
-import android.view.animation.LinearInterpolator
-import android.view.animation.RotateAnimation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -56,7 +53,7 @@ class MainActivity : AppCompatActivity(), Actions {
                 listItens.adapter = transacaoAdapter
                 animateValue()
 
-                if(it.isEmpty()) {
+                if(it.isEmpty() && viewModel.totalDespesa.get() == 0.0 && viewModel.totalReceita.get() == 0.0 ) {
                     textEmpty.visibility = View.VISIBLE
                     listItens.visibility = View.GONE
 
@@ -68,7 +65,7 @@ class MainActivity : AppCompatActivity(), Actions {
         })
 
         compositeDisposable.add(viewModel.saldo.observe {
-            TransitionManager.beginDelayedTransition(resumeCard, Recolor().setDuration(1000))
+            TransitionManager.beginDelayedTransition(layoutTop, Recolor().setDuration(1000))
             Handler().postDelayed({
                 if(it!! < 0) {
                     layoutTop.background = ContextCompat.getDrawable(this, R.drawable.shape_negative)
@@ -77,7 +74,35 @@ class MainActivity : AppCompatActivity(), Actions {
                     layoutTop.background = ContextCompat.getDrawable(this, R.drawable.shape_positive)
                     window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
                 }
-            }, 350)
+            }, 100)
+
+            when (viewModel.stateFilter) {
+                MainViewModel.FILTER_NO -> {
+                    filterDespesaSelected.visibility = View.GONE
+                    filterReceitaSelected.visibility = View.GONE
+                    progress.visibility = View.VISIBLE
+                }
+                MainViewModel.FILTER_RECEITAS -> {
+                    filterDespesaSelected.visibility = View.GONE
+                    filterReceitaSelected.visibility = View.VISIBLE
+                    progress.visibility = View.GONE
+                }
+                MainViewModel.FILTER_DESPESAS -> {
+                    filterDespesaSelected.visibility = View.VISIBLE
+                    filterReceitaSelected.visibility = View.GONE
+                    progress.visibility = View.GONE
+                }
+            }
+
+            if (it!! == 0.0 && viewModel.totalDespesa.get() == 0.0 && viewModel.totalReceita.get() == 0.0) progress.visibility = View.GONE
+        })
+
+        compositeDisposable.add(viewModel.valueProgress.subscribe {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                progress.setProgress(it, true)
+            } else {
+                progress.progress = it
+            }
         })
 
     }
