@@ -6,11 +6,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import br.com.bruno.join.entity.Transacao
 import br.com.bruno.join.enums.TipoTransacao
+import br.com.bruno.join.extensions.primeiroDiaMes
+import br.com.bruno.join.extensions.ultimaDiaMes
+import br.com.bruno.join.extensions.ultimaHora
+import br.com.bruno.join.extensions.zeraHora
+import com.vicpin.krealmextensions.query
 import com.vicpin.krealmextensions.queryAllAsFlowable
+import com.vicpin.krealmextensions.queryAsFlowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
+import java.util.*
 
 /**
  * Created by Bruno Costa on 09/08/2018.
@@ -23,6 +30,11 @@ class MainViewModel(
         val FILTER_NO       = 0
         val FILTER_DESPESAS = 1
         val FILTER_RECEITAS = 2
+        val FILTER_HOJE = 3
+        val FILTER_SEMANA = 4
+        val FILTER_15DIAS = 5
+        val FILTER_MES = 6
+
     }
 
     var totalReceita = ObservableField<Double>(0.0)
@@ -34,6 +46,7 @@ class MainViewModel(
     var composite = CompositeDisposable()
 
     var listaTransacoesAux: List<Transacao> = mutableListOf()
+    var dateFilterList: Date = Calendar.getInstance().time
     var stateFilter = FILTER_NO
 
     init {
@@ -41,7 +54,11 @@ class MainViewModel(
     }
 
     private fun initFlowables() {
-        val query = Transacao().queryAllAsFlowable()
+        val query = Transacao().queryAsFlowable {
+            beginGroup()
+                    .between("data", dateFilterList.primeiroDiaMes(), dateFilterList.ultimaDiaMes())
+            endGroup()
+        }
         composite.add(query
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -104,9 +121,7 @@ class MainViewModel(
 
         if (typeFilter == stateFilter) {
             stateFilter = FILTER_NO
-            calcularSaldoPrevisto(listaTransacoesAux)
-            calcularSaldoConsolidado(listaTransacoesAux)
-            listaTransacoes.onNext(listaTransacoesAux.sortedByDescending{ it.data })
+            setList(listaTransacoesAux)
             calculateProgress(listaTransacoesAux)
             return
         }
@@ -117,15 +132,48 @@ class MainViewModel(
         }
 
         stateFilter = typeFilter
-        calcularSaldoPrevisto(listFiltered)
-        calcularSaldoConsolidado(listFiltered)
-        listaTransacoes.onNext(listFiltered.sortedByDescending{ it.data })
+        setList(listFiltered)
 
     }
 
+    fun filterByMenu(typeFilter: Int){
+        when(typeFilter){
+            FILTER_HOJE -> {
+                val list = Transacao().query {
+                    between("data", Calendar.getInstance().time.zeraHora(), Calendar.getInstance().time.ultimaHora())
+                }
+                setList(list)
+            }
+            FILTER_SEMANA -> {
+                val calendar = Calendar.getInstance()
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
+                val di = calendar.time
+
+                calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY)
+                val df = calendar.time
+                setList(Transacao().query { between("data", di.zeraHora(), df.ultimaHora()) })
+            }
+            FILTER_15DIAS -> {
+                val calendar = Calendar.getInstance()
+                calendar.set(Calendar.DAY_OF_MONTH, 15)
+                val df = calendar.time
+                setList(Transacao().query { between("data", df.zeraHora(), Calendar.getInstance().time.ultimaDiaMes()) })
+            }
+            FILTER_MES -> {
+                setList(Transacao().query { between("data", Calendar.getInstance().time.primeiroDiaMes(), Calendar.getInstance().time.ultimaDiaMes()) })
+            }
+        }
+    }
+
+    private fun setList(list: List<Transacao>){
+        calcularSaldoPrevisto(list)
+        calcularSaldoConsolidado(list)
+        listaTransacoes.onNext(list.sortedWith(compareByDescending<Transacao>{ it.data }.thenByDescending { it.id }))
+    }
+
     fun calculateProgress(list: List<Transacao>) {
-        val c100 = list.filter { it.consolidado!! }.sumByDouble { if (it.valor < 0){ (-1.0) * it.valor } else { it.valor } }
-        val receita = list.filter { it.tipo!! == TipoTransacao.RECEITA.name && it.consolidado!!}.sumByDouble { it.valor }
+        val c100 = list.asSequence().filter { it.consolidado!! }.sumByDouble { if (it.valor < 0){ (-1.0) * it.valor } else { it.valor } }
+        val receita = list.asSequence().filter { it.tipo!! == TipoTransacao.RECEITA.name && it.consolidado!!}.sumByDouble { it.valor }
         val porcentagem = receita * 100 / c100
         valueProgress.onNext(if (porcentagem > 0) { porcentagem.toInt() } else { 0 })
     }

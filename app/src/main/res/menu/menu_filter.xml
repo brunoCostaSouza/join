@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/file"
+        android:icon="@drawable/ic_filter_list"
+        android:title="Filtrar por:"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/filterUltimasMes"
+                android:title="@string/filtrar_ltimas_deste_m_s" />
+
+            <item
+                android:id="@+id/filterUltimas15Dias"
+                android:title="@string/filtrar_dos_ltimos_15_dias" />
+
+            <item
+                android:id="@+id/filterUltimaSemana"
+                android:title="@string/filtrar_da_ltima_semana" />
+
+            <item
+                android:id="@+id/filterUltimasHoje"
+                android:checked="true"
+                android:title="@string/filtrar_ltimas_de_hoje"/>
+        </menu>
+    </item>
+</menu>

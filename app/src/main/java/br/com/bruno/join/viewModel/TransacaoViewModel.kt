@@ -14,6 +14,7 @@ import br.com.bruno.join.extensions.formataData
 import br.com.bruno.join.extensions.unFormatData
 import br.com.bruno.join.extensions.unFormatMoney
 import br.com.bruno.join.repository.ITransacaoRepository
+import co.metalab.asyncawait.async
 import com.vicpin.krealmextensions.deleteAll
 import com.vicpin.krealmextensions.queryAll
 import com.vicpin.krealmextensions.queryFirst
@@ -84,11 +85,16 @@ class TransacaoViewModel(
     }
 
     fun getCategorias() {
-        val list = mutableListOf<Categoria>()
-        list.add(getCategoriaVazia())
-        list.addAll(Categoria().queryAll())
-        categorias.set(list)
+
+            val list = mutableListOf<Categoria>()
+            list.add(getCategoriaVazia())
+            list.addAll(Categoria().queryAll())
+            categorias.set(list)
+
     }
+
+
+
 
     fun itemSelecionado(parent: ViewParent, view: View, position: Int, id: Long) {
         categoria.set(categorias.get()!![position])

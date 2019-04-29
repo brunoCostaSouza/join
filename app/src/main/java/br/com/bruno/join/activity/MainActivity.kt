@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +26,7 @@ import com.transitionseverywhere.TransitionManager
 import formatMoney
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.home.*
+
 
 class MainActivity : AppCompatActivity(), Actions {
 
@@ -53,7 +55,7 @@ class MainActivity : AppCompatActivity(), Actions {
                 listItens.adapter = transacaoAdapter
                 animateValue()
 
-                if(it.isEmpty() && viewModel.totalDespesa.get() == 0.0 && viewModel.totalReceita.get() == 0.0 ) {
+                if (it.isEmpty() && viewModel.totalDespesa.get() == 0.0 && viewModel.totalReceita.get() == 0.0) {
                     textEmpty.visibility = View.VISIBLE
                     listItens.visibility = View.GONE
 
@@ -67,7 +69,7 @@ class MainActivity : AppCompatActivity(), Actions {
         compositeDisposable.add(viewModel.saldo.observe {
             TransitionManager.beginDelayedTransition(layoutTop, Recolor().setDuration(1000))
             Handler().postDelayed({
-                if(it!! < 0) {
+                if (it!! < 0) {
                     layoutTop.background = ContextCompat.getDrawable(this, R.drawable.shape_negative)
                     window.statusBarColor = ContextCompat.getColor(this, R.color.secondPrimary)
                 } else {
@@ -107,7 +109,7 @@ class MainActivity : AppCompatActivity(), Actions {
 
     }
 
-    private fun setupView(){
+    private fun setupView() {
 
         transacaoAdapter = ItemTransacaoAdapter(applicationContext, supportFragmentManager)
         listItens.apply {
@@ -159,12 +161,40 @@ class MainActivity : AppCompatActivity(), Actions {
         }
         animator.start()
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
+        menuInflater.inflate(R.menu.menu_filter, menu)
+        return true
+    }
+
+    override fun onOptionsMenuClosed(menu: Menu?) {
+        super.onOptionsMenuClosed(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item!!.itemId) {
+            R.id.filterUltimasHoje -> {
+                textDescricaoFiltro.text = "Últimas de hoje"
+                viewModel.filterByMenu(MainViewModel.FILTER_HOJE)
+            }
+            R.id.filterUltimaSemana -> {
+                textDescricaoFiltro.text = "Últimas da semana"
+                viewModel.filterByMenu(MainViewModel.FILTER_SEMANA)
+            }
+            R.id.filterUltimas15Dias -> {
+                textDescricaoFiltro.text = "Últimos 15 dias"
+                viewModel.filterByMenu(MainViewModel.FILTER_15DIAS)
+            }
+            R.id.filterUltimasMes -> {
+                textDescricaoFiltro.text = "Últimas deste mês."
+                viewModel.filterByMenu(MainViewModel.FILTER_MES)
+            }
+
+        }
         return true
     }
 }
 
-interface Actions{
+interface Actions {
     fun closeWindowBefore()
 }

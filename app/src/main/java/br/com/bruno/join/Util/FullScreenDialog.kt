@@ -8,8 +8,6 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -27,7 +25,6 @@ import br.com.bruno.join.viewModel.TransacaoViewModel
 import com.felixsoares.sweetdialog.SweetDialog
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.full_dialog.*
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
