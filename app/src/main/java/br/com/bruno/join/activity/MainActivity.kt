@@ -1,13 +1,16 @@
 package br.com.bruno.join.activity
 
 import android.animation.ValueAnimator
+import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -16,9 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.bruno.join.R
 import br.com.bruno.join.Util.FullScreenDialog
+import br.com.bruno.join.Util.PeriodDialog
 import br.com.bruno.join.adapter.ItemTransacaoAdapter
 import br.com.bruno.join.databinding.HomeBinding
 import br.com.bruno.join.enums.TipoTransacao
+import br.com.bruno.join.extensions.formataData
 import br.com.bruno.join.extensions.observe
 import br.com.bruno.join.viewModel.MainViewModel
 import com.transitionseverywhere.Recolor
@@ -26,6 +31,7 @@ import com.transitionseverywhere.TransitionManager
 import formatMoney
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.home.*
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), Actions {
@@ -79,17 +85,17 @@ class MainActivity : AppCompatActivity(), Actions {
             }, 100)
 
             when (viewModel.stateFilter) {
-                MainViewModel.FILTER_NO -> {
+                MainViewModel.STATE_FILTER_NO -> {
                     filterDespesaSelected.visibility = View.GONE
                     filterReceitaSelected.visibility = View.GONE
                     progress.visibility = View.VISIBLE
                 }
-                MainViewModel.FILTER_RECEITAS -> {
+                MainViewModel.STATE_FILTER_RECEITAS -> {
                     filterDespesaSelected.visibility = View.GONE
                     filterReceitaSelected.visibility = View.VISIBLE
                     progress.visibility = View.GONE
                 }
-                MainViewModel.FILTER_DESPESAS -> {
+                MainViewModel.STATE_FILTER_DESPESAS -> {
                     filterDespesaSelected.visibility = View.VISIBLE
                     filterReceitaSelected.visibility = View.GONE
                     progress.visibility = View.GONE
@@ -188,6 +194,16 @@ class MainActivity : AppCompatActivity(), Actions {
             R.id.filterUltimasMes -> {
                 textDescricaoFiltro.text = "Últimas deste mês."
                 viewModel.filterByMenu(MainViewModel.FILTER_MES)
+            }
+            R.id.filterPeriodo -> {
+                val dialog = PeriodDialog()
+                dialog.show(supportFragmentManager, "DIALOGPERIOD")
+                dialog.listenerOnClickFilter { inicio, fim ->
+                    textDescricaoFiltro.text = "${inicio.formataData()}  á  ${fim.formataData()}"
+                    dialog.dismiss()
+                    viewModel.filterByPeriod(inicio, fim)
+                }
+
             }
 
         }

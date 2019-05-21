@@ -25,6 +25,11 @@
     <string name="filtrar_da_ltima_semana">Filtrar da <b>última semana.</b></string>
     <string name="filtrar_dos_ltimos_15_dias">Filtrar dos <b>últimos 15 dias</b></string>
     <string name="filtrar_ltimas_deste_m_s">Filtrar últimas <b>deste mês</b></string>
+    <string name="filtrar_periodo">Selecionar período</string>
+    <string name="informe_o_per_odo">Informe o período</string>
+    <string name="per_odo_inv_lido">Período inválido</string>
+    <string name="dd_mm_aaaa">DD/MM/AAAA</string>
+    <string name="de">De</string>
 
     <array name="categorias">
         <item>Selecione uma categoria</item>

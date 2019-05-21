@@ -21,8 +21,11 @@
 
             <item
                 android:id="@+id/filterUltimasHoje"
-                android:checked="true"
                 android:title="@string/filtrar_ltimas_de_hoje"/>
+            <item
+                android:id="@+id/filterPeriodo"
+                android:checked="true"
+                android:title="@string/filtrar_periodo"/>
         </menu>
     </item>
 </menu>
