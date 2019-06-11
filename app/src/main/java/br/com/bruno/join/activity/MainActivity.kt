@@ -1,16 +1,14 @@
 package br.com.bruno.join.activity
 
 import android.animation.ValueAnimator
-import android.app.DatePickerDialog
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -43,7 +41,7 @@ class MainActivity : AppCompatActivity(), Actions {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this, MainViewModel.Factory(this)).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, MainViewModel.Factory(this, this)).get(MainViewModel::class.java)
         val binding: HomeBinding = DataBindingUtil.setContentView(this, R.layout.home)
         binding.viewModel = viewModel
 
@@ -56,7 +54,7 @@ class MainActivity : AppCompatActivity(), Actions {
 
     private fun setupViewModel() {
         compositeDisposable.add(viewModel.listaTransacoes.subscribe {
-            this@MainActivity!!.runOnUiThread {
+            this@MainActivity.runOnUiThread {
                 transacaoAdapter.updateList(it)
                 listItens.adapter = transacaoAdapter
                 animateValue()
@@ -126,22 +124,22 @@ class MainActivity : AppCompatActivity(), Actions {
 
         listItens.addOnScrollListener(scrollListener)
 
-        btnAddReceita.setOnClickListener {
-            val dialog = FullScreenDialog()
-            dialog.actions = this
-            dialog.tipoTransacao = TipoTransacao.RECEITA
-            dialog.show(supportFragmentManager.beginTransaction(), FullScreenDialog.TAG)
-        }
-
-        btnAddDespesa.setOnClickListener {
-            val dialog = FullScreenDialog()
-            dialog.actions = this
-            dialog.tipoTransacao = TipoTransacao.DESPESA
-            dialog.show(supportFragmentManager.beginTransaction(), FullScreenDialog.TAG)
-        }
-
         //rootFab.setIconAnimationInterpolator(AnimationUtils.loadInterpolator(this, R.anim.anim_rotate))
 
+    }
+
+    override fun gotoAddDespesa() {
+        val dialog = FullScreenDialog()
+        dialog.actions = this
+        dialog.tipoTransacao = TipoTransacao.DESPESA
+        dialog.show(supportFragmentManager.beginTransaction(), FullScreenDialog.TAG)
+    }
+
+    override fun gotoAddReceita() {
+        val dialog = FullScreenDialog()
+        dialog.actions = this
+        dialog.tipoTransacao = TipoTransacao.RECEITA
+        dialog.show(supportFragmentManager.beginTransaction(), FullScreenDialog.TAG)
     }
 
     private val scrollListener = object : RecyclerView.OnScrollListener() {
@@ -173,27 +171,25 @@ class MainActivity : AppCompatActivity(), Actions {
         return true
     }
 
-    override fun onOptionsMenuClosed(menu: Menu?) {
-        super.onOptionsMenuClosed(menu)
-    }
-
+    @SuppressLint("SetTextI18n")
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
             R.id.filterUltimasHoje -> {
                 textDescricaoFiltro.text = "Últimas de hoje"
-                viewModel.filterByMenu(MainViewModel.FILTER_HOJE)
+                viewModel.filterByMenu(MainViewModel.MENU_FILTER_HOJE)
             }
             R.id.filterUltimaSemana -> {
                 textDescricaoFiltro.text = "Últimas da semana"
-                viewModel.filterByMenu(MainViewModel.FILTER_SEMANA)
+                viewModel.filterByMenu(MainViewModel.MENU_FILTER_SEMANA)
             }
             R.id.filterUltimas15Dias -> {
-                textDescricaoFiltro.text = "Últimos 15 dias"
-                viewModel.filterByMenu(MainViewModel.FILTER_15DIAS)
+                val di = Calendar.getInstance().apply {add(Calendar.DAY_OF_MONTH, -15)}
+                textDescricaoFiltro.text = "Últimos 15 dias (${di.time.formataData()} até hoje)"
+                viewModel.filterByMenu(MainViewModel.MENU_FILTER_15DIAS)
             }
             R.id.filterUltimasMes -> {
                 textDescricaoFiltro.text = "Últimas deste mês."
-                viewModel.filterByMenu(MainViewModel.FILTER_MES)
+                viewModel.filterByMenu(MainViewModel.MENU_FILTER_MES)
             }
             R.id.filterPeriodo -> {
                 val dialog = PeriodDialog()
@@ -213,4 +209,6 @@ class MainActivity : AppCompatActivity(), Actions {
 
 interface Actions {
     fun closeWindowBefore()
+    fun gotoAddReceita()
+    fun gotoAddDespesa()
 }

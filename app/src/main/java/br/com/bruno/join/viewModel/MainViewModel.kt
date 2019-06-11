@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import br.com.bruno.join.activity.Actions
 import br.com.bruno.join.entity.Transacao
 import br.com.bruno.join.enums.TipoTransacao
 import br.com.bruno.join.extensions.primeiroDiaMes
@@ -22,7 +23,8 @@ import java.util.*
  * Created by Bruno Costa on 09/08/2018.
  */
 class MainViewModel(
-        val context: Context
+        val context: Context,
+        val action: Actions
 ): ViewModel() {
 
     companion object {
@@ -30,10 +32,10 @@ class MainViewModel(
         const val STATE_FILTER_DESPESAS = 1
         const val STATE_FILTER_RECEITAS = 2
 
-        const val FILTER_HOJE   = 3
-        const val FILTER_SEMANA = 4
-        const val FILTER_15DIAS = 5
-        const val FILTER_MES    = 6
+        const val MENU_FILTER_HOJE   = 3
+        const val MENU_FILTER_SEMANA = 4
+        const val MENU_FILTER_15DIAS = 5
+        const val MENU_FILTER_MES    = 6
 
     }
 
@@ -120,7 +122,7 @@ class MainViewModel(
         filter(STATE_FILTER_RECEITAS)
     }
 
-    fun filter(typeFilter: Int) {
+    private fun filter(typeFilter: Int) {
         var listFiltered: List<Transacao> = mutableListOf()
 
         if (typeFilter == stateFilter) {
@@ -140,14 +142,15 @@ class MainViewModel(
     }
 
     fun filterByMenu(typeFilter: Int){
-        when(typeFilter){
-            FILTER_HOJE -> {
+        stateFilter = STATE_FILTER_NO
+        when (typeFilter) {
+            MENU_FILTER_HOJE -> {
                 listaTransacoesAux = Transacao().query {
                     between("data", Calendar.getInstance().time.zeraHora(), Calendar.getInstance().time.ultimaHora())
                 }
                 setList(listaTransacoesAux)
             }
-            FILTER_SEMANA -> {
+            MENU_FILTER_SEMANA -> {
                 val calendar = Calendar.getInstance()
                 calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
                 val di = calendar.time
@@ -158,14 +161,14 @@ class MainViewModel(
                 listaTransacoesAux = Transacao().query { between("data", di.zeraHora(), df.ultimaHora()) }
                 setList(listaTransacoesAux)
             }
-            FILTER_15DIAS -> {
+            MENU_FILTER_15DIAS -> {
                 val calendar = Calendar.getInstance()
-                calendar.set(Calendar.DAY_OF_MONTH, 15)
+                calendar.add(Calendar.DAY_OF_MONTH, -15)
                 val df = calendar.time
-                listaTransacoesAux = Transacao().query { between("data", df.zeraHora(), Calendar.getInstance().time.ultimaDiaMes()) }
+                listaTransacoesAux = Transacao().query { between("data", df.zeraHora(), Calendar.getInstance().time.ultimaHora()) }
                 setList(listaTransacoesAux)
             }
-            FILTER_MES -> {
+            MENU_FILTER_MES -> {
                 listaTransacoesAux = Transacao().query { between("data", Calendar.getInstance().time.primeiroDiaMes(), Calendar.getInstance().time.ultimaDiaMes()) }
                 setList(listaTransacoesAux)
             }
@@ -196,9 +199,18 @@ class MainViewModel(
         valueProgress.onNext(if (porcentagem > 0) { porcentagem.toInt() } else { 0 })
     }
 
+    fun gotoAddReceita() {
+        action.gotoAddReceita()
+    }
+
+    fun gotoAddDespesa() {
+        action.gotoAddDespesa()
+    }
+
     class Factory(
-            val context: Context
+            val context: Context,
+            val action: Actions
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T = MainViewModel(context) as T
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T = MainViewModel(context, action) as T
     }
 }

@@ -36,17 +36,18 @@ class FullScreenDialog : DialogFragment() {
     }
 
     val compDisposable = CompositeDisposable()
-    lateinit var viewModel: TransacaoViewModel
-    lateinit var transacaoRepository: ITransacaoRepository
-    lateinit var categoriaAdapter: CategoriaAdapter
     lateinit var app: JApplication
-    var actions: Actions? = null
     lateinit var tipoTransacao: TipoTransacao
+    lateinit var viewModel: TransacaoViewModel
+    lateinit var categoriaAdapter: CategoriaAdapter
+    lateinit var transacaoRepository: ITransacaoRepository
+
+    var actions: Actions? = null
     var datePickerDialog: DatePickerDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.FullScreenDialogStyle)
+        setStyle(STYLE_NORMAL, R.style.FullScreenDialogStyle)
     }
 
 
@@ -232,8 +233,7 @@ class FullScreenDialog : DialogFragment() {
                 animationDone.setAnimation("done_accent.json")
                 animationDialog.setAnimation("sucess_accent.json")
             }
-            else -> {
-            }
+            else -> {}
         }
     }
 

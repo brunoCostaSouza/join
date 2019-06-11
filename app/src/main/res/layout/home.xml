@@ -245,11 +245,23 @@
                 app:menu_labels_singleLine="true">
 
                 <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/btnRelatorios"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_pie_chart"
+                    app:fab_colorNormal="@color/c_c"
+                    app:fab_colorPressed="@color/whiteDark"
+                    app:fab_label="Relatórios"
+                    app:fab_size="mini" />
+
+                <com.github.clans.fab.FloatingActionButton
                     android:id="@+id/btnAddReceita"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_arrow_upward_white"
                     app:fab_colorNormal="@color/colorPrimary"
+                    app:fab_colorPressed="@color/whiteDark"
+                    android:onClick="@{() -> viewModel.gotoAddReceita()}"
                     app:fab_label="Adicionar Receita"
                     app:fab_size="mini" />
 
@@ -259,8 +271,9 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_arrow_down_white"
                     android:tint="@color/colorCard"
+                    android:onClick="@{() -> viewModel.gotoAddDespesa()}"
                     app:fab_colorNormal="@color/despesa"
-                    app:fab_colorPressed="#E8004A"
+                    app:fab_colorPressed="@color/whiteDark"
                     app:fab_colorRipple="#C20024"
                     app:fab_label="Adicionar Despesas"
                     app:fab_size="mini" />
