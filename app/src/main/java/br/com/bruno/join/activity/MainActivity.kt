@@ -2,6 +2,7 @@ package br.com.bruno.join.activity
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -142,6 +143,10 @@ class MainActivity : AppCompatActivity(), Actions {
         dialog.show(supportFragmentManager.beginTransaction(), FullScreenDialog.TAG)
     }
 
+    override fun gotoRelatorios() {
+        startActivity(Intent(this, ChartActivity::class.java))
+    }
+
     private val scrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, lastPosition: Int, newPosition: Int) {
             super.onScrolled(recyclerView, lastPosition, newPosition)
@@ -211,4 +216,5 @@ interface Actions {
     fun closeWindowBefore()
     fun gotoAddReceita()
     fun gotoAddDespesa()
+    fun gotoRelatorios()
 }

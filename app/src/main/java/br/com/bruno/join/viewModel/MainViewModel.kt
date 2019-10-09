@@ -141,7 +141,7 @@ class MainViewModel(
 
     }
 
-    fun filterByMenu(typeFilter: Int){
+    fun filterByMenu(typeFilter: Int) {
         stateFilter = STATE_FILTER_NO
         when (typeFilter) {
             MENU_FILTER_HOJE -> {
@@ -180,7 +180,7 @@ class MainViewModel(
         setList(listaTransacoesAux)
     }
 
-    private fun setList(list: List<Transacao>){
+    private fun setList(list: List<Transacao>) {
         calcularSaldoPrevisto(list)
         calcularSaldoConsolidado(list)
         calculateProgress(list)
@@ -205,6 +205,10 @@ class MainViewModel(
 
     fun gotoAddDespesa() {
         action.gotoAddDespesa()
+    }
+
+    fun gotoRelatorios() {
+        action.gotoRelatorios()
     }
 
     class Factory(

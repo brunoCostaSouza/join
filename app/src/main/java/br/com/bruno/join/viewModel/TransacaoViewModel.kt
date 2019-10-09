@@ -24,15 +24,15 @@ import io.reactivex.subjects.PublishSubject
 import java.util.*
 
 class TransacaoViewModel(
-        val context: Context,
-        private val idTransacao: Long?,
-        private val repository: ITransacaoRepository
-): ViewModel() {
+    val context: Context,
+    private val idTransacao: Long?,
+    private val repository: ITransacaoRepository
+) : ViewModel() {
 
-    var transacao: Transacao = if(idTransacao == null) {
+    var transacao: Transacao = if (idTransacao == null) {
         Transacao()
     } else {
-        Transacao().queryFirst {equalTo("id", idTransacao)}!!
+        Transacao().queryFirst { equalTo("id", idTransacao) }!!
     }
 
     var valor = ObservableField<String>()
@@ -65,7 +65,7 @@ class TransacaoViewModel(
                 it.categoria = categoria.get()
                 it.tipo = tipoTransacao.get()!!.name
                 it.descricao = descricao.get()!!
-                it.valor = valor.get()!!.unFormatMoney()?:0.0
+                it.valor = valor.get()!!.unFormatMoney() ?: 0.0
                 it.data = dataTransacao.get()!!.unFormatData()
                 it.consolidado = consolidado.get()
             }
@@ -85,22 +85,17 @@ class TransacaoViewModel(
     }
 
     fun getCategorias() {
-
-            val list = mutableListOf<Categoria>()
-            list.add(getCategoriaVazia())
-            list.addAll(Categoria().queryAll())
-            categorias.set(list)
-
+        val list = mutableListOf<Categoria>()
+        list.add(getCategoriaVazia())
+        list.addAll(Categoria().queryAll())
+        categorias.set(list)
     }
-
-
-
 
     fun itemSelecionado(parent: ViewParent, view: View, position: Int, id: Long) {
         categoria.set(categorias.get()!![position])
     }
 
-    fun checkConsolidado(){
+    fun checkConsolidado() {
         consolidado.set(!consolidado.get()!!)
     }
 
@@ -111,10 +106,11 @@ class TransacaoViewModel(
     }
 
     class Factory(
-            val context: Context,
-            val idTransacao: Long?,
-            val repository: ITransacaoRepository
+        val context: Context,
+        val idTransacao: Long?,
+        val repository: ITransacaoRepository
     ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T = TransacaoViewModel(context, idTransacao, repository) as T
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+            TransacaoViewModel(context, idTransacao, repository) as T
     }
 }

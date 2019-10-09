@@ -111,9 +111,8 @@ class DetailDialog: DialogFragment(), Actions {
     }
 
     override fun gotoAddReceita() {}
-
     override fun gotoAddDespesa() {}
-
+    override fun gotoRelatorios() {}
     /*
     val compDisposable = CompositeDisposable()
     lateinit var  viewModel: TransacaoViewModel

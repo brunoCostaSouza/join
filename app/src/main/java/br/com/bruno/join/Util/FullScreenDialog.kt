@@ -31,6 +31,7 @@ import java.util.*
 
 class FullScreenDialog : DialogFragment() {
 
+    val ID_TRANSACAO = "idTransacao"
     companion object {
         var TAG = "FullScreenDialog"
     }
@@ -54,7 +55,7 @@ class FullScreenDialog : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         transacaoRepository = TransacaoRepository()
 
-        val idTransacao = arguments?.getLong("idTransacao")
+        val idTransacao = arguments?.getLong(ID_TRANSACAO)
 
         viewModel = ViewModelProviders
                 .of(this, TransacaoViewModel.Factory(activity!!.applicationContext, idTransacao, transacaoRepository))
@@ -114,13 +115,13 @@ class FullScreenDialog : DialogFragment() {
             }
         }
 
-        spnCategory.setOnFocusChangeListener { v, hasFocus ->
+        spnCategory.setOnFocusChangeListener { _, hasFocus ->
             if(hasFocus) {
                 Util.hideKeyBoard(context!!, editValue)
             }
         }
 
-        textData.setOnFocusChangeListener { v, hasFocus -> if (hasFocus) showCalendar() }
+        textData.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) showCalendar() }
         textData.setOnClickListener { showCalendar() }
 
 
