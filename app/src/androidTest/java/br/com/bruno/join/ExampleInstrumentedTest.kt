@@ -1,12 +1,15 @@
 package br.com.bruno.join
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
-
+import androidx.test.rule.ActivityTestRule
+import androidx.test.runner.AndroidJUnit4
+import br.com.bruno.join.view.MainActivity
+import kotlinx.android.synthetic.main.home.rootFab
+import org.junit.After
+import org.junit.Assert.assertNotNull
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -15,10 +18,28 @@ import org.junit.Assert.*
  */
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
+
+    @get:Rule
+    var activityRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
+    private lateinit var mActivity: MainActivity
+
+    @Before
+    fun setUp() {
+        mActivity = activityRule.activity
+    }
+
     @Test
     fun useAppContext() {
-        // Context of the app under test.
+        mActivity.run {
+            assertNotNull(rootFab)
+        }
+        /*
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("br.com.bruno.join", appContext.packageName)
+        assertEquals("br.com.bruno.join", appContext.packageName)*/
+    }
+
+    @After
+    fun tearDown() {
+
     }
 }

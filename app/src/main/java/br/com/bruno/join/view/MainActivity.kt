@@ -1,4 +1,4 @@
-package br.com.bruno.join.activity
+package br.com.bruno.join.view
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
@@ -10,18 +10,18 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import br.com.bruno.join.application.JoinAppCompatActivity
 import br.com.bruno.join.R
-import br.com.bruno.join.Util.FullScreenDialog
-import br.com.bruno.join.Util.PeriodDialog
-import br.com.bruno.join.adapter.ItemTransacaoAdapter
+import br.com.bruno.join.util.FullScreenDialog
+import br.com.bruno.join.util.PeriodDialog
+import br.com.bruno.join.adapter.ItemTransactionAdapter
 import br.com.bruno.join.databinding.HomeBinding
-import br.com.bruno.join.enums.TipoTransacao
+import br.com.bruno.join.enums.TypeTransaction
 import br.com.bruno.join.extensions.formataData
 import br.com.bruno.join.extensions.observe
 import br.com.bruno.join.viewModel.MainViewModel
@@ -33,34 +33,33 @@ import kotlinx.android.synthetic.main.home.*
 import java.util.*
 
 
-class MainActivity : AppCompatActivity(), Actions {
+class MainActivity : JoinAppCompatActivity(), Actions {
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var transacaoAdapter: ItemTransacaoAdapter
+    private lateinit var transactionAdapter: ItemTransactionAdapter
     private val compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProviders.of(this, MainViewModel.Factory(this, this)).get(MainViewModel::class.java)
-        val binding: HomeBinding = DataBindingUtil.setContentView(this, R.layout.home)
-        binding.viewModel = viewModel
-
-        setSupportActionBar(toolbarhome)
-        supportActionBar?.elevation = 0F
-
+        initViewModel()
         setupView()
         setupViewModel()
     }
 
-    private fun setupViewModel() {
-        compositeDisposable.add(viewModel.listaTransacoes.subscribe {
+    override fun initViewModel() {
+        viewModel = ViewModelProviders.of(this, MainViewModel.Factory(this, this)).get(MainViewModel::class.java)
+        val binding: HomeBinding = DataBindingUtil.setContentView(this, R.layout.home)
+        binding.viewModel = viewModel
+    }
+
+    override fun setupViewModel() {
+        compositeDisposable.add(viewModel.listTransactions.subscribe {
             this@MainActivity.runOnUiThread {
-                transacaoAdapter.updateList(it)
-                listItens.adapter = transacaoAdapter
+                transactionAdapter.updateList(it)
+                listItens.adapter = transactionAdapter
                 animateValue()
 
-                if (it.isEmpty() && viewModel.totalDespesa.get() == 0.0 && viewModel.totalReceita.get() == 0.0) {
+                if (it.isEmpty() && viewModel.totalExpenses.get() == 0.0 && viewModel.totalIncome.get() == 0.0) {
                     textEmpty.visibility = View.VISIBLE
                     listItens.visibility = View.GONE
 
@@ -71,7 +70,7 @@ class MainActivity : AppCompatActivity(), Actions {
             }
         })
 
-        compositeDisposable.add(viewModel.saldo.observe {
+        compositeDisposable.add(viewModel.balance.observe {
             TransitionManager.beginDelayedTransition(layoutTop, Recolor().setDuration(1000))
             Handler().postDelayed({
                 if (it!! < 0) {
@@ -101,7 +100,7 @@ class MainActivity : AppCompatActivity(), Actions {
                 }
             }
 
-            if (it!! == 0.0 && viewModel.totalDespesa.get() == 0.0 && viewModel.totalReceita.get() == 0.0) progress.visibility = View.GONE
+            if (it!! == 0.0 && viewModel.totalExpenses.get() == 0.0 && viewModel.totalIncome.get() == 0.0) progress.visibility = View.GONE
         })
 
         compositeDisposable.add(viewModel.valueProgress.subscribe {
@@ -114,13 +113,15 @@ class MainActivity : AppCompatActivity(), Actions {
 
     }
 
-    private fun setupView() {
+    override fun setupView() {
+        setSupportActionBar(toolbarhome)
+        supportActionBar?.elevation = 0F
 
-        transacaoAdapter = ItemTransacaoAdapter(applicationContext, supportFragmentManager)
+        transactionAdapter = ItemTransactionAdapter(applicationContext, supportFragmentManager)
         listItens.apply {
             layoutManager = LinearLayoutManager(context)
             layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.animation_item)
-            adapter = transacaoAdapter
+            adapter = transactionAdapter
         }
 
         listItens.addOnScrollListener(scrollListener)
@@ -132,14 +133,14 @@ class MainActivity : AppCompatActivity(), Actions {
     override fun gotoAddDespesa() {
         val dialog = FullScreenDialog()
         dialog.actions = this
-        dialog.tipoTransacao = TipoTransacao.DESPESA
+        dialog.tipoTransacao = TypeTransaction.DESPESA
         dialog.show(supportFragmentManager.beginTransaction(), FullScreenDialog.TAG)
     }
 
     override fun gotoAddReceita() {
         val dialog = FullScreenDialog()
         dialog.actions = this
-        dialog.tipoTransacao = TipoTransacao.RECEITA
+        dialog.tipoTransacao = TypeTransaction.RECEITA
         dialog.show(supportFragmentManager.beginTransaction(), FullScreenDialog.TAG)
     }
 
@@ -162,7 +163,7 @@ class MainActivity : AppCompatActivity(), Actions {
     }
 
     private fun animateValue() {
-        val endValue = viewModel.saldo.get()!!.toFloat()
+        val endValue = viewModel.balance.get()!!.toFloat()
         val animator = ValueAnimator.ofFloat(0f, endValue)
         animator.duration = 500
         animator.addUpdateListener { animation ->

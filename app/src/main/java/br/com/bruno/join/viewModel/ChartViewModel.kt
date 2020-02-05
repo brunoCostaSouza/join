@@ -1,22 +1,14 @@
 package br.com.bruno.join.viewModel
 
 import android.content.Context
-import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import br.com.bruno.join.activity.Actions
-import br.com.bruno.join.entity.Categoria
-import br.com.bruno.join.entity.Transacao
-import br.com.bruno.join.enums.TipoTransacao
+import br.com.bruno.join.model.Categoria
+import br.com.bruno.join.model.Transaction
+import br.com.bruno.join.enums.TypeTransaction
 import br.com.bruno.join.extensions.primeiroDiaMes
 import br.com.bruno.join.extensions.ultimaDiaMes
-import br.com.bruno.join.extensions.ultimaHora
-import br.com.bruno.join.extensions.zeraHora
 import com.vicpin.krealmextensions.query
-import com.vicpin.krealmextensions.queryAsFlowable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.*
 import kotlin.collections.HashMap
@@ -31,9 +23,9 @@ class ChartViewModel(
     var totalReceitaDespesa = PublishSubject.create<Map<String, Double>>()
     var totalPorCategoria = PublishSubject.create<Map<Categoria, Double>>()
 
-    fun starCharts(){
+    fun starCharts() {
         val data = Calendar.getInstance().time
-        Transacao().query {
+        Transaction().query {
             between("data", data.primeiroDiaMes(), data.ultimaDiaMes())
         }.let {
             configValuesOfBarChart(it)
@@ -41,19 +33,19 @@ class ChartViewModel(
         }
     }
 
-    private fun configValuesOfBarChart (it: List<Transacao>) {
-        val totalDespesa = it.filter { t -> t.tipo == TipoTransacao.DESPESA.name }
+    private fun configValuesOfBarChart(it: List<Transaction>) {
+        val totalDespesa = it.filter { t -> t.tipo == TypeTransaction.DESPESA.name }
             .sumByDouble { t2 -> t2.valor }
-        val totalReceita = it.filter { t -> t.tipo == TipoTransacao.RECEITA.name }
+        val totalReceita = it.filter { t -> t.tipo == TypeTransaction.RECEITA.name }
             .sumByDouble { t2 -> t2.valor }
 
         val map = HashMap<String, Double>()
-        map[TipoTransacao.DESPESA.name] = totalDespesa
-        map[TipoTransacao.RECEITA.name] = totalReceita
+        map[TypeTransaction.DESPESA.name] = totalDespesa
+        map[TypeTransaction.RECEITA.name] = totalReceita
         totalReceitaDespesa.onNext(map)
     }
 
-    private fun configValuesOfPieChart(it: List<Transacao>) {
+    private fun configValuesOfPieChart(it: List<Transaction>) {
         val map = HashMap<Categoria, Double>()
         val listPorCategoria = it.groupBy { it.categoria }
         listPorCategoria.forEach {
@@ -63,7 +55,7 @@ class ChartViewModel(
         totalPorCategoria.onNext(map)
     }
 
-    class Factory(
+    class Factory (
         val context: Context
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T = ChartViewModel(context) as T

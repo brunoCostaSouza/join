@@ -1,9 +1,8 @@
-package br.com.bruno.join.Util
+package br.com.bruno.join.util
 
 import android.animation.Animator
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +10,9 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import br.com.bruno.join.R
-import br.com.bruno.join.activity.Actions
-import br.com.bruno.join.entity.Transacao
-import br.com.bruno.join.enums.TipoTransacao
+import br.com.bruno.join.view.Actions
+import br.com.bruno.join.model.Transaction
+import br.com.bruno.join.enums.TypeTransaction
 import br.com.bruno.join.extensions.formataData
 import com.vicpin.krealmextensions.delete
 import formatMoney
@@ -26,29 +25,29 @@ class DetailDialog: DialogFragment(), Actions {
     }
 
     val dialogForm = FullScreenDialog()
-    lateinit var transacao: Transacao
+    lateinit var transaction: Transaction
     lateinit var actions: Actions
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val layout = layoutInflater.inflate(R.layout.detail_dialog, container, false)
         layout.apply {
-            lblDescricao.text = transacao.descricao
-            lblValor.text = transacao.valor.formatMoney()
-            if(transacao.tipo!! == TipoTransacao.RECEITA.name) {
+            lblDescricao.text = transaction.descricao
+            lblValor.text = transaction.valor.formatMoney()
+            if(transaction.tipo!! == TypeTransaction.RECEITA.name) {
                 lblValor.setTextColor(ContextCompat.getColor(context, R.color.receita))
             } else {
                 lblValor.setTextColor(ContextCompat.getColor(context, R.color.despesa))
             }
 
-            lblData.text = "Data da transação: ${transacao.data!!.formataData()}"
-            lblCategoria.text = transacao.categoria!!.descricao
-            lblConsolidado.visibility = if(transacao.consolidado!!){ View.GONE } else { View.VISIBLE }
+            lblData.text = "Data da transação: ${transaction.data!!.formataData()}"
+            lblCategoria.text = transaction.categoria!!.descricao
+            lblConsolidado.visibility = if(transaction.consolidado!!){ View.GONE } else { View.VISIBLE }
 
             btnEdit.setOnClickListener(listenerEdit)
             btnRemove.setOnClickListener(listenerRemove)
         }
 
-        dialog.window?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(context!!, android.R.color.transparent)))
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(context!!, android.R.color.transparent)))
         setListenersButton(layout)
         return layout!!
     }
@@ -67,19 +66,19 @@ class DetailDialog: DialogFragment(), Actions {
         }
 
         layout.btnQuestionYes.setOnClickListener {
-            Transacao().delete { equalTo("id", transacao.id) }
+            Transaction().delete { equalTo("id", transaction.id) }
             layout.clDetail.visibility = View.INVISIBLE
             layout.clQuestion.visibility = View.GONE
             layout.animDetail.visibility = View.VISIBLE
 
-            if (transacao.tipo == TipoTransacao.RECEITA.name) layout.animDetail.setAnimation("removedReceita.json") else layout.animDetail.setAnimation("removedDespesa.json")
+            if (transaction.tipo == TypeTransaction.RECEITA.name) layout.animDetail.setAnimation("removedReceita.json") else layout.animDetail.setAnimation("removedDespesa.json")
             layout.animDetail.playAnimation()
             layout.animDetail.speed = 1.2F
             layout.animDetail.addAnimatorListener(object : Animator.AnimatorListener {
                 override fun onAnimationRepeat(animation: Animator?) {}
 
                 override fun onAnimationEnd(animation: Animator?) {
-                    if (dialog.isShowing) dialog.dismiss()
+                    if (dialog?.isShowing!!) dialog?.dismiss()
                 }
 
                 override fun onAnimationCancel(animation: Animator?) {}
@@ -93,12 +92,12 @@ class DetailDialog: DialogFragment(), Actions {
     private val listenerEdit = View.OnClickListener {
 
         if(!dialogForm.isVisible) {
-            dialogForm.tipoTransacao = if (transacao.tipo == TipoTransacao.RECEITA.name) TipoTransacao.RECEITA else TipoTransacao.DESPESA
+            dialogForm.tipoTransacao = if (transaction.tipo == TypeTransaction.RECEITA.name) TypeTransaction.RECEITA else TypeTransaction.DESPESA
             val args = Bundle()
-            args.putLong("idTransacao", transacao.id)
+            args.putLong("idTransacao", transaction.id)
             dialogForm.arguments = args
             dialogForm.actions = this
-            dialogForm.show(activity?.supportFragmentManager, FullScreenDialog.TAG)
+            dialogForm.show(activity?.supportFragmentManager!!, FullScreenDialog.TAG)
         }
     }
 
@@ -115,18 +114,18 @@ class DetailDialog: DialogFragment(), Actions {
     override fun gotoRelatorios() {}
     /*
     val compDisposable = CompositeDisposable()
-    lateinit var  viewModel: TransacaoViewModel
-    lateinit var transacaoRepository: ITransacaoRepository
+    lateinit var  viewModel: TransactionViewModel
+    lateinit var transacaoRepository: ITransactionRepository
     lateinit var categoriaAdapter: CategoriaAdapter
     lateinit var app: JApplication
     var isReceita = true
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        transacaoRepository = TransacaoRepository()
+        transacaoRepository = TransactionRepository()
 
         viewModel = ViewModelProviders
-                .of(this, TransacaoViewModel.Factory(activity!!.applicationContext, null, transacaoRepository))
-                .get(TransacaoViewModel::class.java)
+                .of(this, TransactionViewModel.Factory(activity!!.applicationContext, null, transacaoRepository))
+                .get(TransactionViewModel::class.java)
 
         val binding: TransacaoDialogBinding = DataBindingUtil.inflate(inflater, R.layout.transacao_dialog, container, true)
         binding.viewModel = viewModel
@@ -167,7 +166,7 @@ class DetailDialog: DialogFragment(), Actions {
         })
 
         compDisposable.add(viewModel.tipoTransacao.observe {
-            doAnimate(it!! == TipoTransacao.RECEITA)
+            doAnimate(it!! == TypeTransaction.RECEITA)
         })
 
         compDisposable.add(viewModel.showALert.subscribe {

@@ -1,32 +1,26 @@
-package br.com.bruno.join.activity
+package br.com.bruno.join.view
 
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import br.com.bruno.join.R
-import br.com.bruno.join.Util.ChartValueFormat
+import br.com.bruno.join.util.ChartValueFormat
 import br.com.bruno.join.databinding.ActivityChartBindingImpl
-import br.com.bruno.join.entity.Categoria
-import br.com.bruno.join.enums.TipoTransacao
+import br.com.bruno.join.enums.TypeTransaction
 import br.com.bruno.join.viewModel.ChartViewModel
-import br.com.bruno.join.viewModel.MainViewModel
-import com.github.mikephil.charting.charts.BarChart
-import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Description
-import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import formatMoney
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.activity_chart.*
+import kotlinx.android.synthetic.main.activity_chart.bar_graph
+import kotlinx.android.synthetic.main.activity_chart.pie_graph
 
 class ChartActivity : AppCompatActivity() {
 
@@ -67,8 +61,8 @@ class ChartActivity : AppCompatActivity() {
         compositeDisposable.add(viewModel.totalReceitaDespesa.subscribe {
             val barEntries = mutableListOf<BarEntry>()
 
-            barEntries.add(BarEntry(1f, (it[TipoTransacao.RECEITA.name] ?: error("")).toFloat()))
-            barEntries.add(BarEntry(2f, (it[TipoTransacao.DESPESA.name] ?: error("")).toFloat()))
+            barEntries.add(BarEntry(1f, (it[TypeTransaction.RECEITA.name] ?: error("")).toFloat()))
+            barEntries.add(BarEntry(2f, (it[TypeTransaction.DESPESA.name] ?: error("")).toFloat()))
 
             val barDataSet = BarDataSet(barEntries, "Receita | Despesa")
             val colors: IntArray =
@@ -85,7 +79,7 @@ class ChartActivity : AppCompatActivity() {
             bar_graph.xAxis.isEnabled = false
             bar_graph.axisRight.isEnabled = false
             bar_graph.axisLeft.axisMaximum =
-                (it[TipoTransacao.RECEITA.name] ?: error("")).toFloat() + 50
+                (it[TypeTransaction.RECEITA.name] ?: error("")).toFloat() + 50
             bar_graph.axisLeft.axisMinimum = 0f
             bar_graph.invalidate()
         })

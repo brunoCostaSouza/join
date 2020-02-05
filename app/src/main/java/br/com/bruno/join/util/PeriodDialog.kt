@@ -1,8 +1,6 @@
-package br.com.bruno.join.Util
+package br.com.bruno.join.util
 
 import android.app.DatePickerDialog
-import android.app.Dialog
-import android.app.VoiceInteractor
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +11,6 @@ import androidx.fragment.app.DialogFragment
 import br.com.bruno.join.R
 import br.com.bruno.join.extensions.ultimaHora
 import br.com.bruno.join.extensions.zeraHora
-import kotlinx.android.synthetic.main.nav_header_main.*
 import kotlinx.android.synthetic.main.periodo_dialog.*
 import kotlinx.android.synthetic.main.periodo_dialog.view.*
 import java.text.SimpleDateFormat
@@ -40,7 +37,7 @@ class PeriodDialog : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val layout = layoutInflater.inflate(R.layout.periodo_dialog, container, false)
         setListeners(layout)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(context!!, android.R.color.transparent)))
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(context!!, android.R.color.transparent)))
         return layout
     }
 

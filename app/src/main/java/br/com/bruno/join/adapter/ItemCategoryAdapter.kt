@@ -5,9 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.core.content.ContextCompat
 import br.com.bruno.join.R
-import br.com.bruno.join.entity.Categoria
+import br.com.bruno.join.model.Categoria
 import kotlinx.android.synthetic.main.item_categoria.view.*
 import kotlinx.android.synthetic.main.item_categoria_empty.view.*
 

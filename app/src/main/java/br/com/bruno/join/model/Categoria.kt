@@ -1,4 +1,4 @@
-package br.com.bruno.join.entity
+package br.com.bruno.join.model
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey

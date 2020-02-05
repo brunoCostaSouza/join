@@ -20,14 +20,14 @@ import java.util.Collections.replaceAll
 @BindingAdapter("formatMoney")
 fun TextView.setFormatMoney(value: String?) {
     if (value != null) {
-        this.text = value?.toDouble()?.formatMoney()
+        this.text = value.toDouble().formatMoney()
     } else {
         this.text = 0.0.formatMoney()
     }
 }
 
-@BindingAdapter("formatMoneyPrevist")
-fun TextView.setFormatMoneyPrevist(value: String?) {
+@BindingAdapter("formatMoneyForeseen")
+fun TextView.setFormatMoneyForeseen(value: String?) {
     if (value != null) {
         this.text = "Previsto: ${value?.toDouble()?.formatMoney()}"
     } else {

@@ -1,4 +1,4 @@
-package br.com.bruno.join.Util
+package br.com.bruno.join.util
 
 import br.com.bruno.join.extensions.formatMoney
 import com.github.mikephil.charting.data.Entry

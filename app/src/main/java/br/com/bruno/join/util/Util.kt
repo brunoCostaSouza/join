@@ -1,4 +1,4 @@
-package br.com.bruno.join.Util
+package br.com.bruno.join.util
 
 import android.app.Activity
 import android.content.Context

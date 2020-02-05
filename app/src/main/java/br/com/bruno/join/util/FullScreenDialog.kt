@@ -1,10 +1,12 @@
-package br.com.bruno.join.Util
+package br.com.bruno.join.util
 
 import android.animation.Animator
 import android.app.DatePickerDialog
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,36 +14,54 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
-import br.com.bruno.join.Application.JApplication
+import br.com.bruno.join.application.JApplication
 import br.com.bruno.join.R
-import br.com.bruno.join.activity.Actions
+import br.com.bruno.join.view.Actions
 import br.com.bruno.join.adapter.CategoriaAdapter
 import br.com.bruno.join.databinding.FullDialogBinding
-import br.com.bruno.join.enums.TipoTransacao
+import br.com.bruno.join.enums.TypeTransaction
 import br.com.bruno.join.extensions.observe
-import br.com.bruno.join.repository.ITransacaoRepository
-import br.com.bruno.join.repository.TransacaoRepository
-import br.com.bruno.join.viewModel.TransacaoViewModel
+import br.com.bruno.join.extensions.replaceAllCharacters
+import br.com.bruno.join.repository.contract.ITransactionRepository
+import br.com.bruno.join.repository.implementation.TransactionRepository
+import br.com.bruno.join.viewModel.TransactionViewModel
 import com.felixsoares.sweetdialog.SweetDialog
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.full_dialog.*
+import kotlinx.android.synthetic.main.full_dialog.animationDialog
+import kotlinx.android.synthetic.main.full_dialog.animationDone
+import kotlinx.android.synthetic.main.full_dialog.editValue
+import kotlinx.android.synthetic.main.full_dialog.layoutDescription
+import kotlinx.android.synthetic.main.full_dialog.layoutTextData
+import kotlinx.android.synthetic.main.full_dialog.llForm
+import kotlinx.android.synthetic.main.full_dialog.llformAnimation
+import kotlinx.android.synthetic.main.full_dialog.rootDialog
+import kotlinx.android.synthetic.main.full_dialog.spnCategory
+import kotlinx.android.synthetic.main.full_dialog.switchConsolidadoDespesa
+import kotlinx.android.synthetic.main.full_dialog.switchConsolidadoReceita
+import kotlinx.android.synthetic.main.full_dialog.textData
+import kotlinx.android.synthetic.main.full_dialog.textDescription
+import kotlinx.android.synthetic.main.full_dialog.toolbarDialog
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
-import java.util.*
-
+import java.util.Calendar
+import java.util.Locale
 
 class FullScreenDialog : DialogFragment() {
 
     val ID_TRANSACAO = "idTransacao"
+    var current = ""
+
     companion object {
         var TAG = "FullScreenDialog"
     }
 
     val compDisposable = CompositeDisposable()
     lateinit var app: JApplication
-    lateinit var tipoTransacao: TipoTransacao
-    lateinit var viewModel: TransacaoViewModel
+    lateinit var tipoTransacao: TypeTransaction
+    lateinit var viewModel: TransactionViewModel
     lateinit var categoriaAdapter: CategoriaAdapter
-    lateinit var transacaoRepository: ITransacaoRepository
+    lateinit var transacaoRepository: ITransactionRepository
 
     var actions: Actions? = null
     var datePickerDialog: DatePickerDialog? = null
@@ -51,17 +71,28 @@ class FullScreenDialog : DialogFragment() {
         setStyle(STYLE_NORMAL, R.style.FullScreenDialogStyle)
     }
 
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        transacaoRepository = TransacaoRepository()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        transacaoRepository = TransactionRepository()
 
         val idTransacao = arguments?.getLong(ID_TRANSACAO)
 
         viewModel = ViewModelProviders
-                .of(this, TransacaoViewModel.Factory(activity!!.applicationContext, idTransacao, transacaoRepository))
-                .get(TransacaoViewModel::class.java)
+            .of(
+                this,
+                TransactionViewModel.Factory(
+                    activity!!.applicationContext,
+                    idTransacao,
+                    transacaoRepository
+                )
+            )
+            .get(TransactionViewModel::class.java)
 
-        val binding: FullDialogBinding = DataBindingUtil.inflate(inflater, R.layout.full_dialog, container, true)
+        val binding: FullDialogBinding =
+            DataBindingUtil.inflate(inflater, R.layout.full_dialog, container, true)
         binding.viewModel = viewModel
 
         app = activity!!.application as JApplication
@@ -80,8 +111,11 @@ class FullScreenDialog : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog.window?.setWindowAnimations(R.style.FullScreenDialogStyle)
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        dialog?.window?.setWindowAnimations(R.style.FullScreenDialogStyle)
 
         editValue.requestFocus()
         Util.showKeyBoard(activity!!, editValue)
@@ -98,12 +132,12 @@ class FullScreenDialog : DialogFragment() {
 
         toolbarDialog.apply {
             setNavigationIcon(R.drawable.ic_close_white)
-            setNavigationOnClickListener { dialog.dismiss() }
+            setNavigationOnClickListener { dialog?.dismiss() }
             elevation = 0f
         }
 
-        when(tipoTransacao){
-            TipoTransacao.RECEITA -> {
+        when (tipoTransacao) {
+            TypeTransaction.RECEITA -> {
                 toolbarDialog.title = "Receita"
                 switchConsolidadoReceita.visibility = View.VISIBLE
                 switchConsolidadoDespesa.visibility = View.GONE
@@ -116,7 +150,7 @@ class FullScreenDialog : DialogFragment() {
         }
 
         spnCategory.setOnFocusChangeListener { _, hasFocus ->
-            if(hasFocus) {
+            if (hasFocus) {
                 Util.hideKeyBoard(context!!, editValue)
             }
         }
@@ -124,19 +158,68 @@ class FullScreenDialog : DialogFragment() {
         textData.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) showCalendar() }
         textData.setOnClickListener { showCalendar() }
 
+        editValue.run {
+
+            addTextChangedListener(object : TextWatcher {
+                var value = 0.0
+                var aux = ""
+                override fun afterTextChanged(s: Editable?) {}
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(sequence: CharSequence?, start: Int, before: Int, count: Int) {
+                    val actual = editValue.text.toString()
+                    if (current != actual && actual.length > current.length) {
+
+                        aux += sequence.toString()[sequence!!.length - 1]
+                        value = aux.toDouble() / 100
+
+                        editValue.removeTextChangedListener(this)
+
+                        val formatted =
+                            DecimalFormat.getCurrencyInstance(Locale("pt", "BR")).format(value)
+                        current = formatted
+                        editValue.setText(formatted)
+                        editValue.setSelection(formatted.length)
+
+                        editValue.addTextChangedListener(this)
+                    } else if (editValue.text.toString().length < current.length) {
+                        aux = aux.substring(0, aux.length - 1)
+                        if (aux.isEmpty()) {
+                            aux = "0"
+                        }
+                        value = aux.toDouble() / 100
+
+                        editValue.removeTextChangedListener(this)
+
+                        val formatted =
+                            DecimalFormat.getCurrencyInstance(Locale("pt", "BR")).format(value)
+                        current = formatted
+                        editValue.setText(formatted)
+                        editValue.setSelection(formatted.length)
+                        editValue.addTextChangedListener(this)
+                    }
+                }
+            })
+        }
 
         setColorsDialog()
         animationDone.playAnimation()
     }
 
     private fun showCalendar() {
-        if(datePickerDialog == null || !datePickerDialog!!.isShowing) {
+        if (datePickerDialog == null || !datePickerDialog!!.isShowing) {
             Util.hideKeyBoard(context!!, textData)
 
             val cal = Calendar.getInstance()
-            if (viewModel.transacao.data != null) cal.time = viewModel.transacao.data
+            viewModel.transaction.data?.run { cal.time = this }
 
-            datePickerDialog = DatePickerDialog(context!!, getStyleCalendar(), dpdListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+            datePickerDialog = DatePickerDialog(
+                context!!,
+                getStyleCalendar(),
+                dpdListener,
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)
+            )
             datePickerDialog!!.show()
         }
     }
@@ -153,7 +236,7 @@ class FullScreenDialog : DialogFragment() {
 
     private fun setupViewModel() {
         compDisposable.add(viewModel.categorias.observe {
-            if (dialog.isShowing) dialog.dismiss()
+            if (dialog?.isShowing!!) dialog?.dismiss()
             categoriaAdapter.categorias = it!!
             categoriaAdapter.notifyDataSetChanged()
         })
@@ -180,23 +263,22 @@ class FullScreenDialog : DialogFragment() {
                 override fun onAnimationRepeat(animation: Animator?) {}
 
                 override fun onAnimationEnd(animation: Animator?) {
-                    Handler().postDelayed({ if (dialog != null && dialog.isShowing) dialog.dismiss() }, 500)
+                    Handler().postDelayed({ if (dialog?.isShowing!!) dialog?.dismiss() }, 500)
                 }
 
                 override fun onAnimationCancel(animation: Animator?) {}
 
                 override fun onAnimationStart(animation: Animator?) {}
-
             })
         })
-
     }
 
     fun setColorsDialog() {
         viewModel.tipoTransacao.set(tipoTransacao)
         when (tipoTransacao) {
-            TipoTransacao.RECEITA -> {
-                val drawableGreen = ColorDrawable(ContextCompat.getColor(context!!, R.color.colorPrimary))
+            TypeTransaction.RECEITA -> {
+                val drawableGreen =
+                    ColorDrawable(ContextCompat.getColor(context!!, R.color.colorPrimary))
                 val colorGreen = context!!.getColor(R.color.colorPrimary)
 
                 rootDialog.background = drawableGreen
@@ -213,8 +295,9 @@ class FullScreenDialog : DialogFragment() {
                 animationDialog.setAnimation("sucess_primary.json")
             }
 
-            TipoTransacao.DESPESA -> {
-                val drawableGreen = ColorDrawable(ContextCompat.getColor(context!!, R.color.secondPrimary))
+            TypeTransaction.DESPESA -> {
+                val drawableGreen =
+                    ColorDrawable(ContextCompat.getColor(context!!, R.color.secondPrimary))
                 val color = context!!.getColor(R.color.secondPrimary)
 
                 toolbarDialog.setBackgroundColor(color)
@@ -234,16 +317,18 @@ class FullScreenDialog : DialogFragment() {
                 animationDone.setAnimation("done_accent.json")
                 animationDialog.setAnimation("sucess_accent.json")
             }
-            else -> {}
+            else -> {
+            }
         }
     }
 
     private fun getStyleCalendar(): Int {
         return when (tipoTransacao) {
-            TipoTransacao.RECEITA -> R.style.DatePickerThemeReceita
+            TypeTransaction.RECEITA -> R.style.DatePickerThemeReceita
             else -> R.style.DatePickerThemeDespesa
         }
     }
+
     /*
     fun doAnimate(isReceita: Boolean) {
         TransitionManager.beginDelayedTransition(llTTransacao, ChangeBounds().setPathMotion(ArcMotion()).setDuration(300))
@@ -264,5 +349,4 @@ class FullScreenDialog : DialogFragment() {
         btnAddReceita.visibility = if(isReceita) View.VISIBLE else View.GONE
         btnAddDespesa.visibility = if(isReceita) View.GONE else View.VISIBLE
     }*/
-
 }

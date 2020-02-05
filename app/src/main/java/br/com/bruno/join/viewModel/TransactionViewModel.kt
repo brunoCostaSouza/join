@@ -6,33 +6,28 @@ import android.view.ViewParent
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import br.com.bruno.join.R
-import br.com.bruno.join.entity.Categoria
-import br.com.bruno.join.entity.Transacao
-import br.com.bruno.join.enums.TipoTransacao
+import br.com.bruno.join.model.Categoria
+import br.com.bruno.join.model.Transaction
+import br.com.bruno.join.enums.TypeTransaction
 import br.com.bruno.join.extensions.formataData
 import br.com.bruno.join.extensions.unFormatData
 import br.com.bruno.join.extensions.unFormatMoney
-import br.com.bruno.join.repository.ITransacaoRepository
-import co.metalab.asyncawait.async
-import com.vicpin.krealmextensions.deleteAll
+import br.com.bruno.join.repository.contract.ITransactionRepository
 import com.vicpin.krealmextensions.queryAll
 import com.vicpin.krealmextensions.queryFirst
-import com.vicpin.krealmextensions.save
 import formatMoney
 import io.reactivex.subjects.PublishSubject
-import java.util.*
 
-class TransacaoViewModel(
+class TransactionViewModel(
     val context: Context,
     private val idTransacao: Long?,
-    private val repository: ITransacaoRepository
+    private val repository: ITransactionRepository
 ) : ViewModel() {
 
-    var transacao: Transacao = if (idTransacao == null) {
-        Transacao()
+    var transaction: Transaction = if (idTransacao == null) {
+        Transaction()
     } else {
-        Transacao().queryFirst { equalTo("id", idTransacao) }!!
+        Transaction().queryFirst { equalTo("id", idTransacao) }!!
     }
 
     var valor = ObservableField<String>()
@@ -40,36 +35,36 @@ class TransacaoViewModel(
     var dataTransacao = ObservableField<String>()
     var categoria = ObservableField<Categoria>()
     var consolidado = ObservableField<Boolean>(true)
-    var tipoTransacao = ObservableField<TipoTransacao>()
+    var tipoTransacao = ObservableField<TypeTransaction>()
     var categorias = ObservableField<List<Categoria>>()
     var showALert = PublishSubject.create<String>()
     var showSuccess = PublishSubject.create<String>()
 
     init {
-        tipoTransacao.set(TipoTransacao.RECEITA)
+        tipoTransacao.set(TypeTransaction.RECEITA)
     }
 
     fun setupViews() {
         if (idTransacao != null) {
-            valor.set(transacao.valor.formatMoney())
-            descricao.set(transacao.descricao)
-            dataTransacao.set(transacao.data?.formataData())
-            categoria.set(transacao.categoria!!)
-            consolidado.set(transacao.consolidado)
+            valor.set(transaction.valor.formatMoney())
+            descricao.set(transaction.descricao)
+            dataTransacao.set(transaction.data?.formataData())
+            categoria.set(transaction.categoria!!)
+            consolidado.set(transaction.consolidado)
         }
     }
 
     fun salvarTransacao() {
         if (validarCampos()) {
-            transacao.let {
+            transaction.let {
                 it.categoria = categoria.get()
                 it.tipo = tipoTransacao.get()!!.name
                 it.descricao = descricao.get()!!
-                it.valor = valor.get()!!.unFormatMoney() ?: 0.0
+                it.valor = valor.get()!!.unFormatMoney()
                 it.data = dataTransacao.get()!!.unFormatData()
                 it.consolidado = consolidado.get()
             }
-            repository.salvarTransacao(transacao)
+            repository.saveTransaction(transaction)
             showSuccess.onNext("Transação salva com sucesso.")
         } else {
             showALert.onNext("Informe todos os campos.")
@@ -108,9 +103,9 @@ class TransacaoViewModel(
     class Factory(
         val context: Context,
         val idTransacao: Long?,
-        val repository: ITransacaoRepository
+        val repository: ITransactionRepository
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-            TransacaoViewModel(context, idTransacao, repository) as T
+            TransactionViewModel(context, idTransacao, repository) as T
     }
 }

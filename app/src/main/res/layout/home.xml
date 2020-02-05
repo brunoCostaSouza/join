@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context="br.com.bruno.join.activity.MainActivity">
+            tools:context="br.com.bruno.join.view.MainActivity">
 
             <LinearLayout
                 android:id="@+id/layoutTop"
@@ -56,7 +56,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="30sp"
-                    app:formatMoney="@{viewModel.saldo.get().toString()}" />
+                    app:formatMoney="@{viewModel.balance.get().toString()}" />
 
                 <TextView
                     android:id="@+id/textSaldoPrevisto"
@@ -65,8 +65,8 @@
                     android:textAlignment="center"
                     android:textColor="@color/c_q"
                     android:textSize="15sp"
-                    android:visibility="@{!(viewModel.saldoPrevisto.get().equals(viewModel.saldo.get())) ? View.VISIBLE: View.GONE}"
-                    app:formatMoneyPrevist="@{viewModel.saldoPrevisto.get().toString()}" />
+                    android:visibility="@{!(viewModel.balanceExpected.get().equals(viewModel.balance.get())) ? View.VISIBLE: View.GONE}"
+                    app:formatMoneyForeseen="@{viewModel.balanceExpected.get().toString()}" />
 
 
             </LinearLayout>
@@ -110,7 +110,7 @@
                             android:textAlignment="center"
                             android:textColor="@color/receita"
                             android:textSize="18sp"
-                            app:formatMoney="@{viewModel.totalReceita.get().toString()}" />
+                            app:formatMoney="@{viewModel.totalIncome.get().toString()}" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -161,7 +161,7 @@
                             android:textAlignment="center"
                             android:textColor="@color/despesa"
                             android:textSize="18sp"
-                            app:formatMoney="@{viewModel.totalDespesa.get().toString()}" />
+                            app:formatMoney="@{viewModel.totalExpenses.get().toString()}" />
 
                         <TextView
                             android:layout_width="match_parent"

@@ -15,7 +15,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activity.ChartActivity">
+        tools:context=".view.ChartActivity">
 
         <RelativeLayout
             android:id="@+id/rl_graph_1"

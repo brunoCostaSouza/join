@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Data da transacao: 20/04/2018"
+            android:text="Data da transaction: 20/04/2018"
             android:textAlignment="center"
             android:textColor="@color/gray_dark"
             android:textSize="13sp"

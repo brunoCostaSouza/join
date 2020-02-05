@@ -1,33 +1,17 @@
-package br.com.bruno.join.Application
+package br.com.bruno.join.application
 
 import android.app.Application
 import android.content.Context
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.Toast
 import br.com.bruno.join.R
 import com.felixsoares.sweetdialog.SweetDialog
 import io.realm.Realm
 import io.realm.RealmConfiguration
-import kotlinx.android.synthetic.main.alert_toast.view.*
-import android.app.Activity
-import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import br.com.bruno.join.entity.Categoria
+import br.com.bruno.join.model.Categoria
 import com.vicpin.krealmextensions.queryAll
 import com.vicpin.krealmextensions.save
 
 
 class JApplication : Application() {
-
-    companion object {
-        val ALERT_TYPE_SUCCESS = 1
-        val ALERT_TYPE_WARNING = 2
-        val ALERT_TYPE_ERROR = 3
-        val ALERT_TYPE_INFO = 4
-    }
 
     override fun onCreate() {
         super.onCreate()

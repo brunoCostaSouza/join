@@ -1,4 +1,4 @@
-package br.com.bruno.join.entity
+package br.com.bruno.join.model
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
@@ -9,7 +9,7 @@ import java.util.*
  * Created by Bruno Costa on 09/08/2018.
 */
 @RealmClass
-open class Transacao: RealmObject(){
+open class Transaction: RealmObject(){
     @PrimaryKey
     open var id: Long = 0
     open var valor: Double = 0.0

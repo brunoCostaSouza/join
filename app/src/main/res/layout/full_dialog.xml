@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewModel"
-            type="br.com.bruno.join.viewModel.TransacaoViewModel" />"
+            type="br.com.bruno.join.viewModel.TransactionViewModel" />
 
-        <import type="br.com.bruno.join.enums.TipoTransacao"/>
+        <import type="br.com.bruno.join.enums.TypeTransaction"/>
 
         <import type="br.com.bruno.join.R"/>
 
@@ -44,7 +44,27 @@
             android:visibility="visible"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <faranjit.currency.edittext.CurrencyEditText
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/editValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:hint="R$ 0,00"
+                android:inputType="numberDecimal"
+                android:maxLength="20"
+                android:textAlignment="textEnd"
+                android:textSize="45sp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textCursorDrawable="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@={viewModel.valor}"
+                android:layout_marginBottom="5dp"
+                tools:ignore="RtlCompat" />
+
+            <!--<faranjit.currency.edittext.CurrencyEditText
                 android:id="@+id/editValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,7 +88,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:locale="pt_BR"
                 app:monetaryDivider=","
-                app:showSymbol="true" />
+                app:showSymbol="true" />-->
 
             <LinearLayout
                 android:id="@+id/container"
