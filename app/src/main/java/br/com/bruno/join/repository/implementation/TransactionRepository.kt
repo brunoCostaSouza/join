@@ -9,9 +9,9 @@ class TransactionRepository : ITransactionRepository {
 
     override fun saveTransaction(transaction: Transaction) {
         if (transaction.id == 0L) {
-            val ultimaTransacao = Transaction().queryLast()
-            if (ultimaTransacao != null) {
-                transaction.id = ultimaTransacao.id + 1
+            val lastTransaction = Transaction().queryLast()
+            if (lastTransaction != null) {
+                transaction.id = lastTransaction.id + 1
             } else {
                 transaction.id = 1
             }

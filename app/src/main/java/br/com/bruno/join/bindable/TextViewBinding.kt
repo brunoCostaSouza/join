@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import formatMoney
 import androidx.databinding.adapters.TextViewBindingAdapter.setText
+import br.com.bruno.join.R
 import faranjit.currency.edittext.CurrencyEditText
 import java.text.NumberFormat
 import java.text.ParseException
@@ -29,8 +30,8 @@ fun TextView.setFormatMoney(value: String?) {
 @BindingAdapter("formatMoneyForeseen")
 fun TextView.setFormatMoneyForeseen(value: String?) {
     if (value != null) {
-        this.text = "Previsto: ${value?.toDouble()?.formatMoney()}"
+        this.text = resources.getString(R.string.previsto, value.toDouble().formatMoney())
     } else {
-        this.text = "Previsto: ${0.0.formatMoney()}"
+        this.text = resources.getString(R.string.previsto, 0.0.formatMoney())
     }
 }

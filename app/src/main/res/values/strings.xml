@@ -30,6 +30,7 @@
     <string name="per_odo_inv_lido">Período inválido</string>
     <string name="dd_mm_aaaa">DD/MM/AAAA</string>
     <string name="de">De</string>
+    <string name="previsto">Previsto: %s</string>
 
     <array name="categorias">
         <item>Selecione uma categoria</item>
