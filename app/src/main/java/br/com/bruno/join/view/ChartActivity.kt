@@ -1,6 +1,7 @@
 package br.com.bruno.join.view
 
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -26,6 +27,7 @@ class ChartActivity : AppCompatActivity() {
 
     private lateinit var viewModel: ChartViewModel
     private val compositeDisposable = CompositeDisposable()
+    private lateinit var button: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +41,7 @@ class ChartActivity : AppCompatActivity() {
         setupView()
         setupViewModel()
         viewModel.starCharts()
+
     }
 
     private fun setupView() {

@@ -82,7 +82,7 @@ class JApplication : Application() {
 
     }
 
-    fun addCategoriesIfNeeded(){
+    fun addCategoriesIfNeeded() {
         if (Categoria().queryAll().isEmpty()) {
             Categoria().apply {
                 id = 1L
